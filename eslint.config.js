@@ -4,7 +4,7 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
-    ignores: [".yarn/", ".git/", "coverage/", "node_modules/", "output/", "*.config.*"],
+    ignores: [".yarn/", ".git/", "coverage/", "lib/", "node_modules/", "output/", "*.config.*"],
   },
   {
     languageOptions: {
