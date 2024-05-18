@@ -683,9 +683,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oliversalzburg/action-automatic-releases@workspace:.":
+"@oliversalzburg/action-auto-releases@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@oliversalzburg/action-automatic-releases@workspace:."
+  resolution: "@oliversalzburg/action-auto-releases@workspace:."
   dependencies:
     "@actions/core": "npm:1.10.1"
     "@actions/github": "npm:5.1.1"
