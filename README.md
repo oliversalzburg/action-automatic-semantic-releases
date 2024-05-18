@@ -1,4 +1,4 @@
-# Automatic Release Action
+# Automatic Semantic Releases Action
 
 ## Usage
 
