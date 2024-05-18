@@ -1,4 +1,4 @@
-name: Auto Releases
+name: Release Manager
 author: Oliver Salzburg
 description: Automate the GitHub release process with assets, changelogs, pre-releases, and more
 branding:
