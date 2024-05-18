@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "private": true,
-  "name": "@oliversalzburg/action-auto-releases",
+  "name": "@oliversalzburg/action-automatic-semantic-releases",
   "version": "0.0.5",
   "license": "MIT",
   "author": "Oliver Salzburg <oliver.salzburg@gmail.com>",
