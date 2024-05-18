@@ -1,7 +1,6 @@
 import * as core from "@actions/core";
 import { GitHub } from "@actions/github/lib/utils.js";
 import { GetResponseDataTypeFromEndpointMethod } from "@octokit/types";
-import createPreset from "conventional-changelog-angular";
 import { CommitMeta, CommitNote, CommitReference } from "conventional-commits-parser";
 import { CommitsSinceRelease } from "./AutomaticReleases.js";
 
@@ -153,10 +152,16 @@ export const parseGitTag = (inputRef: string): string => {
   return resMatch[2];
 };
 
-export const getChangelogOptions = async () => {
-  const defaultOpts = (await createPreset()).parser;
-  defaultOpts.mergePattern = "^Merge pull request #(.*) from (.*)$";
-  defaultOpts.mergeCorrespondence = ["issueId", "source"];
+export const getChangelogOptions = () => {
+  const defaultOpts = {
+    headerPattern: /^(\w*)(?:\((.*)\))?: (.*)$/,
+    headerCorrespondence: ["type", "scope", "subject"],
+    noteKeywords: ["BREAKING CHANGE"],
+    mergePattern: /^Merge pull request #(.*) from (.*)$/,
+    mergeCorrespondence: ["issueId", "source"],
+    revertPattern: /^(?:Revert|revert:)\s"?([\s\S]+?)"?\s*This reverts commit (\w{7,40})\b/i,
+    revertCorrespondence: ["header", "hash"],
+  };
   core.debug(`Changelog options: ${JSON.stringify(defaultOpts)}`);
   return defaultOpts;
 };

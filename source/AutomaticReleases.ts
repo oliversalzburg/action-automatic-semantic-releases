@@ -336,7 +336,7 @@ export class AutomaticReleases {
         );
       }
 
-      const clOptions = await getChangelogOptions();
+      const clOptions = getChangelogOptions();
       const parsedCommitMsg: Exclude<Commit, "type"> & {
         type?: ConventionalCommitTypes | string | null;
       } = new CommitParser(clOptions).parse(commit.commit.message);
