@@ -1,4 +1,4 @@
-name: Release Manager
+name: Automatic Semantic Releases
 author: Oliver Salzburg
 description: Automate the GitHub release process with assets, changelogs, pre-releases, and more
 branding:
