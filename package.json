@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "yarn3-typescript-nodejs-esbuild",
+  "license": "MIT",
+  "author": "Oliver Salzburg <oliver.salzburg@gmail.com>",
+  "type": "module",
+  "scripts": {
+    "build": "node build.js",
+    "clean": "rm -rf ./output",
+    "lint": "yarn run lint:all",
+    "lint:all": "yarn run lint:eslint && yarn run lint:prettier && yarn run lint:tsc",
+    "lint:eslint": "eslint .",
+    "lint:prettier": "prettier --check .",
+    "lint:tsc": "tsc --noEmit",
+    "test": "tsc && node $(yarn bin mocha) output/*.test.js",
+    "test:coverage": "tsc && c8 --reporter=html-spa node $(yarn bin mocha) output/*.test.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.3.0",
+    "@types/chai": "4.3.16",
+    "@types/eslint": "8.56.10",
+    "@types/mocha": "10.0.6",
+    "@types/node": "20.12.12",
+    "c8": "9.1.0",
+    "chai": "5.1.1",
+    "esbuild": "0.21.3",
+    "eslint": "8.57.0",
+    "globals": "15.2.0",
+    "lint-staged": "15.2.2",
+    "mocha": "10.4.0",
+    "prettier": "3.2.5",
+    "prettier-package-json": "2.8.0",
+    "prettier-plugin-organize-imports": "3.2.4",
+    "typescript": "5.4.5",
+    "typescript-eslint": "7.9.0"
+  },
+  "packageManager": "yarn@4.2.2"
+}
