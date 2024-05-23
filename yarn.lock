@@ -697,7 +697,7 @@ __metadata:
     "@types/eslint": "npm:8.56.10"
     "@types/mocha": "npm:10.0.6"
     "@types/node": "npm:20.12.12"
-    "@types/semver": "npm:^7"
+    "@types/semver": "npm:7.5.8"
     c8: "npm:9.1.0"
     chai: "npm:5.1.1"
     conventional-commits-parser: "npm:6.0.0"
@@ -807,7 +807,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/semver@npm:^7":
+"@types/semver@npm:7.5.8":
   version: 7.5.8
   resolution: "@types/semver@npm:7.5.8"
   checksum: 10c0/8663ff927234d1c5fcc04b33062cb2b9fcfbe0f5f351ed26c4d1e1581657deebd506b41ff7fdf89e787e3d33ce05854bc01686379b89e9c49b564c4cfa988efa
