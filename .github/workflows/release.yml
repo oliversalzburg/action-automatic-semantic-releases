@@ -7,7 +7,7 @@ on:
 
 jobs:
   qa-tag:
-    uses: ./github/workflows/test.yml
+    uses: ./.github/workflows/test.yml
 
   qa-docs:
     name: QA Documentation
