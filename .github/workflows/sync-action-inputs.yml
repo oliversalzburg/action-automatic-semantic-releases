@@ -8,7 +8,7 @@ on:
 jobs:
   update-doc:
     permissions:
-      contents: read
+      contents: write
       pull-requests: write
     runs-on: ubuntu-22.04
 
@@ -33,7 +33,7 @@ jobs:
         uses: peter-evans/create-pull-request@18f7dc018cc2cd597073088f7c7591b9d1c02672 # v3
         with:
           base: main
-          title: Synchronize README.md with action.yml
+          title: "docs: Synchronize `README.md` with `action.yml`"
           branch: fix/auto-doc-update-readme
-          commit-message: "chore: Synchronize README.md with action.yml"
+          commit-message: "docs: Synchronize README.md with action.yml"
           body: "auto-doc: Updated README.md"
