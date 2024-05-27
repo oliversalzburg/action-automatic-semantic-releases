@@ -168,6 +168,8 @@ jobs:
           title: Snapshot Build v${{ env.RELEASE_VERSION }}
 ```
 
+## Inputs
+
 ## Release Process
 
 ```shell
