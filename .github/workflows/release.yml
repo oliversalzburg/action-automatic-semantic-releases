@@ -66,7 +66,7 @@ jobs:
       - name: Determine release version
         run: echo "RELEASE_VERSION=$(node examples/manifest-version.cjs)" >> $GITHUB_ENV
 
-      - uses: oliversalzburg/action-automatic-semantic-releases@0b63ad22fee878d2b259d76cd88384d13a57f9a0 # v0.0.7
+      - uses: oliversalzburg/action-automatic-semantic-releases@34b5770268a57ec013c8f7d99422c668361c5934 # v0.0.12
         with:
           draft: false
           prerelease: false
