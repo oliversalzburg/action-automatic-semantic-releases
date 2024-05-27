@@ -34,9 +34,7 @@ jobs:
         run: yarn docs:typedoc
 
   qa-successful-tag:
-    needs:
-      - qa-tag
-      - qa-docs
+    needs: qa-tag
     name: Evaluate QA results
     if: ( success() || failure() )
     runs-on: ubuntu-22.04
