@@ -22,6 +22,8 @@ import {
 
 export interface Args {
   automaticReleaseTag: string;
+  bodyPrefix?: string;
+  bodySuffix?: string;
   draftRelease: boolean;
   preRelease: boolean;
   releaseTitle: string;
@@ -116,7 +118,7 @@ export class AutomaticReleases {
       name: args.releaseTitle ? args.releaseTitle : releaseTag,
       draft: args.draftRelease,
       prerelease: args.preRelease,
-      body: changelog,
+      body: `${args.bodyPrefix ?? ""}${changelog}${args.bodySuffix ?? ""}`,
     });
 
     await uploadReleaseArtifacts(octokit, context, release, args.files);
@@ -132,6 +134,8 @@ export class AutomaticReleases {
       automaticReleaseTag: core.getInput("automatic_release_tag", {
         required: false,
       }),
+      bodyPrefix: core.getInput("body_prefix", { required: false }),
+      bodySuffix: core.getInput("body_suffix", { required: false }),
       draftRelease: core.getBooleanInput("draft", { required: true }),
       preRelease: core.getBooleanInput("prerelease", { required: true }),
       releaseTitle: core.getInput("title", { required: false }),

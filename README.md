@@ -1,5 +1,7 @@
 # Automatic Semantic Releases Action
 
+This action is a fork of <https://github.com/marvinpinto/action-automatic-releases>.
+
 ## Usage
 
 ### Tagged Build (Release on Tag Push)
@@ -127,6 +129,41 @@ jobs:
           prerelease: true
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           title: Nightly Build v${{ env.RELEASE_VERSION }}
+```
+
+## Examples
+
+### Serial Snapshot Build
+
+This example is highly specific to JavaScript module projects. It assumes a registry of published artifacts with valid semantic version numbers, where the next published snapshot should have a version number following the existing series.
+
+> This process was inspired by the release pipelines of <https://github.com/mikro-orm/mikro-orm>.
+
+```yml
+jobs:
+  snapshot:
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          registry-url: https://registry.npmjs.org
+      - run: echo "RELEASE_VERSION=$(node manifest-version.cjs --canary=patch)" >> $GITHUB_ENV
+      - env:
+          # This registry access token requires write access to the scope used in the manifest.
+          # A token that is limited to the package scope is not sufficient to publish a completely new module.
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm --no-git-tag-version --ignore-scripts version ${RELEASE_VERSION}
+          npm publish --access=public --provenance --tag=next
+      - uses: oliversalzburg/action-automatic-semantic-releases@v0.0.5
+        with:
+          automatic_release_tag: next
+          draft: false
+          files: |
+            output/*
+          prerelease: true
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          title: Snapshot Build v${{ env.RELEASE_VERSION }}
 ```
 
 ## Release Process
