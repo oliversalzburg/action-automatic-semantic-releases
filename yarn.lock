@@ -692,7 +692,7 @@ __metadata:
     "@eslint/js": "npm:9.3.0"
     "@kie/mock-github": "npm:2.0.1"
     "@octokit/rest": "npm:20.1.1"
-    "@oliversalzburg/js-utils": "npm:0.0.30"
+    "@oliversalzburg/js-utils": "npm:0.0.36"
     "@types/chai": "npm:4.3.16"
     "@types/eslint": "npm:8.56.10"
     "@types/mocha": "npm:10.0.6"
@@ -718,10 +718,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@oliversalzburg/js-utils@npm:0.0.30":
-  version: 0.0.30
-  resolution: "@oliversalzburg/js-utils@npm:0.0.30"
-  checksum: 10c0/c9ee87ed8725cc84833a9d77bd4e9eb2c03905d221470f1b99b1fd02b5e4e8e20f2a500c65945748381fd23fa8843160735bce3c7bbe87ef3edc6143d8615084
+"@oliversalzburg/js-utils@npm:0.0.36":
+  version: 0.0.36
+  resolution: "@oliversalzburg/js-utils@npm:0.0.36"
+  checksum: 10c0/fd732e5cdd82b347763fe50934441d96410a27e0123fd7c433028962bfce06b443d2421dcbf7c1350f030771c025a89fe9e1228279600dfc22dee61ca182b917
   languageName: node
   linkType: hard
 
