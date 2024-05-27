@@ -41,7 +41,7 @@ This action assumes that _only_ tagged builds also have a correlating change in 
 
 Due to the complexity of version number management in various kinds of projects, this task is left to the integrator of this action. Most likely, you'd want to generate the version number before your own build anyway, to make it available as part of the artifact labeling process.
 
-[The script that is used in the examples below](./examples/version.cjs) can be used as a starting point for your own project.
+[The script that is used in the examples below](./examples/release-version.cjs) can be used as a starting point for your own project.
 
 ### Development Build (Release on Push)
 
@@ -66,7 +66,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-      - run: echo "RELEASE_VERSION=$(node version.cjs)" >> $GITHUB_ENV
+      - run: echo "RELEASE_VERSION=$(node release-version.cjs)" >> $GITHUB_ENV
       - run: your build process
       - uses: oliversalzburg/action-automatic-semantic-releases@v0.0.5
         with:
@@ -116,7 +116,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-      - run: echo "RELEASE_VERSION=$(node version.cjs)" >> $GITHUB_ENV
+      - run: echo "RELEASE_VERSION=$(node release-version.cjs)" >> $GITHUB_ENV
       - run: your build process
       - uses: oliversalzburg/action-automatic-semantic-releases@v0.0.5
         with:
