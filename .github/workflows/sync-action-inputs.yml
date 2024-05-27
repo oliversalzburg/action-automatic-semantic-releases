@@ -22,7 +22,7 @@ jobs:
         uses: tj-actions/auto-doc@79cbc18cd7c4b037bb2fe25199cb14fef4bbad43 # v3
 
       - name: Verify Changed files
-        uses: tj-actions/verify-changed-files@fda469d6b456070da68fa3fdbc07a513d858b200 # v8.8
+        uses: tj-actions/verify-changed-files@9ed3155b72ba709881c967f75611fc5852f773b9 # v13.1
         id: verify-changed-files
         with:
           files: |
