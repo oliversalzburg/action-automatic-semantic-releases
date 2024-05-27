@@ -4,6 +4,8 @@ This action is a fork of <https://github.com/marvinpinto/action-automatic-releas
 
 ## Usage
 
+- Uses git tags to track previous snapshot releases. It writes them back to the repo!
+
 ### Tagged Build (Release on Tag Push)
 
 ```yml
