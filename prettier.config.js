@@ -7,7 +7,7 @@ export default {
     {
       files: "*.md",
       options: {
-        tabWidth: 4,
+        tabWidth: 2,
       },
     },
   ],
