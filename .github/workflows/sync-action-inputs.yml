@@ -28,6 +28,17 @@ jobs:
           files: |
             README.md
 
+      - name: Select NodeJS version
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+        env:
+          # renovate: datasource=docker depName=node versioning=node
+          NODE_VERSION: "20.13.1"
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Format properly
+        run: yarn lint:prettier --write
+
       - name: Create Pull Request
         if: steps.verify-changed-files.outputs.files_changed == 'true'
         uses: peter-evans/create-pull-request@18f7dc018cc2cd597073088f7c7591b9d1c02672 # v3
