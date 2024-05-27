@@ -118,7 +118,7 @@ export class AutomaticReleases {
       name: args.releaseTitle ? args.releaseTitle : releaseTag,
       draft: args.draftRelease,
       prerelease: args.preRelease,
-      body: `${args.bodyPrefix ?? ""}${changelog}${args.bodySuffix ?? ""}`,
+      body: `${args.bodyPrefix ? args.bodyPrefix + "\n" : ""}${changelog}${args.bodySuffix ? "\n" + args.bodySuffix : ""}`,
     });
 
     await uploadReleaseArtifacts(octokit, context, release, args.files);
