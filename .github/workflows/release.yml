@@ -10,24 +10,11 @@ jobs:
     name: Call QA
     uses: ./.github/workflows/test.yml
 
-  qa-successful-tag:
-    needs: qa-tag
-    name: Evaluate QA results
-    if: ( success() || failure() )
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Success
-        if: ${{ !(contains(needs.*.result, 'failure')) }}
-        run: exit 0
-      - name: Failure
-        if: ${{ contains(needs.*.result, 'failure') }}
-        run: exit 1
-
   release:
-    needs: qa-successful-tag
-    name: Publish action
+    needs: qa-tag
+    name: Publish
     runs-on: ubuntu-22.04
-    concurrency: lib-publish
+    concurrency: publish
     permissions:
       contents: write
       id-token: write
