@@ -20,7 +20,7 @@ jobs:
   tagged-release:
     runs-on: ubuntu-22.04
     permissions:
-      contents: write
+      contents: read
       packages: write
       pull-requests: read
 
@@ -63,6 +63,7 @@ jobs:
   pre-release:
     runs-on: ubuntu-22.04
     permissions:
+      # Maintaining the `automatic_release_tag` on the repo requires write permissions
       contents: write
       packages: write
       pull-requests: read
@@ -113,6 +114,7 @@ jobs:
     if: ${{ needs.check_date.outputs.should_run != 'false' }}
     runs-on: ubuntu-22.04
     permissions:
+      # Maintaining the `automatic_release_tag` on the repo requires write permissions
       contents: write
       packages: write
       pull-requests: read
