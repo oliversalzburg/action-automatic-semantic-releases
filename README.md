@@ -1,10 +1,10 @@
 # Automatic Semantic Releases Action
 
-This action is a fork of <https://github.com/marvinpinto/action-automatic-releases>.
+> :information_source: This action is a fork of <https://github.com/marvinpinto/action-automatic-releases>.
 
 ## Usage
 
-- Uses git tags to track previous snapshot releases. It writes them back to the repo!
+The easiest type of GitHub Release is to just release whenever you push a versioned tag.
 
 ### Tagged Build (Release on Tag Push)
 
@@ -41,13 +41,17 @@ jobs:
 
 ### Version Management
 
-This action assumes that _only_ tagged builds also have a correlating change in the version number that is persisted into the code base. Snapshot releases, like development or nightly builds, all have to be produced from the same version number in the code base. So that these snapshot releases do not conflict with tagged builds with the same version number, a unique version number needs to be generated for snapshot releases.
+This action assumes that _only_ tagged builds also have a correlating change in the version number that is persisted into the code base. This means that you'll likely only see versions like `1.33.7` in your manifest in the code base, while there are published _releases_ that are derived from that version. You commonly see versions like `3.13.3-dev.7` or `3.1.3-37e57` that could designate such a derived version.
+
+Snapshot releases, like development or nightly builds, all have to be produced from the same version number in the code base. To prevent snapshot releases to conflict with tagged builds with the same version number, a unique version number needs to be generated for snapshot releases.
 
 Due to the complexity of version number management in various kinds of projects, this task is left to the integrator of this action. Most likely, you'd want to generate the version number before your own build anyway, to make it available as part of the artifact labeling process.
 
 [The script that is used in the examples below](./examples/release-version.cjs) can be used as a starting point for your own project.
 
 ### Development Build (Release on Push)
+
+While excessive, you can also create a release on every single push to the repository.
 
 ```yml
 name: Publish Push
@@ -85,6 +89,10 @@ jobs:
 ```
 
 ### Nightly Build (Release on Schedule)
+
+A common release type is to release once per day, if there were any changes since in the last 24 hours.
+
+This template illustrates this release type.
 
 ```yml
 name: Publish Nightly
@@ -141,7 +149,7 @@ jobs:
 
 This example is highly specific to JavaScript module projects. It assumes a registry of published artifacts with valid semantic version numbers, where the next published snapshot should have a version number following the existing series.
 
-> This process was inspired by the release pipelines of <https://github.com/mikro-orm/mikro-orm>.
+> :information_source: This process was inspired by the release pipelines of <https://github.com/mikro-orm/mikro-orm>.
 
 ```yml
 jobs:
