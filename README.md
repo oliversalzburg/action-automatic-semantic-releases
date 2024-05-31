@@ -6,6 +6,8 @@
 
 The easiest type of GitHub Release is to just release whenever you push a versioned tag.
 
+Maintaining the `automatic_release_tag` on the repo and creating releases requires write permissions to `contents`.
+
 ### Tagged Build (Release on Tag Push)
 
 ```yml
@@ -20,8 +22,7 @@ jobs:
   tagged-release:
     runs-on: ubuntu-22.04
     permissions:
-      contents: read
-      packages: write
+      contents: write
       pull-requests: read
 
     steps:
@@ -67,9 +68,7 @@ jobs:
   pre-release:
     runs-on: ubuntu-22.04
     permissions:
-      # Maintaining the `automatic_release_tag` on the repo requires write permissions
       contents: write
-      packages: write
       pull-requests: read
 
     steps:
@@ -122,9 +121,7 @@ jobs:
     if: ${{ needs.check_date.outputs.should_run != 'false' }}
     runs-on: ubuntu-22.04
     permissions:
-      # Maintaining the `automatic_release_tag` on the repo requires write permissions
       contents: write
-      packages: write
       pull-requests: read
 
     steps:
