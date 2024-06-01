@@ -34,7 +34,7 @@
     "tslib": "2.6.2"
   },
   "devDependencies": {
-    "@eslint/js": "9.3.0",
+    "@eslint/js": "9.4.0",
     "@kie/mock-github": "2.0.1",
     "@types/chai": "4.3.16",
     "@types/eslint": "8.56.10",
