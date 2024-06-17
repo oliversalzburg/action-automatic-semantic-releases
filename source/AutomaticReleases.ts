@@ -13,45 +13,151 @@ import semverValid from "semver/functions/valid.js";
 import { uploadReleaseArtifacts } from "./uploadReleaseArtifacts.js";
 import {
   ConventionalCommitTypes,
-  ParsedCommits,
+  ParsedCommit,
   generateChangelogFromParsedCommits,
   getChangelogOptions,
   isBreakingChange,
   parseGitTag,
 } from "./utils.js";
 
+interface RefInfo extends Record<string, string> {
+  /**
+   * The owner of the repo.
+   */
+  owner: string;
+  /**
+   * The name of the repo.
+   */
+  repo: string;
+  /**
+   * The SHA of the commit to tag.
+   */
+  sha: string;
+  /**
+   *
+   */
+  ref: string;
+}
+
+interface ReleaseInfo extends Record<string, string> {
+  tag: string;
+  owner: string;
+  repo: string;
+}
+
+interface ReleaseInfoFull extends Record<string, string | boolean> {
+  owner: string;
+  repo: string;
+  tag_name: string;
+  name: string;
+  draft: boolean;
+  prerelease: boolean;
+  body: string;
+}
+
+interface TagInfo extends Record<string, string> {
+  owner: string;
+  repo: string;
+}
+
+interface TagRefInfo extends Record<string, string> {
+  owner: string;
+  repo: string;
+  ref: string;
+}
+
+/**
+ * The arguments for the action.
+ */
 export interface Args {
+  /**
+   * The git tag associated with this automatic release.
+   */
   automaticReleaseTag: string;
+
+  /**
+   * A prefix for the release body.
+   */
   bodyPrefix?: string;
+
+  /**
+   * A suffix for the release body.
+   */
   bodySuffix?: string;
+
+  /**
+   * Is this still a draft?
+   */
   draftRelease: boolean;
+
+  /**
+   * Is this a pre-release?
+   */
   preRelease: boolean;
+
+  /**
+   * Title of the release.
+   */
   releaseTitle: string;
+
+  /**
+   * Files to put into the release.
+   */
   files: Array<string>;
 }
 
+/**
+ * The type of the API response for creating a new release.
+ */
 export type NewGitHubRelease = GetResponseDataTypeFromEndpointMethod<
   InstanceType<typeof GitHub>["rest"]["repos"]["createRelease"]
 >;
+/**
+ * The type of the API response for comparing commits.
+ */
 export type CommitsSinceRelease = Array<
   GetResponseDataTypeFromEndpointMethod<
     InstanceType<typeof GitHub>["rest"]["repos"]["compareCommits"]
   >["commits"][number]
 >;
 
+/**
+ * The construction options for the action.
+ */
 export interface AutomaticReleasesOptions {
+  /**
+   * The execution context.
+   */
   context: Context;
+
+  /**
+   * Instance of the GitHub core module.
+   */
   core: typeof core;
+
+  /**
+   * Instance of OctoKit to use for API operations.
+   */
   octokit: InstanceType<typeof GitHub>;
 }
 
+/**
+ * The automatic releases action.
+ */
 export class AutomaticReleases {
   #options: AutomaticReleasesOptions;
 
+  /**
+   * Constructs a new instance of the action.
+   * @param options - The options for the action.
+   */
   constructor(options: AutomaticReleasesOptions) {
     this.#options = options;
   }
 
+  /**
+   * Execute the action.
+   */
   async main() {
     const { context, core, octokit } = this.#options;
 
@@ -129,6 +235,10 @@ export class AutomaticReleases {
     core.setOutput("upload_url", release.upload_url);
   }
 
+  /**
+   * Validates the given arguments for the action and returns them.
+   * @returns The validated arguments for the action.
+   */
   getAndValidateArgs(): Args {
     const args = {
       automaticReleaseTag: core.getInput("automatic_release_tag", {
@@ -150,10 +260,12 @@ export class AutomaticReleases {
     return args;
   }
 
-  async createReleaseTag(
-    client: InstanceType<typeof GitHub>,
-    refInfo: { owner: string; repo: string; sha: string; ref: string },
-  ) {
+  /**
+   * Create a release tag.
+   * @param client - The API client to use.
+   * @param refInfo - The information for the tag to create.
+   */
+  async createReleaseTag(client: InstanceType<typeof GitHub>, refInfo: RefInfo): Promise<void> {
     core.startGroup("Generating release tag");
     const friendlyTagName = refInfo.ref.substring(10); // 'refs/tags/latest' => 'latest'
     core.info(`Attempting to create or update release tag "${friendlyTagName}"`);
@@ -178,10 +290,12 @@ export class AutomaticReleases {
     core.endGroup();
   }
 
-  async deletePreviousGitHubRelease(
-    client: InstanceType<typeof GitHub>,
-    releaseInfo: { tag: string; owner: string; repo: string },
-  ) {
+  /**
+   * Delete the previous release.
+   * @param client - The API client to use.
+   * @param releaseInfo - Information about the release.
+   */
+  async deletePreviousGitHubRelease(client: InstanceType<typeof GitHub>, releaseInfo: ReleaseInfo) {
     core.startGroup(`Deleting GitHub releases associated with the tag "${releaseInfo.tag}"`);
     try {
       core.info(`Searching for releases corresponding to the "${releaseInfo.tag}" tag`);
@@ -203,17 +317,15 @@ export class AutomaticReleases {
     core.endGroup();
   }
 
+  /**
+   * Create a new GitHub release.
+   * @param client - The API client to use.
+   * @param releaseInfo - Information about the release.
+   * @returns The response from the GitHub API.
+   */
   async generateNewGitHubRelease(
     client: InstanceType<typeof GitHub>,
-    releaseInfo: {
-      owner: string;
-      repo: string;
-      tag_name: string;
-      name: string;
-      draft: boolean;
-      prerelease: boolean;
-      body: string;
-    },
+    releaseInfo: ReleaseInfoFull,
   ): Promise<NewGitHubRelease> {
     core.startGroup(`Generating new GitHub release for the "${releaseInfo.tag_name}" tag`);
 
@@ -223,10 +335,17 @@ export class AutomaticReleases {
     return resp.data;
   }
 
+  /**
+   * Find the tag for the previous release, if any.
+   * @param client - The API client to use.
+   * @param currentReleaseTag - The current release tag.
+   * @param tagInfo - Information about the tag.
+   * @returns The previous release tag.
+   */
   async searchForPreviousReleaseTag(
     client: InstanceType<typeof GitHub>,
     currentReleaseTag: string,
-    tagInfo: { owner: string; repo: string },
+    tagInfo: TagInfo,
   ): Promise<string> {
     const validSemver = semverValid(currentReleaseTag);
     if (!validSemver) {
@@ -260,13 +379,16 @@ export class AutomaticReleases {
     return previousReleaseTag;
   }
 
+  /**
+   * Determine the commits that have been pushed to the repo since the last release.
+   * @param client - The API client to use.
+   * @param tagInfo - Information about the tag reference.
+   * @param currentSha - The current commit SHA.
+   * @returns The commits since the last release.
+   */
   async getCommitsSinceRelease(
     client: InstanceType<typeof GitHub>,
-    tagInfo: {
-      owner: string;
-      repo: string;
-      ref: string;
-    },
+    tagInfo: TagRefInfo,
     currentSha: string,
   ): Promise<CommitsSinceRelease> {
     core.startGroup("Retrieving commit history");
@@ -317,13 +439,21 @@ export class AutomaticReleases {
     return commits;
   }
 
+  /**
+   * Generates a changelog based on a set of commits.
+   * @param client - The API client to use.
+   * @param owner - The owner of the repository.
+   * @param repo - The name of the repository.
+   * @param commits - The commits that have been made.
+   * @returns The generated changelog.
+   */
   async getChangelog(
     client: InstanceType<typeof GitHub>,
     owner: string,
     repo: string,
     commits: CommitsSinceRelease,
   ): Promise<string> {
-    const parsedCommits: Array<ParsedCommits> = [];
+    const parsedCommits: Array<ParsedCommit> = [];
     core.startGroup("Generating changelog");
 
     for (const commit of commits) {
@@ -351,7 +481,7 @@ export class AutomaticReleases {
         continue;
       }
 
-      const expandedCommitMsg: ParsedCommits = {
+      const expandedCommitMsg: ParsedCommit = {
         type: parsedCommitMsg.type as ConventionalCommitTypes,
         scope: parsedCommitMsg.scope ?? "",
         subject: parsedCommitMsg.subject ?? "",

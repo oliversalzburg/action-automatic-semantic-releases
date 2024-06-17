@@ -4,15 +4,27 @@ import { GetResponseDataTypeFromEndpointMethod } from "@octokit/types";
 import { CommitMeta, CommitNote, CommitReference } from "conventional-commits-parser";
 import { CommitsSinceRelease } from "./AutomaticReleases.js";
 
+/**
+ * Shortens a SHA hash.
+ * @param sha - The full SHA.
+ * @returns The shortened hash.
+ */
 export const getShortSHA = (sha: string): string => {
   const coreAbbrev = 7;
   return sha.substring(0, coreAbbrev);
 };
 
-export type CompareComittsItem = GetResponseDataTypeFromEndpointMethod<
+/**
+ * The type of the API response for comparing commits.
+ */
+export type CompareCommitsItem = GetResponseDataTypeFromEndpointMethod<
   InstanceType<typeof GitHub>["rest"]["repos"]["compareCommits"]
 >["commits"][number];
-export type ParsedCommitsExtraCommit = CompareComittsItem & {
+
+/**
+ * The type of a parsed commit.
+ */
+export type ParsedCommitsExtraCommit = CompareCommitsItem & {
   author: {
     email: string;
     name: string;
@@ -31,12 +43,26 @@ export type ParsedCommitsExtraCommit = CompareComittsItem & {
   url: string;
 };
 
+/**
+ * Additional parts of a parsed commit.
+ */
 export interface ParsedCommitsExtra {
+  /**
+   * Metadata about the commit itself.
+   */
   commit: CommitsSinceRelease[number];
+
+  /**
+   * Pull requests this commit is associated with.
+   */
   pullRequests: Array<{
     number: number;
     url: string;
   }>;
+
+  /**
+   * Is this commit a breaking change?
+   */
   breakingChange: boolean;
 }
 
@@ -54,22 +80,72 @@ export enum ConventionalCommitTypes {
   revert = "Reverts",
 }
 
-export interface ParsedCommits {
+/**
+ * Relevant information about a commit.
+ */
+export interface ParsedCommit {
+  /**
+   * The conventional commit type.
+   */
   type: ConventionalCommitTypes;
+
+  /**
+   * The conventional commit scope.
+   */
   scope: string;
+
+  /**
+   * The subject.
+   */
   subject: string;
+
+  /**
+   * Merge commit?
+   */
   merge: string;
+
+  /**
+   * Header.
+   */
   header: string;
+
+  /**
+   * Body.
+   */
   body: string;
+
+  /**
+   * Footer.
+   */
   footer: string;
+
+  /**
+   * Additional notes.
+   */
   notes: Array<CommitNote>;
+
+  /**
+   * Extras.
+   */
   extra: ParsedCommitsExtra;
+
+  /**
+   * References to other commits.
+   */
   references: Array<CommitReference>;
+
+  /**
+   * Pings to other users.
+   */
   mentions: Array<string>;
+
+  /**
+   * Is this a revert of another commit?
+   */
   revert: CommitMeta | null;
 }
 
-const getFormattedChangelogEntry = (parsedCommit: ParsedCommits): string => {
+const getFormattedChangelogEntry = (parsedCommit: ParsedCommit): string => {
   let entry = "";
 
   const url = parsedCommit.extra.commit.html_url;
@@ -98,7 +174,12 @@ const getFormattedChangelogEntry = (parsedCommit: ParsedCommits): string => {
   return entry;
 };
 
-export const generateChangelogFromParsedCommits = (parsedCommits: Array<ParsedCommits>): string => {
+/**
+ * Generates a changelog for a given set of commits.
+ * @param parsedCommits - The commit for which to generate the changelog.
+ * @returns The final changelog.
+ */
+export const generateChangelogFromParsedCommits = (parsedCommits: Array<ParsedCommit>): string => {
   let changelog = "";
 
   // Breaking Changes
@@ -137,11 +218,21 @@ export const generateChangelogFromParsedCommits = (parsedCommits: Array<ParsedCo
   return changelog.trim();
 };
 
-export const isBreakingChange = ({ body, footer }: { body: string; footer: string }): boolean => {
+/**
+ * Determine whether the given commit is a breaking change.
+ * @param commit - The commit metadata.
+ * @returns Whether the commit signifies a breaking change.
+ */
+export const isBreakingChange = (commit: CommitMeta): boolean => {
   const re = /^BREAKING\s+CHANGES?:\s+/;
-  return re.test(body || "") || re.test(footer || "");
+  return re.test(commit.body || "") || re.test(commit.footer || "");
 };
 
+/**
+ * Retrieve the name of a tag from its git reference.
+ * @param inputRef - The git reference.
+ * @returns The name of the tag.
+ */
 export const parseGitTag = (inputRef: string): string => {
   const re = /^(refs\/)?tags\/(.*)$/;
   const resMatch = inputRef.match(re);
@@ -152,6 +243,10 @@ export const parseGitTag = (inputRef: string): string => {
   return resMatch[2];
 };
 
+/**
+ * Retrieve the default changelog options.
+ * @returns The default changelog options.
+ */
 export const getChangelogOptions = () => {
   const defaultOpts = {
     headerPattern: /^(\w*)(?:\((.*)\))?: (.*)$/,
@@ -166,7 +261,11 @@ export const getChangelogOptions = () => {
   return defaultOpts;
 };
 
-// istanbul ignore next
+/**
+ * Convert the given arguments so that we can log them safely through OctoKit.
+ * @param args - Arguments to log.
+ * @returns A string that can safely be logged.
+ */
 export const octokitLogger = (
   ...args: Array<string | Record<string, unknown> | undefined>
 ): string => {

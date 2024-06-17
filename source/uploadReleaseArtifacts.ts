@@ -8,8 +8,19 @@ import md5File from "md5-file";
 import path from "path";
 import { NewGitHubRelease } from "./AutomaticReleases.js";
 
+/**
+ * The type of the API response for uploading a release asset.
+ */
 export type UploadReleaseAssetOptions =
   RestEndpointMethodTypes["repos"]["uploadReleaseAsset"]["parameters"];
+
+/**
+ * Uploads files to a GitHub release.
+ * @param client - The API client to use.
+ * @param context - The execution context.
+ * @param release - The release to upload to.
+ * @param files - The files to upload to the release.
+ */
 export const uploadReleaseArtifacts = async (
   client: InstanceType<typeof GitHub>,
   context: Context,

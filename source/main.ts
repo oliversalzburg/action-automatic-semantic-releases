@@ -6,6 +6,9 @@ import { octokitLogger } from "./utils.js";
 
 const isMainModule = import.meta.url.endsWith(process.argv[1]);
 
+/**
+ * Execute the action.
+ */
 export const main = async (): Promise<void> => {
   try {
     const repo_token = core.getInput("repo_token", { required: true });
