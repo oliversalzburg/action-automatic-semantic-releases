@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 /**
  * Constructs a version number from:
  * - the `version` field in the `package.json` in the current working directory

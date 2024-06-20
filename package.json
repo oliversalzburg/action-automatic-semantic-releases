@@ -15,6 +15,7 @@
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier --check .",
     "lint:tsc": "tsc --noEmit",
+    "nextversion": "./.scripts/manifest-version.cjs",
     "rebuild": "yarn run clean && yarn run build",
     "test": "tsc && node $(yarn bin mocha) output/*.test.js",
     "test:coverage": "tsc && c8 --reporter=html-spa node $(yarn bin mocha) output/*.test.js",
