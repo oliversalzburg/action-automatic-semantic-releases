@@ -3,8 +3,13 @@ name: QA
 on:
   pull_request:
   push:
+    branches:
+      - "**"
+      - "!main"
 
 jobs:
   qa:
+    # We don't need to run this on Renovate PRs. We will already test the `renovate/foo` branch.
+    if: github.event_name != 'pull_request' || github.actor != 'renovate[bot]'
     name: 🔹 QA
-    uses: oliversalzburg/workflows/.github/workflows/qa-github-action-nodejs.yml@main
+    uses: oliversalzburg/workflows/.github/workflows/qa-npm-package.yml@main
