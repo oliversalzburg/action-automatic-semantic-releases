@@ -1,5 +1,5 @@
 import * as core from "@actions/core";
-import { GitHub } from "@actions/github/lib/utils.js";
+import { type GitHub } from "@actions/github/lib/utils.js";
 import { GetResponseDataTypeFromEndpointMethod } from "@octokit/types";
 import { CommitMeta, CommitNote, CommitReference } from "conventional-commits-parser";
 import { CommitsSinceRelease } from "./AutomaticReleases.js";

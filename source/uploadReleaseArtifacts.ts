@@ -1,6 +1,6 @@
 import * as core from "@actions/core";
 import { Context } from "@actions/github/lib/context.js";
-import { GitHub } from "@actions/github/lib/utils.js";
+import { type GitHub } from "@actions/github/lib/utils.js";
 import { RestEndpointMethodTypes } from "@octokit/rest";
 import { lstatSync, readFileSync } from "fs";
 import { globby } from "globby";
