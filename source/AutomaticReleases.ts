@@ -5,7 +5,7 @@ import {
   GetResponseDataTypeFromEndpointMethod,
   GetResponseTypeFromEndpointMethod,
 } from "@octokit/types";
-import { mustExist } from "@oliversalzburg/js-utils/nil.js";
+import { mustExist } from "@oliversalzburg/js-utils/data/nil.js";
 import { Commit, CommitParser } from "conventional-commits-parser";
 import semverLt from "semver/functions/lt.js";
 import semverRcompare from "semver/functions/rcompare.js";

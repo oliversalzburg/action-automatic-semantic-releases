@@ -1,6 +1,6 @@
 import core from "@actions/core";
 import { context, getOctokit } from "@actions/github";
-import { redirectErrorsToConsole } from "@oliversalzburg/js-utils/error/console.js";
+import { redirectErrorsToConsole } from "@oliversalzburg/js-utils/errors/console.js";
 import { AutomaticReleases } from "./AutomaticReleases.js";
 import { octokitLogger } from "./utils.js";
 
