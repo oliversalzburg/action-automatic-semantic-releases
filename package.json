@@ -31,7 +31,7 @@
     "conventional-commits-parser": "6.0.0",
     "globby": "14.0.2",
     "md5-file": "5.0.0",
-    "semver": "7.6.2",
+    "semver": "7.6.3",
     "tslib": "2.6.3"
   },
   "devDependencies": {
