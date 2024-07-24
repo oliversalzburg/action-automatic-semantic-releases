@@ -50,7 +50,7 @@ it("runs", async () => {
   const automaticReleases = new AutomaticReleases({
     context: new Context(),
     core,
-    octokit: getOctokit("invalid-token"),
+    octokit: getOctokit("invalid-token", { request: { fetch } }),
   });
 
   await automaticReleases.main();
