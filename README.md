@@ -1,5 +1,7 @@
 # Automatic Semantic Releases Action
 
+[![Pre-Release](https://github.com/oliversalzburg/action-automatic-semantic-releases/actions/workflows/pre-release.yml/badge.svg)](https://github.com/oliversalzburg/action-automatic-semantic-releases/actions/workflows/pre-release.yml)
+
 > :information_source: This action is a fork of <https://github.com/marvinpinto/action-automatic-releases>.
 
 ## Usage
