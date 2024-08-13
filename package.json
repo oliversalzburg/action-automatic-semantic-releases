@@ -37,7 +37,7 @@
   "devDependencies": {
     "@eslint/js": "9.9.0",
     "@kie/mock-github": "3.0.0-beta.1",
-    "@oliversalzburg/eslint-config": "0.0.29",
+    "@oliversalzburg/eslint-config": "1.0.1",
     "@types/chai": "4.3.17",
     "@types/eslint": "9.6.0",
     "@types/mocha": "10.0.7",
