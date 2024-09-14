@@ -33,5 +33,6 @@ jobs:
       pull-requests: read
     uses: oliversalzburg/workflows/.github/workflows/publish-github-action-nodejs.yml@main
     with:
+      draft-only: false
       is-canary: true
       wants-github-release: ${{ inputs.wants-github-release || false }}
