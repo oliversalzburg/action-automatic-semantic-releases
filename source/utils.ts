@@ -216,10 +216,10 @@ export const generateChangelogFromParsedCommits = (parsedCommits: Array<ParsedCo
         .filter(val => val.type === (key as ConventionalCommitTypes))
         .map(val => getFormattedChangelogEntry(val));
       if (clBlock.length) {
-        changelog += `<details>\n`;
-        changelog += `<summary>${ConventionalCommitTypes[key]} (${clBlock.length})</summary>\n`;
+        changelog += `\n<details>\n`;
+        changelog += `<summary>${ConventionalCommitTypes[key]} (${clBlock.length})</summary>\n\n`;
         changelog += clBlock.join("\n").trim();
-        changelog += `</details>`;
+        changelog += `\n</details>\n`;
       }
     }
 
