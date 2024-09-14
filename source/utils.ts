@@ -222,11 +222,6 @@ export const generateChangelogFromParsedCommits = (parsedCommits: Array<ParsedCo
         changelog += `\n</details>\n`;
       }
     }
-
-    const block = commitsDeps.map(val => getFormattedChangelogEntry(val));
-    if (block.length) {
-      changelog += block.join("\n").trim();
-    }
   }
 
   // Commits
