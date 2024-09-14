@@ -182,37 +182,60 @@ const getFormattedChangelogEntry = (parsedCommit: ParsedCommit): string => {
 export const generateChangelogFromParsedCommits = (parsedCommits: Array<ParsedCommit>): string => {
   let changelog = "";
 
+  const commitsWithoutDeps = parsedCommits.filter(commit => commit.scope !== "deps");
+  const commitsDeps = parsedCommits.filter(commit => commit.scope === "deps");
+
   // Breaking Changes
   const breaking = parsedCommits
     .filter(val => val.extra.breakingChange)
-    .map(val => getFormattedChangelogEntry(val))
-    .reduce((acc, line) => `${acc}\n${line}`, "");
-  if (breaking) {
+    .map(val => getFormattedChangelogEntry(val));
+  if (breaking.length) {
     changelog += "## Breaking Changes\n";
-    changelog += breaking.trim();
+    changelog += breaking.join("\n").trim();
   }
 
   for (const key of Object.keys(ConventionalCommitTypes) as Array<
     keyof typeof ConventionalCommitTypes
   >) {
-    const clBlock = parsedCommits
+    const clBlock = commitsWithoutDeps
       .filter(val => val.type === (key as ConventionalCommitTypes))
-      .map(val => getFormattedChangelogEntry(val))
-      .reduce((acc, line) => `${acc}\n${line}`, "");
-    if (clBlock) {
-      changelog += `\n\n## ${ConventionalCommitTypes[key]}\n`;
-      changelog += clBlock.trim();
+      .map(val => getFormattedChangelogEntry(val));
+    if (clBlock.length) {
+      changelog += `\n\n## ${ConventionalCommitTypes[key]} (${clBlock.length})\n`;
+      changelog += clBlock.join("\n").trim();
+    }
+  }
+
+  if (commitsDeps.length) {
+    changelog += `\n\n## Dependency Changes (${commitsDeps.length})\n`;
+
+    for (const key of Object.keys(ConventionalCommitTypes) as Array<
+      keyof typeof ConventionalCommitTypes
+    >) {
+      const clBlock = commitsDeps
+        .filter(val => val.type === (key as ConventionalCommitTypes))
+        .map(val => getFormattedChangelogEntry(val));
+      if (clBlock.length) {
+        changelog += `<details>\n`;
+        changelog += `<summary>${ConventionalCommitTypes[key]} (${clBlock.length})</summary>\n`;
+        changelog += clBlock.join("\n").trim();
+        changelog += `</details>`;
+      }
+    }
+
+    const block = commitsDeps.map(val => getFormattedChangelogEntry(val));
+    if (block.length) {
+      changelog += block.join("\n").trim();
     }
   }
 
   // Commits
-  const commits = parsedCommits
+  const commitsBlock = commitsWithoutDeps
     .filter(val => !Object.keys(ConventionalCommitTypes).includes(val.type))
-    .map(val => getFormattedChangelogEntry(val))
-    .reduce((acc, line) => `${acc}\n${line}`, "");
-  if (commits) {
-    changelog += "\n\n## Commits\n";
-    changelog += commits.trim();
+    .map(val => getFormattedChangelogEntry(val));
+  if (commitsBlock.length) {
+    changelog += "\n\n## Commits without convention\n";
+    changelog += commitsBlock.join("\n").trim();
   }
 
   return changelog.trim();
