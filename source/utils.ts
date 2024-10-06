@@ -188,6 +188,7 @@ export const generateChangelogFromParsedCommits = (parsedCommits: Array<ParsedCo
   // Breaking Changes
   const breaking = parsedCommits
     .filter(val => val.extra.breakingChange)
+    .sort((a, b) => a.header.localeCompare(b.header))
     .map(val => getFormattedChangelogEntry(val));
   if (breaking.length) {
     changelog += "## Breaking Changes\n";
@@ -199,6 +200,7 @@ export const generateChangelogFromParsedCommits = (parsedCommits: Array<ParsedCo
   >) {
     const clBlock = commitsWithoutDeps
       .filter(val => val.type === (key as ConventionalCommitTypes))
+      .sort((a, b) => a.header.localeCompare(b.header))
       .map(val => getFormattedChangelogEntry(val));
     if (clBlock.length) {
       changelog += `\n\n## ${ConventionalCommitTypes[key]} (${clBlock.length})\n`;
@@ -214,6 +216,7 @@ export const generateChangelogFromParsedCommits = (parsedCommits: Array<ParsedCo
     >) {
       const clBlock = commitsDeps
         .filter(val => val.type === (key as ConventionalCommitTypes))
+        .sort((a, b) => a.header.localeCompare(b.header))
         .map(val => getFormattedChangelogEntry(val));
       if (clBlock.length) {
         changelog += `\n<details>\n`;
