@@ -44,7 +44,7 @@ export const uploadReleaseArtifacts = async (
         url: release.upload_url,
         headers: {
           "content-length": lstatSync(filePath).size,
-          "content-type": "application/octet-stream"
+          "content-type": "application/octet-stream",
         },
         name: nameWithExt,
         data: readFileSync(filePath) as unknown as string,
