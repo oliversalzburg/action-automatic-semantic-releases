@@ -44,10 +44,10 @@ export const uploadReleaseArtifacts = async (
         url: release.upload_url,
         headers: {
           "content-length": lstatSync(filePath).size,
-          "content-type": "text/plain; charset=utf-8",
+          "content-type": "application/octet-stream"
         },
         name: nameWithExt,
-        data: readFileSync(filePath, { encoding: "utf-8" }),
+        data: readFileSync(filePath) as unknown as string,
       };
 
       try {
