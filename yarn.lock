@@ -294,8 +294,8 @@ __metadata:
   linkType: hard
 
 "@eslint/eslintrc@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "@eslint/eslintrc@npm:3.1.0"
+  version: 3.2.0
+  resolution: "@eslint/eslintrc@npm:3.2.0"
   dependencies:
     ajv: "npm:^6.12.4"
     debug: "npm:^4.3.2"
@@ -306,7 +306,7 @@ __metadata:
     js-yaml: "npm:^4.1.0"
     minimatch: "npm:^3.1.2"
     strip-json-comments: "npm:^3.1.1"
-  checksum: 10c0/5b7332ed781edcfc98caa8dedbbb843abfb9bda2e86538529c843473f580e40c69eb894410eddc6702f487e9ee8f8cfa8df83213d43a8fdb549f23ce06699167
+  checksum: 10c0/43867a07ff9884d895d9855edba41acf325ef7664a8df41d957135a81a477ff4df4196f5f74dc3382627e5cc8b7ad6b815c2cea1b58f04a75aced7c43414ab8b
   languageName: node
   linkType: hard
 
@@ -372,9 +372,9 @@ __metadata:
   linkType: hard
 
 "@humanwhocodes/retry@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "@humanwhocodes/retry@npm:0.4.0"
-  checksum: 10c0/28dcf1ed70b28ae8bc07b268c457a02f6b53fe4591b73e31f6735e7673dfd9e662f24a69e065aada1a64311bf5692d93d4ef35aba849314e8a87a870ba3b47aa
+  version: 0.4.1
+  resolution: "@humanwhocodes/retry@npm:0.4.1"
+  checksum: 10c0/be7bb6841c4c01d0b767d9bb1ec1c9359ee61421ce8ba66c249d035c5acdfd080f32d55a5c9e859cdd7868788b8935774f65b2caf24ec0b7bd7bf333791f063b
   languageName: node
   linkType: hard
 
@@ -3433,9 +3433,9 @@ __metadata:
   linkType: hard
 
 "object-inspect@npm:^1.13.1":
-  version: 1.13.2
-  resolution: "object-inspect@npm:1.13.2"
-  checksum: 10c0/b97835b4c91ec37b5fd71add84f21c3f1047d1d155d00c0fcd6699516c256d4fcc6ff17a1aced873197fe447f91a3964178fd2a67a1ee2120cdaf60e81a050b4
+  version: 1.13.3
+  resolution: "object-inspect@npm:1.13.3"
+  checksum: 10c0/cc3f15213406be89ffdc54b525e115156086796a515410a8d390215915db9f23c8eab485a06f1297402f440a33715fe8f71a528c1dcbad6e1a3bcaf5a46921d4
   languageName: node
   linkType: hard
 
