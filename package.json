@@ -27,7 +27,7 @@
     "@actions/core": "1.11.1",
     "@actions/github": "6.0.0",
     "@octokit/rest": "21.0.2",
-    "@oliversalzburg/js-utils": "0.1.1",
+    "@oliversalzburg/js-utils": "0.1.2",
     "conventional-commits-parser": "6.0.0",
     "globby": "14.0.2",
     "md5-file": "5.0.0",
