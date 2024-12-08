@@ -104,6 +104,11 @@ export interface Args {
    * Files to put into the release.
    */
   files: Array<string>;
+
+  /**
+   * If enabled, no tags will be moved.
+   */
+  dryRun: boolean;
 }
 
 /**
@@ -202,7 +207,7 @@ export class AutomaticReleases {
       commitsSinceRelease,
     );
 
-    if (args.automaticReleaseTag) {
+    if (args.automaticReleaseTag && !args.dryRun) {
       await this.createReleaseTag(octokit, {
         owner: context.repo.owner,
         ref: `refs/tags/${args.automaticReleaseTag}`,
@@ -250,6 +255,7 @@ export class AutomaticReleases {
       preRelease: core.getBooleanInput("prerelease", { required: true }),
       releaseTitle: core.getInput("title", { required: false }),
       files: [] as Array<string>,
+      dryRun: core.getBooleanInput("dry_run", { required: false }),
     };
 
     const inputFilesStr = core.getInput("files", { required: false });

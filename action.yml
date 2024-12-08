@@ -32,6 +32,10 @@ inputs:
   files:
     description: Assets to upload to the release.
     required: false
+  dry_run:
+    description: If set to "true", no tags will be moved.
+    default: "false"
+    required: false
 outputs:
   automatic_releases_tag:
     description: The release tag this action just processed.

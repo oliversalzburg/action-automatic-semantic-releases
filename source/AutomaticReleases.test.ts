@@ -11,6 +11,7 @@ beforeEach(() => {
   process.env.GITHUB_SHA = "c0c8526b12c825637a12e9a700868b9568e5a0b2";
   process.env.INPUT_AUTOMATIC_RELEASE_TAG = "next";
   process.env.INPUT_DRAFT = "false";
+  process.env.INPUT_DRY_RUN = "false";
   process.env.INPUT_PRERELEASE = "true";
   process.env.INPUT_TITLE = "Development Build";
 });
