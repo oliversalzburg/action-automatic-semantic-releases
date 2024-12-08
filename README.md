@@ -187,6 +187,7 @@ jobs:
 | <a name="input_body_prefix"></a>[body_prefix](#input_body_prefix)                               | string | false    |           | Text to prepend before the <br>changelog in the release body. |
 | <a name="input_body_suffix"></a>[body_suffix](#input_body_suffix)                               | string | false    |           | Text to append after the <br>changelog in the release body.   |
 | <a name="input_draft"></a>[draft](#input_draft)                                                 | string | false    | `"false"` | Should this release be marked <br>as a draft?                 |
+| <a name="input_dry_run"></a>[dry_run](#input_dry_run)                                           | string | false    | `"false"` | If set to "true", no <br>tags will be moved.                  |
 | <a name="input_files"></a>[files](#input_files)                                                 | string | false    |           | Assets to upload to the <br>release.                          |
 | <a name="input_prerelease"></a>[prerelease](#input_prerelease)                                  | string | false    | `"true"`  | Should this release be marked <br>as a pre-release?           |
 | <a name="input_repo_token"></a>[repo_token](#input_repo_token)                                  | string | true     |           | GitHub secret token.                                          |
