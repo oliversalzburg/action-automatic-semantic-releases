@@ -222,10 +222,11 @@ export class AutomaticReleases {
       });
     }
 
+    const tagName = releaseTag + (args.dryRun ? `-${new Date().getTime()}` : "");
     const release = await this.generateNewGitHubRelease(octokit, {
       owner: context.repo.owner,
       repo: context.repo.repo,
-      tag_name: releaseTag,
+      tag_name: tagName,
       name: args.releaseTitle ? args.releaseTitle : releaseTag,
       draft: args.draftRelease,
       prerelease: args.preRelease,
@@ -234,9 +235,9 @@ export class AutomaticReleases {
 
     await uploadReleaseArtifacts(octokit, context, release, args.files);
 
-    core.debug(`Exporting environment variable AUTOMATIC_RELEASES_TAG with value ${releaseTag}`);
-    core.exportVariable("AUTOMATIC_RELEASES_TAG", releaseTag);
-    core.setOutput("automatic_releases_tag", releaseTag);
+    core.debug(`Exporting environment variable AUTOMATIC_RELEASES_TAG with value ${tagName}`);
+    core.exportVariable("AUTOMATIC_RELEASES_TAG", tagName);
+    core.setOutput("automatic_releases_tag", tagName);
     core.setOutput("upload_url", release.upload_url);
   }
 
