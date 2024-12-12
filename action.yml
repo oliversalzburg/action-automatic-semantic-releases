@@ -10,7 +10,7 @@ inputs:
     description: GitHub secret token.
     required: true
   automatic_release_tag:
-    description: Git tag (for automatic releases).
+    description: git tag (for automatic releases).
     required: false
   draft:
     description: Should this release be marked as a draft?
@@ -33,8 +33,12 @@ inputs:
     description: Assets to upload to the release.
     required: false
   dry_run:
-    description: If set to "true", no tags will be moved.
     default: "false"
+    description: If set to "true", no tags will be moved.
+    required: false
+  with_authors:
+    default: "true"
+    description: If set to "true", render the names of commit authors, instead of the commit hash.
     required: false
 outputs:
   automatic_releases_tag:

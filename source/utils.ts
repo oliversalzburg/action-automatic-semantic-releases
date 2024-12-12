@@ -145,7 +145,7 @@ export interface ParsedCommit {
   revert: CommitMeta | null;
 }
 
-const getFormattedChangelogEntry = (parsedCommit: ParsedCommit): string => {
+const getFormattedChangelogEntry = (parsedCommit: ParsedCommit, withAuthors: boolean): string => {
   let entry = "";
 
   const url = parsedCommit.extra.commit.html_url;
@@ -166,10 +166,8 @@ const getFormattedChangelogEntry = (parsedCommit: ParsedCommit): string => {
     prString = " " + prString;
   }
 
-  entry = `- ${sha}: ${parsedCommit.header} (${author})${prString}`;
-
   const scopeStr = parsedCommit.scope ? `**${parsedCommit.scope}**: ` : "";
-  entry = `- ${scopeStr}${parsedCommit.subject}${prString} ([${author}](${url}))`;
+  entry = `- ${scopeStr}${parsedCommit.subject}${prString} ([${withAuthors ? author : sha}](${url}))`;
 
   return entry;
 };
@@ -177,9 +175,13 @@ const getFormattedChangelogEntry = (parsedCommit: ParsedCommit): string => {
 /**
  * Generates a changelog for a given set of commits.
  * @param parsedCommits - The commit for which to generate the changelog.
+ * @param withAuthors - If enabled, render the names of commit authors, instead of the commit hash.
  * @returns The final changelog.
  */
-export const generateChangelogFromParsedCommits = (parsedCommits: Array<ParsedCommit>): string => {
+export const generateChangelogFromParsedCommits = (
+  parsedCommits: Array<ParsedCommit>,
+  withAuthors: boolean,
+): string => {
   let changelog = "";
 
   const commitsWithoutDeps = parsedCommits.filter(commit => commit.scope !== "deps");
@@ -189,7 +191,7 @@ export const generateChangelogFromParsedCommits = (parsedCommits: Array<ParsedCo
   const breaking = parsedCommits
     .filter(val => val.extra.breakingChange)
     .sort((a, b) => a.header.localeCompare(b.header))
-    .map(val => getFormattedChangelogEntry(val));
+    .map(val => getFormattedChangelogEntry(val, withAuthors));
   if (breaking.length) {
     changelog += "## Breaking Changes\n";
     changelog += breaking.join("\n").trim();
@@ -201,7 +203,7 @@ export const generateChangelogFromParsedCommits = (parsedCommits: Array<ParsedCo
     const clBlock = commitsWithoutDeps
       .filter(val => val.type === (key as ConventionalCommitTypes))
       .sort((a, b) => a.header.localeCompare(b.header))
-      .map(val => getFormattedChangelogEntry(val));
+      .map(val => getFormattedChangelogEntry(val, withAuthors));
     if (clBlock.length) {
       changelog += `\n\n## ${ConventionalCommitTypes[key]} (${clBlock.length})\n`;
       changelog += clBlock.join("\n").trim();
@@ -217,7 +219,7 @@ export const generateChangelogFromParsedCommits = (parsedCommits: Array<ParsedCo
       const clBlock = commitsDeps
         .filter(val => val.type === (key as ConventionalCommitTypes))
         .sort((a, b) => a.header.localeCompare(b.header))
-        .map(val => getFormattedChangelogEntry(val));
+        .map(val => getFormattedChangelogEntry(val, withAuthors));
       if (clBlock.length) {
         changelog += `\n<details>\n`;
         changelog += `<summary>${ConventionalCommitTypes[key]} (${clBlock.length})</summary>\n\n`;
@@ -230,7 +232,7 @@ export const generateChangelogFromParsedCommits = (parsedCommits: Array<ParsedCo
   // Commits
   const commitsBlock = commitsWithoutDeps
     .filter(val => !Object.keys(ConventionalCommitTypes).includes(val.type))
-    .map(val => getFormattedChangelogEntry(val));
+    .map(val => getFormattedChangelogEntry(val, withAuthors));
   if (commitsBlock.length) {
     changelog += "\n\n## Commits without convention\n";
     changelog += commitsBlock.join("\n").trim();

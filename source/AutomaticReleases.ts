@@ -109,6 +109,11 @@ export interface Args {
    * If enabled, no tags will be moved.
    */
   dryRun: boolean;
+
+  /**
+   * If enabled, render the names of commit authors, instead of the commit hash.
+   */
+  withAuthors: boolean;
 }
 
 /**
@@ -205,6 +210,7 @@ export class AutomaticReleases {
       context.repo.owner,
       context.repo.repo,
       commitsSinceRelease,
+      args.withAuthors,
     );
 
     if (args.automaticReleaseTag && !args.dryRun) {
@@ -257,6 +263,7 @@ export class AutomaticReleases {
       releaseTitle: core.getInput("title", { required: false }),
       files: [] as Array<string>,
       dryRun: core.getBooleanInput("dry_run", { required: false }),
+      withAuthors: core.getBooleanInput("with_authors", { required: false }),
     };
 
     const inputFilesStr = core.getInput("files", { required: false });
@@ -452,6 +459,7 @@ export class AutomaticReleases {
    * @param owner - The owner of the repository.
    * @param repo - The name of the repository.
    * @param commits - The commits that have been made.
+   * @param withAuthors - If enabled, render the names of commit authors, instead of the commit hash.
    * @returns The generated changelog.
    */
   async getChangelog(
@@ -459,6 +467,7 @@ export class AutomaticReleases {
     owner: string,
     repo: string,
     commits: CommitsSinceRelease,
+    withAuthors: boolean,
   ): Promise<string> {
     const parsedCommits: Array<ParsedCommit> = [];
     core.startGroup("Generating changelog");
@@ -523,7 +532,7 @@ export class AutomaticReleases {
       core.info(`Adding commit "${mustExist(parsedCommitMsg.header)}" to the changelog`);
     }
 
-    const changelog = generateChangelogFromParsedCommits(parsedCommits);
+    const changelog = generateChangelogFromParsedCommits(parsedCommits, withAuthors);
     core.debug("Changelog:");
     core.debug(changelog);
 
