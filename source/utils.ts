@@ -172,7 +172,7 @@ const getFormattedChangelogEntry = (parsedCommit: ParsedCommit, withAuthors: boo
   }
 
   const scopeStr = parsedCommit.scope ? `**${parsedCommit.scope}**: ` : "";
-  entry = `- ${scopeStr}${parsedCommit.subject}${prString} ([${withAuthors ? author : sha}](${url}))`;
+  entry = `- ${scopeStr}${parsedCommit.subject}${prString} ([${withAuthors ? author : `\`${sha}\``}](${url}))`;
 
   return entry;
 };
@@ -221,7 +221,10 @@ export const generateChangelogFromParsedCommits = (
       }
 
       if (groupedCommitsCache && 0 < groupedCommitsCache.length) {
-        clBlock.push(`- ${groupedCommitsCache.map(commit => commit.sha).join(", ")}`);
+        clBlock.push(
+          `${groupedCommitsCache.length.toString()} similar commits not listed: ${groupedCommitsCache.map(commit => `\`${commit.sha}\``).join(", ")}`,
+        );
+        groupedCommitsCache = undefined;
       }
 
       const message = getFormattedChangelogEntry(commit, withAuthors);
