@@ -36,6 +36,10 @@ inputs:
     default: "false"
     description: If set to "true", no tags will be moved.
     required: false
+  merge_similar:
+    default: "false"
+    description: Should similar changes be consolidated to take up less space in the changelog?
+    required: false
   with_authors:
     default: "true"
     description: If set to "true", render the names of commit authors, instead of the commit hash.

@@ -111,6 +111,11 @@ export interface Args {
   dryRun: boolean;
 
   /**
+   * If enabled, similar changes will be grouped in the changelog.
+   */
+  mergeSimilar: boolean;
+
+  /**
    * If enabled, render the names of commit authors, instead of the commit hash.
    */
   withAuthors: boolean;
@@ -211,6 +216,7 @@ export class AutomaticReleases {
       context.repo.repo,
       commitsSinceRelease,
       args.withAuthors,
+      args.mergeSimilar,
     );
 
     if (args.automaticReleaseTag && !args.dryRun) {
@@ -263,6 +269,7 @@ export class AutomaticReleases {
       releaseTitle: core.getInput("title", { required: false }),
       files: [] as Array<string>,
       dryRun: core.getBooleanInput("dry_run", { required: false }),
+      mergeSimilar: core.getBooleanInput("merge_similar", { required: false }),
       withAuthors: core.getBooleanInput("with_authors", { required: false }),
     };
 
@@ -460,6 +467,7 @@ export class AutomaticReleases {
    * @param repo - The name of the repository.
    * @param commits - The commits that have been made.
    * @param withAuthors - If enabled, render the names of commit authors, instead of the commit hash.
+   * @param mergeSimilar - If enabled, similar changes will be grouped in the log.
    * @returns The generated changelog.
    */
   async getChangelog(
@@ -468,6 +476,7 @@ export class AutomaticReleases {
     repo: string,
     commits: CommitsSinceRelease,
     withAuthors: boolean,
+    mergeSimilar: boolean,
   ): Promise<string> {
     const parsedCommits: Array<ParsedCommit> = [];
     core.startGroup("Generating changelog");
@@ -498,6 +507,7 @@ export class AutomaticReleases {
       }
 
       const expandedCommitMsg: ParsedCommit = {
+        sha: commit.sha,
         type: parsedCommitMsg.type as ConventionalCommitTypes,
         scope: parsedCommitMsg.scope ?? "",
         subject: parsedCommitMsg.subject ?? "",
@@ -527,12 +537,14 @@ export class AutomaticReleases {
         body: parsedCommitMsg.body ?? "",
         footer: parsedCommitMsg.footer ?? "",
       });
+
       core.debug(`Parsed commit: ${JSON.stringify(parsedCommitMsg)}`);
+
       parsedCommits.push(expandedCommitMsg);
       core.info(`Adding commit "${mustExist(parsedCommitMsg.header)}" to the changelog`);
     }
 
-    const changelog = generateChangelogFromParsedCommits(parsedCommits, withAuthors);
+    const changelog = generateChangelogFromParsedCommits(parsedCommits, withAuthors, mergeSimilar);
     core.debug("Changelog:");
     core.debug(changelog);
 

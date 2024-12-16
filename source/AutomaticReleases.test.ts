@@ -12,8 +12,10 @@ beforeEach(() => {
   process.env.INPUT_AUTOMATIC_RELEASE_TAG = "next";
   process.env.INPUT_DRAFT = "false";
   process.env.INPUT_DRY_RUN = "false";
+  process.env.INPUT_MERGE_SIMILAR = "false";
   process.env.INPUT_PRERELEASE = "true";
   process.env.INPUT_TITLE = "Development Build";
+  process.env.INPUT_WITH_AUTHORS = "true";
 });
 
 it("runs", async () => {

@@ -85,6 +85,11 @@ export enum ConventionalCommitTypes {
  */
 export interface ParsedCommit {
   /**
+   * The hash of this commit.
+   */
+  sha: string;
+
+  /**
    * The conventional commit type.
    */
   type: ConventionalCommitTypes;
@@ -176,11 +181,13 @@ const getFormattedChangelogEntry = (parsedCommit: ParsedCommit, withAuthors: boo
  * Generates a changelog for a given set of commits.
  * @param parsedCommits - The commit for which to generate the changelog.
  * @param withAuthors - If enabled, render the names of commit authors, instead of the commit hash.
+ * @param mergeSimilar - If enabled, similar changes will be groups in the changelog.
  * @returns The final changelog.
  */
 export const generateChangelogFromParsedCommits = (
   parsedCommits: Array<ParsedCommit>,
   withAuthors: boolean,
+  mergeSimilar: boolean,
 ): string => {
   let changelog = "";
 
@@ -200,10 +207,29 @@ export const generateChangelogFromParsedCommits = (
   for (const key of Object.keys(ConventionalCommitTypes) as Array<
     keyof typeof ConventionalCommitTypes
   >) {
-    const clBlock = commitsWithoutDeps
+    const commits = commitsWithoutDeps
       .filter(val => val.type === (key as ConventionalCommitTypes))
-      .sort((a, b) => a.header.localeCompare(b.header))
-      .map(val => getFormattedChangelogEntry(val, withAuthors));
+      .sort((a, b) => a.header.localeCompare(b.header));
+
+    const clBlock = [];
+    let lastCommitMessage: undefined | string;
+    let groupedCommitsCache;
+    for (const commit of commits) {
+      if (mergeSimilar && lastCommitMessage === commit.header) {
+        groupedCommitsCache = groupedCommitsCache ? [...groupedCommitsCache, commit] : [commit];
+        continue;
+      }
+
+      if (groupedCommitsCache && 0 < groupedCommitsCache.length) {
+        clBlock.push(`- ${groupedCommitsCache.map(commit => commit.sha).join(", ")}`);
+      }
+
+      const message = getFormattedChangelogEntry(commit, withAuthors);
+      clBlock.push(message);
+
+      lastCommitMessage = commit.header;
+    }
+
     if (clBlock.length) {
       changelog += `\n\n## ${ConventionalCommitTypes[key]} (${clBlock.length})\n`;
       changelog += clBlock.join("\n").trim();
