@@ -186,6 +186,8 @@ export const getFormattedChangelogEntry = (
   return entry;
 };
 
+const toGroupable = (header: string) => header.replaceAll(/\d+|[a-fA-F0-9]{7,}/, "x");
+
 const mergeSimilarCommits = (
   commits: Array<ParsedCommit>,
   withAuthors: boolean,
@@ -195,7 +197,7 @@ const mergeSimilarCommits = (
   let lastCommitMessage: undefined | string;
   let groupedCommitsCache;
   for (const commit of commits.sort((a, b) => a.header.localeCompare(b.header))) {
-    if (lastCommitMessage === commit.header) {
+    if (lastCommitMessage === toGroupable(commit.header)) {
       groupedCommitsCache = groupedCommitsCache ? [...groupedCommitsCache, commit] : [commit];
       continue;
     }
@@ -208,7 +210,7 @@ const mergeSimilarCommits = (
     const message = getFormattedChangelogEntry(commit, withAuthors);
     clBlock.push(message);
 
-    lastCommitMessage = commit.header;
+    lastCommitMessage = toGroupable(commit.header);
   }
   return clBlock;
 };
