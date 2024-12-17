@@ -186,6 +186,33 @@ export const getFormattedChangelogEntry = (
   return entry;
 };
 
+const mergeSimilarCommits = (
+  commits: Array<ParsedCommit>,
+  withAuthors: boolean,
+  onMerge: (commits: Array<ParsedCommit>) => string,
+) => {
+  const clBlock = [];
+  let lastCommitMessage: undefined | string;
+  let groupedCommitsCache;
+  for (const commit of commits.sort((a, b) => a.header.localeCompare(b.header))) {
+    if (lastCommitMessage === commit.header) {
+      groupedCommitsCache = groupedCommitsCache ? [...groupedCommitsCache, commit] : [commit];
+      continue;
+    }
+
+    if (groupedCommitsCache && 0 < groupedCommitsCache.length) {
+      clBlock.push(onMerge(groupedCommitsCache));
+      groupedCommitsCache = undefined;
+    }
+
+    const message = getFormattedChangelogEntry(commit, withAuthors);
+    clBlock.push(message);
+
+    lastCommitMessage = commit.header;
+  }
+  return clBlock;
+};
+
 /**
  * Generates a changelog for a given set of commits.
  * @param parsedCommits - The commit for which to generate the changelog.
@@ -213,6 +240,7 @@ export const generateChangelogFromParsedCommits = (
     changelog += breaking.join("\n").trim();
   }
 
+  // Regular conventional commits
   for (const key of Object.keys(ConventionalCommitTypes) as Array<
     keyof typeof ConventionalCommitTypes
   >) {
@@ -220,27 +248,14 @@ export const generateChangelogFromParsedCommits = (
       .filter(val => val.type === (key as ConventionalCommitTypes))
       .sort((a, b) => a.header.localeCompare(b.header));
 
-    const clBlock = [];
-    let lastCommitMessage: undefined | string;
-    let groupedCommitsCache;
-    for (const commit of commits) {
-      if (mergeSimilar && lastCommitMessage === commit.header) {
-        groupedCommitsCache = groupedCommitsCache ? [...groupedCommitsCache, commit] : [commit];
-        continue;
-      }
-
-      if (groupedCommitsCache && 0 < groupedCommitsCache.length) {
-        clBlock.push(
-          `${groupedCommitsCache.length.toString()} similar commit${groupedCommitsCache.length !== 1 ? "s" : ""} not listed: ${groupedCommitsCache.map(commit => `[\`${getShortSHA(commit.sha)}\`](${commit.extra.commit.html_url})`).join(", ")}`,
-        );
-        groupedCommitsCache = undefined;
-      }
-
-      const message = getFormattedChangelogEntry(commit, withAuthors);
-      clBlock.push(message);
-
-      lastCommitMessage = commit.header;
-    }
+    const clBlock = mergeSimilar
+      ? mergeSimilarCommits(
+          commits,
+          withAuthors,
+          groupedCommitsCache =>
+            `<sup>${groupedCommitsCache.length.toString()} similar commit${groupedCommitsCache.length !== 1 ? "s" : ""} not listed: ${groupedCommitsCache.map(commit => `[\`${getShortSHA(commit.sha)}\`](${commit.extra.commit.html_url})`).join(", ")}</sup>`,
+        )
+      : commits.map(commit => getFormattedChangelogEntry(commit, withAuthors));
 
     if (clBlock.length) {
       changelog += `\n\n## ${ConventionalCommitTypes[key]} (${clBlock.length})\n`;
@@ -248,16 +263,26 @@ export const generateChangelogFromParsedCommits = (
     }
   }
 
+  // Dependency Changes
   if (commitsDeps.length) {
     changelog += `\n\n## Dependency Changes (${commitsDeps.length})\n`;
 
     for (const key of Object.keys(ConventionalCommitTypes) as Array<
       keyof typeof ConventionalCommitTypes
     >) {
-      const clBlock = commitsDeps
+      const commits = commitsDeps
         .filter(val => val.type === (key as ConventionalCommitTypes))
-        .sort((a, b) => a.header.localeCompare(b.header))
-        .map(val => getFormattedChangelogEntry(val, withAuthors));
+        .sort((a, b) => a.header.localeCompare(b.header));
+
+      const clBlock = mergeSimilar
+        ? mergeSimilarCommits(
+            commits,
+            withAuthors,
+            groupedCommitsCache =>
+              `<sup>${groupedCommitsCache.length.toString()} similar commit${groupedCommitsCache.length !== 1 ? "s" : ""} not listed: ${groupedCommitsCache.map(commit => `[\`${getShortSHA(commit.sha)}\`](${commit.extra.commit.html_url})`).join(", ")}</sup>`,
+          )
+        : commits.map(commit => getFormattedChangelogEntry(commit, withAuthors));
+
       if (clBlock.length) {
         changelog += `\n<details>\n`;
         changelog += `<summary>${ConventionalCommitTypes[key]} (${clBlock.length})</summary>\n\n`;
@@ -268,12 +293,20 @@ export const generateChangelogFromParsedCommits = (
   }
 
   // Commits
-  const commitsBlock = commitsWithoutDeps
-    .filter(val => !Object.keys(ConventionalCommitTypes).includes(val.type))
-    .map(val => getFormattedChangelogEntry(val, withAuthors));
-  if (commitsBlock.length) {
+  const commits = commitsWithoutDeps.filter(
+    val => !Object.keys(ConventionalCommitTypes).includes(val.type),
+  );
+  const clBlock = mergeSimilar
+    ? mergeSimilarCommits(
+        commits,
+        withAuthors,
+        groupedCommitsCache =>
+          `<sup>${groupedCommitsCache.length.toString()} similar commit${groupedCommitsCache.length !== 1 ? "s" : ""} not listed: ${groupedCommitsCache.map(commit => `[\`${getShortSHA(commit.sha)}\`](${commit.extra.commit.html_url})`).join(", ")}</sup>`,
+      )
+    : commits.map(commit => getFormattedChangelogEntry(commit, withAuthors));
+  if (clBlock.length) {
     changelog += "\n\n## Commits without convention\n";
-    changelog += commitsBlock.join("\n").trim();
+    changelog += clBlock.join("\n").trim();
   }
 
   return changelog.trim();
