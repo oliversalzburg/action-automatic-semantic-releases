@@ -58,3 +58,5 @@ it("runs", async () => {
 
   await automaticReleases.main();
 });
+
+it("parses", () => {});

@@ -150,7 +150,16 @@ export interface ParsedCommit {
   revert: CommitMeta | null;
 }
 
-const getFormattedChangelogEntry = (parsedCommit: ParsedCommit, withAuthors: boolean): string => {
+/**
+ * Renders a changelog entry for a given commit.
+ * @param parsedCommit - The commit for which to generate the changelog entry.
+ * @param withAuthors - Should author names be rendered?
+ * @returns The formatted changelog entry.
+ */
+export const getFormattedChangelogEntry = (
+  parsedCommit: ParsedCommit,
+  withAuthors: boolean,
+): string => {
   let entry = "";
 
   const url = parsedCommit.extra.commit.html_url;
@@ -172,7 +181,7 @@ const getFormattedChangelogEntry = (parsedCommit: ParsedCommit, withAuthors: boo
   }
 
   const scopeStr = parsedCommit.scope ? `**${parsedCommit.scope}**: ` : "";
-  entry = `- ${scopeStr}${parsedCommit.subject}${prString} ([${withAuthors ? author : `\`${sha}\``}](${url}))`;
+  entry = `- ${scopeStr}${parsedCommit.subject !== "" ? parsedCommit.subject : parsedCommit.header}${prString} ([${withAuthors ? author : `\`${sha}\``}](${url}))`;
 
   return entry;
 };
@@ -222,7 +231,7 @@ export const generateChangelogFromParsedCommits = (
 
       if (groupedCommitsCache && 0 < groupedCommitsCache.length) {
         clBlock.push(
-          `${groupedCommitsCache.length.toString()} similar commits not listed: ${groupedCommitsCache.map(commit => `\`${commit.sha}\``).join(", ")}`,
+          `${groupedCommitsCache.length.toString()} similar commit${groupedCommitsCache.length !== 1 ? "s" : ""} not listed: ${groupedCommitsCache.map(commit => `[\`${getShortSHA(commit.sha)}\`](${commit.extra.commit.html_url})`).join(", ")}`,
         );
         groupedCommitsCache = undefined;
       }
