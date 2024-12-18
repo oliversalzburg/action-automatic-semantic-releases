@@ -212,6 +212,13 @@ const mergeSimilarCommits = (
 
     lastCommitMessage = toGroupable(commit.header);
   }
+
+  // Ensure cache is flushed at the end of the list, in case the last item had merges.
+  if (groupedCommitsCache && 0 < groupedCommitsCache.length) {
+    clBlock.push(onMerge(groupedCommitsCache));
+    groupedCommitsCache = undefined;
+  }
+
   return clBlock;
 };
 
