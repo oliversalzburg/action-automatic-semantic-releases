@@ -76,6 +76,6 @@ it("renders commits without convention as expected", () => {
 
   const entry = getFormattedChangelogEntry(expandedCommitMsg, false);
   expect(entry).to.equal(
-    "- Update Crowdin configuration file ([`8f5fd3a`](https://github.com/kitten-science/kitten-scientists/commit/8f5fd3a938a1162daedf135293e163fba99d07ef))",
+    "- Update Crowdin configuration file (8f5fd3a938a1162daedf135293e163fba99d07ef)",
   );
 });
