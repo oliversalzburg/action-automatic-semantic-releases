@@ -163,7 +163,7 @@ export const getFormattedChangelogEntry = (
   let entry = "";
 
   const url = parsedCommit.extra.commit.html_url;
-  const author = parsedCommit.extra.commit.commit.author?.name ?? "<unknown author>";
+  const author = parsedCommit.extra.commit.commit.author?.name;
 
   let prString = parsedCommit.extra.pullRequests.reduce((acc, pr) => {
     // e.g. #1
@@ -179,7 +179,7 @@ export const getFormattedChangelogEntry = (
   }
 
   const scopeStr = parsedCommit.scope ? `**${parsedCommit.scope}**: ` : "";
-  entry = `- ${scopeStr}${parsedCommit.subject !== "" ? parsedCommit.subject : parsedCommit.header}${prString} (${withAuthors ? `[${author}](${url})` : parsedCommit.extra.commit.sha})`;
+  entry = `- ${scopeStr}${parsedCommit.subject !== "" ? parsedCommit.subject : parsedCommit.header}${prString} (${withAuthors && author ? `[${author}](${url})` : parsedCommit.extra.commit.sha})`;
 
   return entry;
 };
