@@ -127,11 +127,9 @@ export type NewGitHubRelease = GetResponseDataTypeFromEndpointMethod<
 /**
  * The type of the API response for comparing commits.
  */
-export type CommitsSinceRelease = Array<
-  GetResponseDataTypeFromEndpointMethod<
-    InstanceType<typeof GitHub>["rest"]["repos"]["compareCommits"]
-  >["commits"][number]
->;
+export type CommitsSinceRelease = GetResponseDataTypeFromEndpointMethod<
+  InstanceType<typeof GitHub>["rest"]["repos"]["compareCommits"]
+>["commits"];
 
 /**
  * The construction options for the action.
@@ -426,25 +424,33 @@ export class AutomaticReleases {
       previousReleaseRef = "HEAD";
     }
 
-    let resp;
+    let resp:
+      | GetResponseDataTypeFromEndpointMethod<
+          InstanceType<typeof GitHub>["rest"]["repos"]["compareCommitsWithBasehead"]
+        >
+      | undefined;
+    let commits: CommitsSinceRelease = [];
     core.info(`Retrieving commits between ${previousReleaseRef} and ${currentSha}`);
     try {
-      resp = await client.paginate(client.rest.repos.compareCommits, {
-        owner: tagInfo.owner,
-        repo: tagInfo.repo,
-        base: previousReleaseRef,
-        head: currentSha,
-        per_page: 250,
-      });
+      for await (const response of client.paginate.iterator(
+        client.rest.repos.compareCommitsWithBasehead,
+        {
+          owner: tagInfo.owner,
+          repo: tagInfo.repo,
+          basehead: `${previousReleaseRef}...${currentSha}`,
+          per_page: 100,
+        },
+      )) {
+        commits.push(...response.data.commits);
+      }
       core.info(
-        `Successfully retrieved ${resp.commits.length.toString()} commits between ${previousReleaseRef} and ${currentSha}`,
+        `Successfully retrieved ${commits.length.toString()} commits between ${previousReleaseRef} and ${currentSha}`,
       );
     } catch (_err) {
       // istanbul ignore next
       core.warning(`Could not find any commits between ${previousReleaseRef} and ${currentSha}`);
     }
 
-    let commits: CommitsSinceRelease = [];
     if (resp?.commits) {
       commits = resp.commits;
     }
