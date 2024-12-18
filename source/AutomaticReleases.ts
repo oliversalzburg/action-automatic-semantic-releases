@@ -1,10 +1,7 @@
 import core from "@actions/core";
 import { Context } from "@actions/github/lib/context.js";
 import { type GitHub } from "@actions/github/lib/utils.js";
-import {
-  GetResponseDataTypeFromEndpointMethod,
-  GetResponseTypeFromEndpointMethod,
-} from "@octokit/types";
+import { GetResponseDataTypeFromEndpointMethod } from "@octokit/types";
 import { mustExist } from "@oliversalzburg/js-utils/data/nil.js";
 import { Commit, CommitParser } from "conventional-commits-parser";
 import semverLt from "semver/functions/lt.js";
@@ -429,19 +426,18 @@ export class AutomaticReleases {
       previousReleaseRef = "HEAD";
     }
 
-    let resp:
-      | GetResponseTypeFromEndpointMethod<typeof client.rest.repos.compareCommits>
-      | undefined;
+    let resp;
     core.info(`Retrieving commits between ${previousReleaseRef} and ${currentSha}`);
     try {
-      resp = await client.rest.repos.compareCommits({
+      resp = await client.paginate(client.rest.repos.compareCommits, {
         owner: tagInfo.owner,
         repo: tagInfo.repo,
         base: previousReleaseRef,
         head: currentSha,
+        per_page: 250,
       });
       core.info(
-        `Successfully retrieved ${resp.data.commits.length.toString()} commits between ${previousReleaseRef} and ${currentSha}`,
+        `Successfully retrieved ${resp.commits.length.toString()} commits between ${previousReleaseRef} and ${currentSha}`,
       );
     } catch (_err) {
       // istanbul ignore next
@@ -449,8 +445,8 @@ export class AutomaticReleases {
     }
 
     let commits: CommitsSinceRelease = [];
-    if (resp?.data.commits) {
-      commits = resp.data.commits;
+    if (resp?.commits) {
+      commits = resp.commits;
     }
     core.debug(
       `Currently ${commits.length.toString()} number of commits between ${previousReleaseRef} and ${currentSha}`,

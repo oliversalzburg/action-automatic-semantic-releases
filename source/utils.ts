@@ -313,6 +313,7 @@ export const generateChangelogFromParsedCommits = (
           `<sup>${groupedCommitsCache.length.toString()} similar commit${groupedCommitsCache.length !== 1 ? "s" : ""} not listed: ${groupedCommitsCache.map(commit => `[\`${getShortSHA(commit.sha)}\`](${commit.extra.commit.html_url})`).join(", ")}</sup>`,
       )
     : commits.map(commit => getFormattedChangelogEntry(commit, withAuthors));
+
   if (clBlock.length) {
     changelog += "\n\n## Commits without convention\n";
     changelog += clBlock.join("\n").trim();
