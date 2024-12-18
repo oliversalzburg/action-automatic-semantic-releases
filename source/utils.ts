@@ -225,7 +225,7 @@ const countChanges = (totalCount: number, mergedCount: number) => {
     return totalCount.toString();
   }
 
-  return `${totalCount - mergedCount}<sup>+${mergedCount}</sup>`;
+  return `${totalCount - mergedCount}/+${mergedCount} merged commits`;
 };
 
 /**
