@@ -230,6 +230,13 @@ export class AutomaticReleases {
     }
 
     const tagName = releaseTag + (args.dryRun ? `-${new Date().getTime()}` : "");
+    let body = `${args.bodyPrefix ? args.bodyPrefix + "\n" : ""}${changelog}${args.bodySuffix ? "\n" + args.bodySuffix : ""}`;
+    if (125000 < body.length) {
+      core.warning(
+        `Release body exceeds 125000 characters! Actual length: ${body.length}. Body will be truncated.`,
+      );
+      body = body.substring(0, 125000 - 1);
+    }
     const release = await this.generateNewGitHubRelease(octokit, {
       owner: context.repo.owner,
       repo: context.repo.repo,
@@ -237,7 +244,7 @@ export class AutomaticReleases {
       name: args.releaseTitle ? args.releaseTitle : releaseTag,
       draft: args.draftRelease,
       prerelease: args.preRelease,
-      body: `${args.bodyPrefix ? args.bodyPrefix + "\n" : ""}${changelog}${args.bodySuffix ? "\n" + args.bodySuffix : ""}`,
+      body,
     });
 
     await uploadReleaseArtifacts(octokit, context, release, args.files);
