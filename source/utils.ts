@@ -186,7 +186,7 @@ export const getFormattedChangelogEntry = (
   return entry;
 };
 
-const toGroupable = (header: string) => header.replaceAll(/\d+|[a-fA-F0-9]{7,}/g, "x");
+const toGroupable = (header: string) => header.replaceAll(/[a-fA-F0-9]{7,}|\d+/g, "x");
 
 const mergeSimilarCommits = (
   commits: Array<ParsedCommit>,
