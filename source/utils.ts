@@ -260,7 +260,7 @@ export const generateChangelogFromParsedCommits = (
           commits,
           withAuthors,
           groupedCommitsCache =>
-            `<sup>${groupedCommitsCache.length.toString()} similar commit${groupedCommitsCache.length !== 1 ? "s" : ""} not listed: ${groupedCommitsCache.map(commit => `[\`${getShortSHA(commit.sha)}\`](${commit.extra.commit.html_url})`).join(", ")}</sup>`,
+            `<sup>${groupedCommitsCache.length.toString()} similar commit${groupedCommitsCache.length !== 1 ? "s" : ""} not listed: ${groupedCommitsCache.map(commit => commit.sha).join(", ")}</sup>`,
         )
       : commits.map(commit => getFormattedChangelogEntry(commit, withAuthors));
 
@@ -286,7 +286,7 @@ export const generateChangelogFromParsedCommits = (
             commits,
             withAuthors,
             groupedCommitsCache =>
-              `<sup>${groupedCommitsCache.length.toString()} similar commit${groupedCommitsCache.length !== 1 ? "s" : ""} not listed: ${groupedCommitsCache.map(commit => `[\`${getShortSHA(commit.sha)}\`](${commit.extra.commit.html_url})`).join(", ")}</sup>`,
+              `<sup>${groupedCommitsCache.length.toString()} similar commit${groupedCommitsCache.length !== 1 ? "s" : ""} not listed: ${groupedCommitsCache.map(commit => commit.sha).join(", ")}</sup>`,
           )
         : commits.map(commit => getFormattedChangelogEntry(commit, withAuthors));
 
@@ -308,7 +308,7 @@ export const generateChangelogFromParsedCommits = (
         commits,
         withAuthors,
         groupedCommitsCache =>
-          `<sup>${groupedCommitsCache.length.toString()} similar commit${groupedCommitsCache.length !== 1 ? "s" : ""} not listed: ${groupedCommitsCache.map(commit => `[\`${getShortSHA(commit.sha)}\`](${commit.extra.commit.html_url})`).join(", ")}</sup>`,
+          `<sup>${groupedCommitsCache.length.toString()} similar commit${groupedCommitsCache.length !== 1 ? "s" : ""} not listed: ${groupedCommitsCache.map(commit => commit.sha).join(", ")}</sup>`,
       )
     : commits.map(commit => getFormattedChangelogEntry(commit, withAuthors));
 
