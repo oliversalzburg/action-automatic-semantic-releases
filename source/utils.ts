@@ -265,7 +265,7 @@ export const generateChangelogFromParsedCommits = (
       : commits.map(commit => getFormattedChangelogEntry(commit, withAuthors));
 
     if (clBlock.length) {
-      changelog += `\n\n## ${ConventionalCommitTypes[key]} (${clBlock.length})\n`;
+      changelog += `\n\n## ${ConventionalCommitTypes[key]} (${clBlock.length}/${commits.length})\n`;
       changelog += clBlock.join("\n").trim();
     }
   }
@@ -292,7 +292,7 @@ export const generateChangelogFromParsedCommits = (
 
       if (clBlock.length) {
         changelog += `\n<details>\n`;
-        changelog += `<summary>${ConventionalCommitTypes[key]} (${clBlock.length})</summary>\n\n`;
+        changelog += `<summary>${ConventionalCommitTypes[key]} (${clBlock.length}/${commits.length})</summary>\n\n`;
         changelog += clBlock.join("\n").trim();
         changelog += `\n</details>\n`;
       }

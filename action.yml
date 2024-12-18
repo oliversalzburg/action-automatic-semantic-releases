@@ -37,7 +37,7 @@ inputs:
     description: If set to "true", no tags will be moved.
     required: false
   merge_similar:
-    default: "false"
+    default: "true"
     description: Should similar changes be consolidated to take up less space in the changelog?
     required: false
   with_authors:
