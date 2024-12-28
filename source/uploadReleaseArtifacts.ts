@@ -2,9 +2,10 @@ import * as core from "@actions/core";
 import { Context } from "@actions/github/lib/context.js";
 import { type GitHub } from "@actions/github/lib/utils.js";
 import { RestEndpointMethodTypes } from "@octokit/rest";
+import { fdir } from "fdir";
 import { lstatSync, readFileSync } from "fs";
-import { globby } from "globby";
-import md5File from "md5-file";
+import crypto from "node:crypto";
+import fs from "node:fs";
 import path from "path";
 import { NewGitHubRelease } from "./AutomaticReleases.js";
 
@@ -27,9 +28,26 @@ export const uploadReleaseArtifacts = async (
   release: NewGitHubRelease,
   files: Array<string>,
 ): Promise<void> => {
+  const createHashFromFile = (filePath: string): Promise<string> =>
+    new Promise(resolve => {
+      const hash = crypto.createHash("sha256");
+      fs.createReadStream(filePath)
+        .on("data", data => hash.update(data))
+        .on("end", () => {
+          resolve(hash.digest("hex"));
+        });
+    });
+
   core.startGroup("Uploading release artifacts");
+
   for (const fileGlob of files) {
-    const paths = await globby(fileGlob);
+    const paths = await new fdir()
+      .withBasePath()
+      .withDirs()
+      .glob(fileGlob)
+      .crawl(process.cwd())
+      .withPromise();
+
     if (paths.length === 0) {
       core.error(`${fileGlob} doesn't match any files`);
     }
@@ -56,9 +74,9 @@ export const uploadReleaseArtifacts = async (
         core.info(
           `Problem uploading ${filePath} as a release asset (${
             (err as Error).message
-          }). Will retry with the md5 hash appended to the filename.`,
+          }). Will retry with the SHA256 hash appended to the filename.`,
         );
-        const hash = await md5File(filePath);
+        const hash = await createHashFromFile(filePath);
         const basename = path.basename(filePath, path.extname(filePath));
         const ext = path.extname(filePath);
         const newName = `${basename}-${hash}${ext}`;
