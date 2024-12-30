@@ -8,6 +8,9 @@ on:
 jobs:
   qa:
     name: 🔹 QA
+    permissions:
+      contents: read
+      packages: read
     uses: oliversalzburg/workflows/.github/workflows/qa-github-action-nodejs.yml@main
 
   release:

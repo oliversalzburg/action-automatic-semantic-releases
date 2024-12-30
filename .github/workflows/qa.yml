@@ -10,4 +10,7 @@ on:
 jobs:
   qa:
     name: 🔹 QA
-    uses: oliversalzburg/workflows/.github/workflows/qa-npm-package.yml@main
+    permissions:
+      contents: read
+      packages: read
+    uses: oliversalzburg/workflows/.github/workflows/qa-github-action-nodejs.yml@main
