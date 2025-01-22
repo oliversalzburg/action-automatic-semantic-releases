@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "build": "node build.js",
-    "build:export": "yarn run rebuild && cp output/main.js lib/main.js",
+    "build:export": "yarn run rebuild && cp output/main.js lib/main.js && git add . && git commit -s -m 'chore: Rebuild entrypoint'",
     "clean": "rm -rf ./output",
     "lint": "yarn run lint:all",
     "lint:all": "yarn run lint:eslint && yarn run lint:prettier && yarn run lint:tsc",
