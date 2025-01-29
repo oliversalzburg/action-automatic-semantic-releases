@@ -35,7 +35,7 @@
     "conventional-commits-parser": "6.0.0",
     "fdir": "6.4.3",
     "picomatch": "4.0.2",
-    "semver": "7.6.3",
+    "semver": "7.7.0",
     "tslib": "2.8.1"
   },
   "devDependencies": {
