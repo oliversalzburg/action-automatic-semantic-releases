@@ -42,10 +42,10 @@ export const uploadReleaseArtifacts = async (
   core.startGroup("Uploading release artifacts");
 
   for (const fileGlob of files) {
-    const paths = await new fdir()
-      .withGlobFunction((glob: string) => picomatch(glob))
-      .withBasePath()
-      .withDirs()
+    const paths = await new fdir({
+      globFunction: (glob: string) => picomatch(glob),
+      relativePaths: true,
+    })
       .glob(fileGlob)
       .crawl(process.cwd())
       .withPromise();
