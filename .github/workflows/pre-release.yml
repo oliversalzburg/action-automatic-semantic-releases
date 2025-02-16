@@ -60,4 +60,5 @@ jobs:
     with:
       draft-only: false
       is-canary: true
+      skip-integrity-check: true
       wants-github-release: ${{ inputs.wants-github-release || false }}
