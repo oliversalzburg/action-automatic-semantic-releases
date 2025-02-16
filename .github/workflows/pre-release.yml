@@ -41,6 +41,7 @@ jobs:
           automatic_release_tag: latest
           draft: true
           dry_run: true
+          files: "*"
           merge_similar: true
           prerelease: true
           repo_token: ${{ secrets.GITHUB_TOKEN }}

@@ -7,6 +7,7 @@ import { lstatSync, readFileSync } from "fs";
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "path";
+import picomatch from "picomatch";
 import { NewGitHubRelease } from "./AutomaticReleases.js";
 
 /**
@@ -42,6 +43,7 @@ export const uploadReleaseArtifacts = async (
 
   for (const fileGlob of files) {
     const paths = await new fdir()
+      .withGlobFunction((glob: string) => picomatch(glob))
       .withBasePath()
       .withDirs()
       .glob(fileGlob)
