@@ -65,6 +65,16 @@ export class AutomaticReleases {
         this.#args.rootVersion !== "" ? this.#args.rootVersion : releaseTag,
       );
       core.info(`Versions suggestions: ${JSON.stringify(versions)}`);
+      core.setOutput("version_current", versions.current);
+      core.setOutput("version_root", versions.root);
+      core.setOutput("version_extension", versions.extension);
+      core.setOutput("version_dev", versions.dev);
+      core.setOutput("version_dev_extended", versions.devExtended);
+      core.setOutput("version_nightly", versions.nightly);
+      core.setOutput("version_nightly_extended", versions.nightlyExtended);
+      core.setOutput("version_major", versions.major);
+      core.setOutput("version_minor", versions.minor);
+      core.setOutput("version_patch", versions.patch);
     }
 
     const commitsSinceRelease: CommitsSinceRelease = await getCommitsSinceRelease(
@@ -99,10 +109,11 @@ export class AutomaticReleases {
       core.debug(`Changelog metadata written to '${filename}'.`);
     }
 
-    core.setOutput("major", changelog.breakingChanges.length);
-    core.setOutput("minor", changelog.feat.length);
+    core.setOutput("commits_total", commitsSinceRelease.length);
+    core.setOutput("major_total", changelog.breakingChanges.length);
+    core.setOutput("minor_total", changelog.feat.length);
     core.setOutput(
-      "patch",
+      "patch_total",
       changelog.fix.length +
         changelog.perf.length +
         changelog.refactor.length +
@@ -110,7 +121,7 @@ export class AutomaticReleases {
         changelog.style.length,
     );
     core.setOutput(
-      "lifecycle",
+      "lifecycle_total",
       changelog.build.length + changelog.ci.length + changelog.docs.length + changelog.test.length,
     );
 

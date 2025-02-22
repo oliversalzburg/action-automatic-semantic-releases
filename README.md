@@ -199,6 +199,26 @@ jobs:
 
 <!-- AUTO-DOC-INPUT:END -->
 
+## Outputs
+
+- commits_total
+- major_total
+- minor_total
+- patch_total
+- lifecycle_total
+- upload_url
+- automatic_releases_tag
+- version_current
+- version_root
+- version_extension
+- version_dev
+- version_dev_extended
+- version_nightly
+- version_nightly_extended
+- version_major
+- version_minor
+- version_patch
+
 ## Release Process
 
 ```shell
