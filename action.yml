@@ -44,6 +44,9 @@ inputs:
     description: Should we actually publish a GitHub release, or just do other work?
     default: "true"
     required: false
+  root_version:
+    description: Provide the current version of your project to determine the release version automatically.
+    required: false
   title:
     description: Release title (for automatic releases).
     required: false

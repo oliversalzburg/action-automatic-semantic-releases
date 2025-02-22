@@ -84,6 +84,11 @@ export interface ActionParameters {
   publish: boolean;
 
   /**
+   * The current version of the project.
+   */
+  rootVersion: string;
+
+  /**
    * Title of the release.
    */
   title: string;
