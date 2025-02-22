@@ -88,6 +88,21 @@ export class AutomaticReleases {
       core.debug(`Changelog metadata written to '${filename}'.`);
     }
 
+    core.setOutput("major", changelog.breakingChanges.length);
+    core.setOutput("minor", changelog.feat.length);
+    core.setOutput(
+      "patch",
+      changelog.fix.length +
+        changelog.perf.length +
+        changelog.refactor.length +
+        changelog.revert.length +
+        changelog.style.length,
+    );
+    core.setOutput(
+      "lifecycle",
+      changelog.build.length + changelog.ci.length + changelog.docs.length + changelog.test.length,
+    );
+
     if (this.#args.automaticReleaseTag && !this.#args.dryRun) {
       await createReleaseTag(core, octokit, {
         owner: context.repo.owner,
