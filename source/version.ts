@@ -7,7 +7,7 @@ const getDateString = () => {
 };
 
 const getRootVersion = (currentVersion: string) => {
-  return currentVersion.replace(/^(\d+\.\d+\.\d+)-?.*$/, "$1");
+  return currentVersion.replace(/^v?(\d+\.\d+\.\d+)-?.*$/, "$1");
 };
 
 const bumpVersion = (rootVersion: string, level: "major" | "minor" | "patch") => {
