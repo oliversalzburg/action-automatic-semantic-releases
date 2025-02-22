@@ -45,7 +45,7 @@ export const getAndValidateArgs = (core: CoreType): ActionParameters => {
     mergeSimilar: core.getBooleanInput("merge_similar", { required: false }),
     preRelease: core.getBooleanInput("prerelease", { required: false }),
     publish: core.getBooleanInput("publish", { required: false }),
-    rootVersion: core.getInput("title", { required: false }),
+    rootVersion: core.getInput("root_version", { required: false }),
     title: core.getInput("title", { required: false }),
     withAuthors: core.getBooleanInput("with_authors", { required: false }),
   };
