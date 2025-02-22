@@ -61,7 +61,9 @@ export class AutomaticReleases {
     core.endGroup();
 
     if (this.#args.automaticReleaseTag === "" || this.#args.rootVersion !== "") {
-      const versions = suggestVersions(releaseTag !== "" ? releaseTag : this.#args.rootVersion);
+      const versions = suggestVersions(
+        this.#args.rootVersion !== "" ? this.#args.rootVersion : releaseTag,
+      );
       core.info(`Versions suggestions: ${JSON.stringify(versions)}`);
     }
 
