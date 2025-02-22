@@ -1,13 +1,8 @@
 import { expect } from "chai";
 import { CommitBase, CommitNote, CommitParser, CommitReference } from "conventional-commits-parser";
 import { it } from "mocha";
-import { CommitsSinceRelease } from "./AutomaticReleases.js";
-import {
-  ConventionalCommitTypes,
-  getChangelogOptions,
-  getFormattedChangelogEntry,
-  ParsedCommit,
-} from "./utils.js";
+import { CommitsSinceRelease, ConventionalCommitTypes, ParsedCommit } from "./types.js";
+import { getChangelogOptions, getFormattedChangelogEntry } from "./utils.js";
 
 it("parses commits as expected", () => {
   const clOptions = getChangelogOptions();

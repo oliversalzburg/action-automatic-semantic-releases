@@ -8,7 +8,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "path";
 import picomatch from "picomatch";
-import { NewGitHubRelease } from "./AutomaticReleases.js";
+import { NewGitHubRelease } from "./types.js";
 
 /**
  * The type of the API response for uploading a release asset.
