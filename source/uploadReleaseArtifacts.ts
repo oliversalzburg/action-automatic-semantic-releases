@@ -3,10 +3,9 @@ import { Context } from "@actions/github/lib/context.js";
 import { type GitHub } from "@actions/github/lib/utils.js";
 import { RestEndpointMethodTypes } from "@octokit/rest";
 import { fdir } from "fdir";
-import { lstatSync, readFileSync } from "fs";
 import crypto from "node:crypto";
-import fs from "node:fs";
-import path from "path";
+import fs, { lstatSync, readFileSync } from "node:fs";
+import path from "node:path";
 import picomatch from "picomatch";
 import { NewGitHubRelease } from "./types.js";
 

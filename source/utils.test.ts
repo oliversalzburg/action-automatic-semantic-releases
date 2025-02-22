@@ -1,3 +1,4 @@
+import core from "@actions/core";
 import { expect } from "chai";
 import { CommitBase, CommitNote, CommitParser, CommitReference } from "conventional-commits-parser";
 import { it } from "mocha";
@@ -5,7 +6,7 @@ import { CommitsSinceRelease, ConventionalCommitTypes, ParsedCommit } from "./ty
 import { getChangelogOptions, getFormattedChangelogEntry } from "./utils.js";
 
 it("parses commits as expected", () => {
-  const clOptions = getChangelogOptions();
+  const clOptions = getChangelogOptions(core);
 
   const parse = (message: string) => new CommitParser(clOptions).parse(message);
 

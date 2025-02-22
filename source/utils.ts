@@ -1,4 +1,3 @@
-import * as core from "@actions/core";
 import { type GitHub } from "@actions/github/lib/utils.js";
 import { GetResponseDataTypeFromEndpointMethod } from "@octokit/types";
 import { mustExist } from "@oliversalzburg/js-utils/data/nil.js";
@@ -10,6 +9,7 @@ import {
   ActionParameters,
   CommitsSinceRelease,
   ConventionalCommitTypes,
+  CoreType,
   NewGitHubRelease,
   ParsedCommit,
   RefInfo,
@@ -31,9 +31,10 @@ export const getShortSHA = (sha: string): string => {
 
 /**
  * Validates the given arguments for the action and returns them.
+ * @param core - GitHub core to use.
  * @returns The validated arguments for the action.
  */
-export const getAndValidateArgs = (): ActionParameters => {
+export const getAndValidateArgs = (core: CoreType): ActionParameters => {
   const args = {
     automaticReleaseTag: core.getInput("automatic_release_tag", {
       required: false,
@@ -245,10 +246,11 @@ export const isBreakingChange = (commit: CommitMeta): boolean => {
 
 /**
  * Retrieve the name of a tag from its git reference.
+ * @param core - GitHub core to use.
  * @param inputRef - The git reference.
  * @returns The name of the tag.
  */
-export const parseGitTag = (inputRef: string): string => {
+export const parseGitTag = (core: CoreType, inputRef: string): string => {
   const re = /^(refs\/)?tags\/(.*)$/;
   const resMatch = inputRef.match(re);
   if (!resMatch?.[2]) {
@@ -260,9 +262,10 @@ export const parseGitTag = (inputRef: string): string => {
 
 /**
  * Retrieve the default changelog options.
+ * @param core - GitHub core to use.
  * @returns The default changelog options.
  */
-export const getChangelogOptions = () => {
+export const getChangelogOptions = (core: CoreType) => {
   const defaultOpts = {
     headerPattern: /^(\w*)(?:\((.*)\))?: (.*)$/,
     headerCorrespondence: ["type", "scope", "subject"],
@@ -308,12 +311,14 @@ export const octokitLogger = (
 
 /**
  * Find the tag for the previous release, if any.
+ * @param core - GitHub core to use.
  * @param client - The API client to use.
  * @param currentReleaseTag - The current release tag.
  * @param tagInfo - Information about the tag.
  * @returns The previous release tag.
  */
 export const searchForPreviousReleaseTag = async (
+  core: CoreType,
   client: InstanceType<typeof GitHub>,
   currentReleaseTag: string,
   tagInfo: TagInfo,
@@ -352,12 +357,14 @@ export const searchForPreviousReleaseTag = async (
 
 /**
  * Determine the commits that have been pushed to the repo since the last release.
+ * @param core - GitHub core to use.
  * @param client - The API client to use.
  * @param tagInfo - Information about the tag reference.
  * @param currentSha - The current commit SHA.
  * @returns The commits since the last release.
  */
 export const getCommitsSinceRelease = async (
+  core: CoreType,
   client: InstanceType<typeof GitHub>,
   tagInfo: TagRefInfo,
   currentSha: string,
@@ -369,7 +376,7 @@ export const getCommitsSinceRelease = async (
   core.info(`Searching for SHA corresponding to previous "${tagInfo.ref}" release tag`);
   try {
     await client.rest.git.getRef(tagInfo);
-    previousReleaseRef = parseGitTag(tagInfo.ref);
+    previousReleaseRef = parseGitTag(core, tagInfo.ref);
   } catch (err) {
     core.info(
       `Could not find SHA corresponding to tag "${tagInfo.ref}" (${
@@ -419,6 +426,7 @@ export const getCommitsSinceRelease = async (
 
 /**
  * Generates a changelog based on a set of commits.
+ * @param core - GitHub core to use.
  * @param client - The API client to use.
  * @param owner - The owner of the repository.
  * @param repo - The name of the repository.
@@ -428,6 +436,7 @@ export const getCommitsSinceRelease = async (
  * @returns The generated changelog.
  */
 export const getChangelog = async (
+  core: CoreType,
   client: InstanceType<typeof GitHub>,
   owner: string,
   repo: string,
@@ -452,7 +461,7 @@ export const getChangelog = async (
       );
     }
 
-    const clOptions = getChangelogOptions();
+    const clOptions = getChangelogOptions(core);
     const parsedCommitMsg: Exclude<Commit, "type"> & {
       type?: ConventionalCommitTypes | string | null;
     } = new CommitParser(clOptions).parse(commit.commit.message);
@@ -511,10 +520,12 @@ export const getChangelog = async (
 
 /**
  * Create a release tag.
+ * @param core - GitHub core to use.
  * @param client - The API client to use.
  * @param refInfo - The information for the tag to create.
  */
 export const createReleaseTag = async (
+  core: CoreType,
   client: InstanceType<typeof GitHub>,
   refInfo: RefInfo,
 ): Promise<void> => {
@@ -544,10 +555,12 @@ export const createReleaseTag = async (
 
 /**
  * Delete the previous release.
+ * @param core - GitHub core to use.
  * @param client - The API client to use.
  * @param releaseInfo - Information about the release.
  */
 export const deletePreviousGitHubRelease = async (
+  core: CoreType,
   client: InstanceType<typeof GitHub>,
   releaseInfo: ReleaseInfo,
 ) => {
@@ -572,11 +585,13 @@ export const deletePreviousGitHubRelease = async (
 
 /**
  * Create a new GitHub release.
+ * @param core - GitHub core to use.
  * @param client - The API client to use.
  * @param releaseInfo - Information about the release.
  * @returns The response from the GitHub API.
  */
 export const generateNewGitHubRelease = async (
+  core: CoreType,
   client: InstanceType<typeof GitHub>,
   releaseInfo: ReleaseInfoFull,
 ): Promise<NewGitHubRelease> => {

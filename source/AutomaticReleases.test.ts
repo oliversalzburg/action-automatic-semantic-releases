@@ -4,6 +4,7 @@ import { Context } from "@actions/github/lib/context.js";
 import { Moctokit } from "@kie/mock-github";
 import { beforeEach, it } from "mocha";
 import { AutomaticReleases } from "./AutomaticReleases.js";
+import { getAndValidateArgs } from "./utils.js";
 
 beforeEach(() => {
   process.env.GITHUB_REF = "refs/heads/main";
@@ -50,11 +51,16 @@ it("runs", async () => {
 
   moctokit.rest.repos.createRelease().reply({ status: 201, data: {} });
 
-  const automaticReleases = new AutomaticReleases({
-    context: new Context(),
-    core,
-    octokit: getOctokit("invalid-token", { request: { fetch } }),
-  });
+  const args = getAndValidateArgs(core);
+
+  const automaticReleases = new AutomaticReleases(
+    {
+      context: new Context(),
+      core,
+      octokit: getOctokit("invalid-token", { request: { fetch } }),
+    },
+    args,
+  );
 
   await automaticReleases.main();
 });

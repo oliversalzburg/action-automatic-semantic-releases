@@ -5,6 +5,11 @@ import { GetResponseDataTypeFromEndpointMethod } from "@octokit/types";
 import { CommitMeta, CommitNote, CommitReference } from "conventional-commits-parser";
 
 /**
+ * Type of the GitHub core.
+ */
+export type CoreType = typeof core;
+
+/**
  * The arguments for the action.
  */
 export interface ActionParameters {
