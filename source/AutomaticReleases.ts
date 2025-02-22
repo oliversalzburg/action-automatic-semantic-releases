@@ -70,9 +70,9 @@ export class AutomaticReleases {
       core.setOutput("version-root", versions.root);
       core.setOutput("version-extension", versions.extension);
       core.setOutput("version-dev", versions.dev);
-      core.setOutput("version-dev_extended", versions.devExtended);
+      core.setOutput("version-dev-extended", versions.devExtended);
       core.setOutput("version-nightly", versions.nightly);
-      core.setOutput("version-nightly_extended", versions.nightlyExtended);
+      core.setOutput("version-nightly-extended", versions.nightlyExtended);
       core.setOutput("version-major", versions.major);
       core.setOutput("version-minor", versions.minor);
       core.setOutput("version-patch", versions.patch);
