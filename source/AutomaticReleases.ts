@@ -1,11 +1,11 @@
 import { writeFile } from "node:fs/promises";
+import { getChangelog, renderChangelog } from "./changelog.js";
 import { ActionParameters, AutomaticReleasesOptions, CommitsSinceRelease } from "./types.js";
 import { uploadReleaseArtifacts } from "./uploadReleaseArtifacts.js";
 import {
   createReleaseTag,
   deletePreviousGitHubRelease,
   generateNewGitHubRelease,
-  getChangelog,
   getCommitsSinceRelease,
   parseGitTag,
   searchForPreviousReleaseTag,
@@ -73,6 +73,10 @@ export class AutomaticReleases {
       context.repo.owner,
       context.repo.repo,
       commitsSinceRelease,
+    );
+    const changeLogText = renderChangelog(
+      core,
+      changelog,
       this.#args.withAuthors,
       this.#args.mergeSimilar,
     );
@@ -100,7 +104,7 @@ export class AutomaticReleases {
     }
 
     const tagName = releaseTag + (this.#args.dryRun ? `-${new Date().getTime()}` : "");
-    let body = `${this.#args.bodyPrefix !== "" ? this.#args.bodyPrefix + "\n" : ""}${changelog}${this.#args.bodySuffix !== "" ? "\n" + this.#args.bodySuffix : ""}`;
+    let body = `${this.#args.bodyPrefix !== "" ? this.#args.bodyPrefix + "\n" : ""}${changeLogText}${this.#args.bodySuffix !== "" ? "\n" + this.#args.bodySuffix : ""}`;
     if (125000 < body.length) {
       core.warning(
         `Release body exceeds 125000 characters! Actual length: ${body.length}. Body will be truncated.`,

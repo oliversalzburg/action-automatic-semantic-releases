@@ -10,6 +10,25 @@ import { CommitMeta, CommitNote, CommitReference } from "conventional-commits-pa
 export type CoreType = typeof core;
 
 /**
+ * The type of the API response for creating a new release.
+ */
+export type NewGitHubRelease = GetResponseDataTypeFromEndpointMethod<
+  InstanceType<typeof GitHub>["rest"]["repos"]["createRelease"]
+>;
+/**
+ * The type of the API response for comparing commits.
+ */
+export type CommitsSinceRelease = GetResponseDataTypeFromEndpointMethod<
+  InstanceType<typeof GitHub>["rest"]["repos"]["compareCommits"]
+>["commits"];
+/**
+ * The type of the API response for comparing commits.
+ */
+export type CompareCommitsItem = GetResponseDataTypeFromEndpointMethod<
+  InstanceType<typeof GitHub>["rest"]["repos"]["compareCommits"]
+>["commits"][number];
+
+/**
  * The arguments for the action.
  * Keep these in sync with the parameter declaration in 'action.yml' and 'getAndValidateArgs'.
  */
@@ -69,19 +88,6 @@ export interface ActionParameters {
    */
   withAuthors: boolean;
 }
-
-/**
- * The type of the API response for creating a new release.
- */
-export type NewGitHubRelease = GetResponseDataTypeFromEndpointMethod<
-  InstanceType<typeof GitHub>["rest"]["repos"]["createRelease"]
->;
-/**
- * The type of the API response for comparing commits.
- */
-export type CommitsSinceRelease = GetResponseDataTypeFromEndpointMethod<
-  InstanceType<typeof GitHub>["rest"]["repos"]["compareCommits"]
->["commits"];
 
 /**
  * The construction options for the action.
@@ -224,13 +230,6 @@ export interface ReleaseInfoFull extends Record<string, string | boolean> {
 }
 
 /**
- * The type of the API response for comparing commits.
- */
-export type CompareCommitsItem = GetResponseDataTypeFromEndpointMethod<
-  InstanceType<typeof GitHub>["rest"]["repos"]["compareCommits"]
->["commits"][number];
-
-/**
  * The type of a parsed commit.
  */
 export type ParsedCommitsExtraCommit = CompareCommitsItem & {
@@ -275,19 +274,23 @@ export interface ParsedCommitsExtra {
   breakingChange: boolean;
 }
 
-export enum ConventionalCommitTypes {
-  feat = "Features",
-  fix = "Bug Fixes",
-  docs = "Documentation",
-  style = "Styles",
-  refactor = "Code Refactoring",
-  perf = "Performance Improvements",
-  test = "Tests",
-  build = "Builds",
-  ci = "Continuous Integration",
-  chore = "Chores",
-  revert = "Reverts",
-}
+export const ConventionalCommitTypes = {
+  feat: "Features",
+  fix: "Bug Fixes",
+  docs: "Documentation",
+  style: "Styles",
+  refactor: "Code Refactoring",
+  perf: "Performance Improvements",
+  test: "Tests",
+  build: "Builds",
+  ci: "Continuous Integration",
+  chore: "Chores",
+  revert: "Reverts",
+};
+/**
+ * Just the identifiers.
+ */
+export type ConventionalCommitType = keyof typeof ConventionalCommitTypes;
 
 /**
  * Relevant information about a commit.
@@ -301,7 +304,7 @@ export interface ParsedCommit {
   /**
    * The conventional commit type.
    */
-  type: ConventionalCommitTypes;
+  type: keyof typeof ConventionalCommitTypes;
 
   /**
    * The conventional commit scope.
@@ -357,4 +360,25 @@ export interface ParsedCommit {
    * Is this a revert of another commit?
    */
   revert: CommitMeta | null;
+}
+
+/**
+ * Describes the metadata of a changelog.
+ */
+export interface Changelog
+  extends Record<keyof typeof ConventionalCommitTypes, Array<ParsedCommit>> {
+  /**
+   * Breaking Changes
+   */
+  breakingChanges: Array<ParsedCommit>;
+
+  /**
+   * Dependency Changes
+   */
+  deps: Record<keyof typeof ConventionalCommitTypes, Array<ParsedCommit>>;
+
+  /**
+   * Non-Conventional Commits
+   */
+  commits: Array<ParsedCommit>;
 }

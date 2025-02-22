@@ -2,8 +2,8 @@ import core from "@actions/core";
 import { expect } from "chai";
 import { CommitBase, CommitNote, CommitParser, CommitReference } from "conventional-commits-parser";
 import { it } from "mocha";
-import { CommitsSinceRelease, ConventionalCommitTypes, ParsedCommit } from "./types.js";
-import { getChangelogOptions, getFormattedChangelogEntry } from "./utils.js";
+import { getChangelogOptions, getFormattedChangelogEntry } from "./changelog.js";
+import { CommitsSinceRelease, ConventionalCommitType, ParsedCommit } from "./types.js";
 
 it("parses commits as expected", () => {
   const clOptions = getChangelogOptions(core);
@@ -52,7 +52,7 @@ it("renders commits without convention as expected", () => {
   };
   const expandedCommitMsg: ParsedCommit = {
     sha: commit.sha,
-    type: parsedCommitMsg.type as ConventionalCommitTypes,
+    type: parsedCommitMsg.type as ConventionalCommitType,
     scope: parsedCommitMsg.scope ?? "",
     subject: parsedCommitMsg.subject ?? "",
     merge: parsedCommitMsg.merge ?? "",
