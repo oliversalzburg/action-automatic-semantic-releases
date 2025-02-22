@@ -10,6 +10,7 @@ import {
   parseGitTag,
   searchForPreviousReleaseTag,
 } from "./utils.js";
+import { suggestVersions } from "./version.js";
 
 /**
  * The automatic releases action.
@@ -40,22 +41,29 @@ export class AutomaticReleases {
     core.endGroup();
 
     core.startGroup("Determining release tags");
-    const releaseTag = this.#args.automaticReleaseTag
-      ? this.#args.automaticReleaseTag
-      : parseGitTag(core, context.ref);
+    const releaseTag =
+      this.#args.automaticReleaseTag !== ""
+        ? this.#args.automaticReleaseTag
+        : parseGitTag(core, context.ref);
     if (!releaseTag) {
       throw new Error(
         `The parameter "automatic_release_tag" was not set and this does not appear to be a GitHub tag event. (Event: ${context.ref})`,
       );
     }
 
-    const previousReleaseTag = this.#args.automaticReleaseTag
-      ? this.#args.automaticReleaseTag
-      : await searchForPreviousReleaseTag(core, octokit, releaseTag, {
-          owner: context.repo.owner,
-          repo: context.repo.repo,
-        });
+    const previousReleaseTag =
+      this.#args.automaticReleaseTag !== ""
+        ? this.#args.automaticReleaseTag
+        : await searchForPreviousReleaseTag(core, octokit, releaseTag, {
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+          });
     core.endGroup();
+
+    if (this.#args.automaticReleaseTag !== "") {
+      const versions = suggestVersions(releaseTag);
+      core.info(`Versions suggestions: ${JSON.stringify(versions)}`);
+    }
 
     const commitsSinceRelease: CommitsSinceRelease = await getCommitsSinceRelease(
       core,
