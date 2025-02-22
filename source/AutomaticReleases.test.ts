@@ -15,6 +15,7 @@ beforeEach(() => {
   process.env.INPUT_DRY_RUN = "false";
   process.env.INPUT_MERGE_SIMILAR = "false";
   process.env.INPUT_PRERELEASE = "true";
+  process.env.INPUT_PUBLISH = "true";
   process.env.INPUT_TITLE = "Development Build";
   process.env.INPUT_WITH_AUTHORS = "true";
 });
