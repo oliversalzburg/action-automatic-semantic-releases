@@ -127,21 +127,25 @@ export class AutomaticReleases {
       );
       body = body.substring(0, 125000 - 1);
     }
-    const release = await generateNewGitHubRelease(core, octokit, {
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      tag_name: tagName,
-      name: this.#args.title ? this.#args.title : releaseTag,
-      draft: this.#args.draftRelease,
-      prerelease: this.#args.preRelease,
-      body,
-    });
 
-    await uploadReleaseArtifacts(octokit, context, release, this.#args.files);
+    if (this.#args.publish) {
+      const release = await generateNewGitHubRelease(core, octokit, {
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        tag_name: tagName,
+        name: this.#args.title ? this.#args.title : releaseTag,
+        draft: this.#args.draftRelease,
+        prerelease: this.#args.preRelease,
+        body,
+      });
+
+      await uploadReleaseArtifacts(octokit, context, release, this.#args.files);
+
+      core.setOutput("upload_url", release.upload_url);
+    }
 
     core.debug(`Exporting environment variable AUTOMATIC_RELEASES_TAG with value ${tagName}`);
     core.exportVariable("AUTOMATIC_RELEASES_TAG", tagName);
     core.setOutput("automatic_releases_tag", tagName);
-    core.setOutput("upload_url", release.upload_url);
   }
 }

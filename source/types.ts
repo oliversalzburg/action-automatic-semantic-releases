@@ -79,6 +79,11 @@ export interface ActionParameters {
   preRelease: boolean;
 
   /**
+   * Should we actually publish a release?
+   */
+  publish: boolean;
+
+  /**
    * Title of the release.
    */
   title: string;
