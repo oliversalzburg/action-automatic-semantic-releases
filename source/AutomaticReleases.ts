@@ -44,7 +44,7 @@ export class AutomaticReleases {
 
     core.startGroup("Initializing the Automatic Releases action");
     core.debug(`Github context: ${JSON.stringify(context)}`);
-    core.debug(`Arguments: ${JSON.stringify(this.#args)}`);
+    core.info(`Arguments: ${JSON.stringify(this.#args)}`);
     core.endGroup();
 
     core.startGroup("Determining release tags");
@@ -100,9 +100,9 @@ export class AutomaticReleases {
 
       const filename = this.#args.changelogArtifact;
       if (filename !== "") {
-        core.debug(`Writing changelog metadata to '${filename}'...`);
+        core.info(`Writing changelog metadata to '${filename}'...`);
         await writeFile(filename, JSON.stringify(changelog));
-        core.debug(`Changelog metadata written to '${filename}'.`);
+        core.info(`Changelog metadata written to '${filename}'.`);
       }
 
       core.setOutput("commits-total", commitsSinceRelease.length);
@@ -149,9 +149,9 @@ export class AutomaticReleases {
           throw new Error("No changelog was generated, and no 'changelog-artifact' was provided.");
         }
 
-        core.debug(`Reading changelog metadata from '${filename}'...`);
+        core.info(`Reading changelog metadata from '${filename}'...`);
         changelog = JSON.parse(await readFile(filename, "utf8")) as Changelog;
-        core.debug(`Changelog metadata read from '${filename}'.`);
+        core.info(`Changelog metadata read from '${filename}'.`);
       }
 
       const changeLogText = renderChangelog(
