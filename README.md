@@ -194,6 +194,7 @@ jobs:
 | <a name="input_prerelease"></a>[prerelease](#input_prerelease)                                  | string | false    | `"true"`  | Should this release be marked <br>as a pre-release?                                                               |
 | <a name="input_publish"></a>[publish](#input_publish)                                           | string | false    | `"true"`  | Should we actually publish a <br>GitHub release, or just do <br>other work?                                       |
 | <a name="input_repo_token"></a>[repo_token](#input_repo_token)                                  | string | true     |           | GitHub secret token.                                                                                              |
+| <a name="input_root_version"></a>[root_version](#input_root_version)                            | string | false    |           | Provide the current version of <br>your project to determine the <br>release version automatically.               |
 | <a name="input_title"></a>[title](#input_title)                                                 | string | false    |           | Release title (for automatic releases).                                                                           |
 | <a name="input_with_authors"></a>[with_authors](#input_with_authors)                            | string | false    | `"true"`  | If set to "true", render <br>the names of commit authors, <br>instead of the commit hash.                         |
 
