@@ -36,6 +36,7 @@ export class AutomaticReleases {
 
     core.startGroup("Initializing the Automatic Releases action");
     core.debug(`Github context: ${JSON.stringify(context)}`);
+    core.debug(`Arguments: ${JSON.stringify(this.#args)}`);
     core.endGroup();
 
     core.startGroup("Determining release tags");
