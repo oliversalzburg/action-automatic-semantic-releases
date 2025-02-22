@@ -67,17 +67,16 @@ export class AutomaticReleases {
         const versions = suggestVersions(
           this.#args.rootVersion !== "" ? this.#args.rootVersion : releaseTag,
         );
-        core.info(`Versions suggestions: ${JSON.stringify(versions)}`);
-        core.setOutput("version_current", versions.current);
-        core.setOutput("version_root", versions.root);
-        core.setOutput("version_extension", versions.extension);
-        core.setOutput("version_dev", versions.dev);
-        core.setOutput("version_dev_extended", versions.devExtended);
-        core.setOutput("version_nightly", versions.nightly);
-        core.setOutput("version_nightly_extended", versions.nightlyExtended);
-        core.setOutput("version_major", versions.major);
-        core.setOutput("version_minor", versions.minor);
-        core.setOutput("version_patch", versions.patch);
+        core.setOutput("version-current", versions.current);
+        core.setOutput("version-root", versions.root);
+        core.setOutput("version-extension", versions.extension);
+        core.setOutput("version-dev", versions.dev);
+        core.setOutput("version-dev_extended", versions.devExtended);
+        core.setOutput("version-nightly", versions.nightly);
+        core.setOutput("version-nightly_extended", versions.nightlyExtended);
+        core.setOutput("version-major", versions.major);
+        core.setOutput("version-minor", versions.minor);
+        core.setOutput("version-patch", versions.patch);
       }
 
       const commitsSinceRelease: CommitsSinceRelease = await getCommitsSinceRelease(
@@ -106,11 +105,11 @@ export class AutomaticReleases {
         core.debug(`Changelog metadata written to '${filename}'.`);
       }
 
-      core.setOutput("commits_total", commitsSinceRelease.length);
-      core.setOutput("major_total", changelog.breakingChanges.length);
-      core.setOutput("minor_total", changelog.feat.length);
+      core.setOutput("commits-total", commitsSinceRelease.length);
+      core.setOutput("major-total", changelog.breakingChanges.length);
+      core.setOutput("minor-total", changelog.feat.length);
       core.setOutput(
-        "patch_total",
+        "patch-total",
         changelog.fix.length +
           changelog.perf.length +
           changelog.refactor.length +
@@ -118,7 +117,7 @@ export class AutomaticReleases {
           changelog.style.length,
       );
       core.setOutput(
-        "lifecycle_total",
+        "lifecycle-total",
         changelog.build.length +
           changelog.ci.length +
           changelog.docs.length +
