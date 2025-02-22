@@ -1,6 +1,12 @@
-import { writeFile } from "node:fs/promises";
+import { isNil } from "@oliversalzburg/js-utils/data/nil.js";
+import { readFile, writeFile } from "node:fs/promises";
 import { getChangelog, renderChangelog } from "./changelog.js";
-import { ActionParameters, AutomaticReleasesOptions, CommitsSinceRelease } from "./types.js";
+import {
+  ActionParameters,
+  AutomaticReleasesOptions,
+  Changelog,
+  CommitsSinceRelease,
+} from "./types.js";
 import { uploadReleaseArtifacts } from "./uploadReleaseArtifacts.js";
 import {
   createReleaseTag,
@@ -34,6 +40,7 @@ export class AutomaticReleases {
    */
   async main() {
     const { context, core, octokit } = this.#options;
+    let changelog: Changelog | undefined;
 
     core.startGroup("Initializing the Automatic Releases action");
     core.debug(`Github context: ${JSON.stringify(context)}`);
@@ -45,111 +52,124 @@ export class AutomaticReleases {
       this.#args.automaticReleaseTag !== ""
         ? this.#args.automaticReleaseTag
         : parseGitTag(core, context.ref);
-    if (!releaseTag) {
-      throw new Error(
-        `The parameter "automatic-release-tag" was not set and this does not appear to be a GitHub tag event. (Event: ${context.ref})`,
+
+    if (releaseTag) {
+      const previousReleaseTag =
+        this.#args.automaticReleaseTag !== ""
+          ? this.#args.automaticReleaseTag
+          : await searchForPreviousReleaseTag(core, octokit, releaseTag, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+      core.endGroup();
+
+      if (this.#args.automaticReleaseTag === "" || this.#args.rootVersion !== "") {
+        const versions = suggestVersions(
+          this.#args.rootVersion !== "" ? this.#args.rootVersion : releaseTag,
+        );
+        core.info(`Versions suggestions: ${JSON.stringify(versions)}`);
+        core.setOutput("version_current", versions.current);
+        core.setOutput("version_root", versions.root);
+        core.setOutput("version_extension", versions.extension);
+        core.setOutput("version_dev", versions.dev);
+        core.setOutput("version_dev_extended", versions.devExtended);
+        core.setOutput("version_nightly", versions.nightly);
+        core.setOutput("version_nightly_extended", versions.nightlyExtended);
+        core.setOutput("version_major", versions.major);
+        core.setOutput("version_minor", versions.minor);
+        core.setOutput("version_patch", versions.patch);
+      }
+
+      const commitsSinceRelease: CommitsSinceRelease = await getCommitsSinceRelease(
+        core,
+        octokit,
+        {
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          ref: `tags/${previousReleaseTag}`,
+        },
+        context.sha,
       );
-    }
 
-    const previousReleaseTag =
-      this.#args.automaticReleaseTag !== ""
-        ? this.#args.automaticReleaseTag
-        : await searchForPreviousReleaseTag(core, octokit, releaseTag, {
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-          });
-    core.endGroup();
-
-    if (this.#args.automaticReleaseTag === "" || this.#args.rootVersion !== "") {
-      const versions = suggestVersions(
-        this.#args.rootVersion !== "" ? this.#args.rootVersion : releaseTag,
+      changelog = await getChangelog(
+        core,
+        octokit,
+        context.repo.owner,
+        context.repo.repo,
+        commitsSinceRelease,
       );
-      core.info(`Versions suggestions: ${JSON.stringify(versions)}`);
-      core.setOutput("version_current", versions.current);
-      core.setOutput("version_root", versions.root);
-      core.setOutput("version_extension", versions.extension);
-      core.setOutput("version_dev", versions.dev);
-      core.setOutput("version_dev_extended", versions.devExtended);
-      core.setOutput("version_nightly", versions.nightly);
-      core.setOutput("version_nightly_extended", versions.nightlyExtended);
-      core.setOutput("version_major", versions.major);
-      core.setOutput("version_minor", versions.minor);
-      core.setOutput("version_patch", versions.patch);
-    }
 
-    const commitsSinceRelease: CommitsSinceRelease = await getCommitsSinceRelease(
-      core,
-      octokit,
-      {
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        ref: `tags/${previousReleaseTag}`,
-      },
-      context.sha,
-    );
+      const filename = this.#args.changelogArtifact;
+      if (filename !== "") {
+        core.debug(`Writing changelog metadata to '${filename}'...`);
+        await writeFile(filename, JSON.stringify(changelog));
+        core.debug(`Changelog metadata written to '${filename}'.`);
+      }
 
-    const changelog = await getChangelog(
-      core,
-      octokit,
-      context.repo.owner,
-      context.repo.repo,
-      commitsSinceRelease,
-    );
-    const changeLogText = renderChangelog(
-      core,
-      changelog,
-      this.#args.withAuthors,
-      this.#args.mergeSimilar,
-    );
-
-    const filename = this.#args.changelogArtifact;
-    if (filename !== "") {
-      core.debug(`Writing changelog metadata to '${filename}'...`);
-      await writeFile(filename, JSON.stringify(changelog));
-      core.debug(`Changelog metadata written to '${filename}'.`);
-    }
-
-    core.setOutput("commits_total", commitsSinceRelease.length);
-    core.setOutput("major_total", changelog.breakingChanges.length);
-    core.setOutput("minor_total", changelog.feat.length);
-    core.setOutput(
-      "patch_total",
-      changelog.fix.length +
-        changelog.perf.length +
-        changelog.refactor.length +
-        changelog.revert.length +
-        changelog.style.length,
-    );
-    core.setOutput(
-      "lifecycle_total",
-      changelog.build.length + changelog.ci.length + changelog.docs.length + changelog.test.length,
-    );
-
-    if (this.#args.automaticReleaseTag && !this.#args.dryRun) {
-      await createReleaseTag(core, octokit, {
-        owner: context.repo.owner,
-        ref: `refs/tags/${this.#args.automaticReleaseTag}`,
-        repo: context.repo.repo,
-        sha: context.sha,
-      });
-
-      await deletePreviousGitHubRelease(core, octokit, {
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        tag: this.#args.automaticReleaseTag,
-      });
+      core.setOutput("commits_total", commitsSinceRelease.length);
+      core.setOutput("major_total", changelog.breakingChanges.length);
+      core.setOutput("minor_total", changelog.feat.length);
+      core.setOutput(
+        "patch_total",
+        changelog.fix.length +
+          changelog.perf.length +
+          changelog.refactor.length +
+          changelog.revert.length +
+          changelog.style.length,
+      );
+      core.setOutput(
+        "lifecycle_total",
+        changelog.build.length +
+          changelog.ci.length +
+          changelog.docs.length +
+          changelog.test.length,
+      );
     }
 
     const tagName = releaseTag + (this.#args.dryRun ? `-${new Date().getTime()}` : "");
-    let body = `${this.#args.bodyPrefix !== "" ? this.#args.bodyPrefix + "\n" : ""}${changeLogText}${this.#args.bodySuffix !== "" ? "\n" + this.#args.bodySuffix : ""}`;
-    if (125000 < body.length) {
-      core.warning(
-        `Release body exceeds 125000 characters! Actual length: ${body.length}. Body will be truncated.`,
-      );
-      body = body.substring(0, 125000 - 1);
-    }
 
     if (this.#args.publish) {
+      if (this.#args.automaticReleaseTag && !this.#args.dryRun) {
+        await createReleaseTag(core, octokit, {
+          owner: context.repo.owner,
+          ref: `refs/tags/${this.#args.automaticReleaseTag}`,
+          repo: context.repo.repo,
+          sha: context.sha,
+        });
+
+        await deletePreviousGitHubRelease(core, octokit, {
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          tag: this.#args.automaticReleaseTag,
+        });
+      }
+
+      const filename = this.#args.changelogArtifact;
+      if (isNil(changelog)) {
+        if (filename === "") {
+          throw new Error("No changelog was generated, and no 'changelog-artifact' was provided.");
+        }
+
+        core.debug(`Reading changelog metadata from '${filename}'...`);
+        changelog = JSON.parse(await readFile(filename, "utf8")) as Changelog;
+        core.debug(`Changelog metadata read from '${filename}'.`);
+      }
+
+      const changeLogText = renderChangelog(
+        core,
+        changelog,
+        this.#args.withAuthors,
+        this.#args.mergeSimilar,
+      );
+
+      let body = `${this.#args.bodyPrefix !== "" ? this.#args.bodyPrefix + "\n" : ""}${changeLogText}${this.#args.bodySuffix !== "" ? "\n" + this.#args.bodySuffix : ""}`;
+      if (125000 < body.length) {
+        core.warning(
+          `Release body exceeds 125000 characters! Actual length: ${body.length}. Body will be truncated.`,
+        );
+        body = body.substring(0, 125000 - 1);
+      }
+
       const release = await generateNewGitHubRelease(core, octokit, {
         owner: context.repo.owner,
         repo: context.repo.repo,
