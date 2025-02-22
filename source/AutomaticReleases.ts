@@ -60,7 +60,7 @@ export class AutomaticReleases {
           });
     core.endGroup();
 
-    if (this.#args.automaticReleaseTag !== "") {
+    if (this.#args.automaticReleaseTag === "") {
       const versions = suggestVersions(releaseTag);
       core.info(`Versions suggestions: ${JSON.stringify(versions)}`);
     }
