@@ -53,32 +53,35 @@ export class AutomaticReleases {
         ? this.#args.automaticReleaseTag
         : parseGitTag(core, context.ref);
 
-    if (releaseTag) {
-      const previousReleaseTag =
-        this.#args.automaticReleaseTag !== ""
-          ? this.#args.automaticReleaseTag
-          : await searchForPreviousReleaseTag(core, octokit, releaseTag, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            });
-      core.endGroup();
+    const previousReleaseTag =
+      this.#args.automaticReleaseTag !== ""
+        ? this.#args.automaticReleaseTag
+        : await searchForPreviousReleaseTag(core, octokit, releaseTag, {
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+          });
+    core.endGroup();
 
-      if (this.#args.automaticReleaseTag === "" || this.#args.rootVersion !== "") {
-        const versions = suggestVersions(
-          this.#args.rootVersion !== "" ? this.#args.rootVersion : releaseTag,
-        );
-        core.setOutput("version-current", versions.current);
-        core.setOutput("version-root", versions.root);
-        core.setOutput("version-extension", versions.extension);
-        core.setOutput("version-dev", versions.dev);
-        core.setOutput("version-dev_extended", versions.devExtended);
-        core.setOutput("version-nightly", versions.nightly);
-        core.setOutput("version-nightly_extended", versions.nightlyExtended);
-        core.setOutput("version-major", versions.major);
-        core.setOutput("version-minor", versions.minor);
-        core.setOutput("version-patch", versions.patch);
-      }
+    if (this.#args.automaticReleaseTag === "" || this.#args.rootVersion !== "") {
+      const versions = suggestVersions(
+        this.#args.rootVersion !== "" ? this.#args.rootVersion : releaseTag,
+      );
+      core.setOutput("version-current", versions.current);
+      core.setOutput("version-root", versions.root);
+      core.setOutput("version-extension", versions.extension);
+      core.setOutput("version-dev", versions.dev);
+      core.setOutput("version-dev_extended", versions.devExtended);
+      core.setOutput("version-nightly", versions.nightly);
+      core.setOutput("version-nightly_extended", versions.nightlyExtended);
+      core.setOutput("version-major", versions.major);
+      core.setOutput("version-minor", versions.minor);
+      core.setOutput("version-patch", versions.patch);
+    }
 
+    if (
+      (this.#args.changelogArtifact === "" && this.#args.publish) ||
+      (this.#args.changelogArtifact !== "" && !this.#args.publish)
+    ) {
       const commitsSinceRelease: CommitsSinceRelease = await getCommitsSinceRelease(
         core,
         octokit,
