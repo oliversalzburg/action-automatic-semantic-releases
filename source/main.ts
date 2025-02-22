@@ -11,13 +11,13 @@ const isMainModule = import.meta.url.endsWith(process.argv[1]);
  */
 export const main = async (): Promise<void> => {
   try {
-    const repo_token = core.getInput("repo_token", { required: true });
+    const token = core.getInput("repo-token", { required: true });
     const args = getAndValidateArgs(core);
     const automaticReleases = new AutomaticReleases(
       {
         context,
         core,
-        octokit: getOctokit(repo_token, {
+        octokit: getOctokit(token, {
           log: {
             debug: (...logArgs) => {
               core.debug(octokitLogger(...logArgs));

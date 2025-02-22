@@ -39,16 +39,16 @@ jobs:
       - name: Generate release
         uses: ./
         with:
-          automatic_release_tag: latest
-          changelog_artifact: changelog.json
+          automatic-release-tag: latest
+          changelog-artifact: changelog.json
           draft: true
-          dry_run: true
+          dry-run: true
           files: "**/*"
-          merge_similar: true
+          merge-similar: true
           prerelease: true
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           title: Test Build
-          with_authors: false
+          with-authors: false
 
       - name: Store Changelog
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4

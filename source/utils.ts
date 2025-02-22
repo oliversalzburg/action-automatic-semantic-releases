@@ -33,21 +33,21 @@ export const getShortSHA = (sha: string): string => {
  */
 export const getAndValidateArgs = (core: CoreType): ActionParameters => {
   const args = {
-    automaticReleaseTag: core.getInput("automatic_release_tag", {
+    automaticReleaseTag: core.getInput("automatic-release-tag", {
       required: false,
     }),
-    bodyPrefix: core.getInput("body_prefix", { required: false }),
-    bodySuffix: core.getInput("body_suffix", { required: false }),
-    changelogArtifact: core.getInput("changelog_artifact", { required: false }),
+    bodyPrefix: core.getInput("body-prefix", { required: false }),
+    bodySuffix: core.getInput("body-suffix", { required: false }),
+    changelogArtifact: core.getInput("changelog-artifact", { required: false }),
     draftRelease: core.getBooleanInput("draft", { required: false }),
-    dryRun: core.getBooleanInput("dry_run", { required: false }),
+    dryRun: core.getBooleanInput("dry-run", { required: false }),
     files: [] as Array<string>,
-    mergeSimilar: core.getBooleanInput("merge_similar", { required: false }),
+    mergeSimilar: core.getBooleanInput("merge-similar", { required: false }),
     preRelease: core.getBooleanInput("prerelease", { required: false }),
     publish: core.getBooleanInput("publish", { required: false }),
-    rootVersion: core.getInput("root_version", { required: false }),
+    rootVersion: core.getInput("root-version", { required: false }),
     title: core.getInput("title", { required: false }),
-    withAuthors: core.getBooleanInput("with_authors", { required: false }),
+    withAuthors: core.getBooleanInput("with-authors", { required: false }),
   };
 
   const inputFilesStr = core.getInput("files", { required: false });
@@ -121,7 +121,7 @@ export const searchForPreviousReleaseTag = async (
   const validSemver = semverValid(currentReleaseTag);
   if (!validSemver) {
     throw new Error(
-      `The parameter "automatic_release_tag" was not set and the current tag "${currentReleaseTag}" does not appear to conform to semantic versioning.`,
+      `The parameter "automatic-release-tag" was not set and the current tag "${currentReleaseTag}" does not appear to conform to semantic versioning.`,
     );
   }
 

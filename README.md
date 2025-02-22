@@ -8,7 +8,7 @@
 
 The easiest type of GitHub Release is to just release whenever you push a versioned tag.
 
-Maintaining the `automatic_release_tag` on the repo and creating releases requires write permissions to `contents`.
+Maintaining the `automatic-release-tag` on the repo and creating releases requires write permissions to `contents`.
 
 ### Tagged Build (Release on Tag Push)
 
@@ -38,7 +38,7 @@ jobs:
           files: |
             output/*
           prerelease: false
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           title: ${{ github.ref_name }}
 ```
 
@@ -80,12 +80,12 @@ jobs:
       - run: your build process
       - uses: oliversalzburg/action-automatic-semantic-releases@v0.0.5
         with:
-          automatic_release_tag: next
+          automatic-release-tag: next
           draft: false
           files: |
             output/*
           prerelease: true
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           title: Development Build v${{ env.RELEASE_VERSION }}
 ```
 
@@ -133,12 +133,12 @@ jobs:
       - run: your build process
       - uses: oliversalzburg/action-automatic-semantic-releases@v0.0.5
         with:
-          automatic_release_tag: nightly
+          automatic-release-tag: nightly
           draft: false
           files: |
             output/*
           prerelease: true
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           title: Nightly Build v${{ env.RELEASE_VERSION }}
 ```
 
@@ -168,12 +168,12 @@ jobs:
           npm publish --access=public --provenance --tag=next
       - uses: oliversalzburg/action-automatic-semantic-releases@v0.0.5
         with:
-          automatic_release_tag: next
+          automatic-release-tag: next
           draft: false
           files: |
             output/*
           prerelease: true
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           title: Snapshot Build v${{ env.RELEASE_VERSION }}
 ```
 
@@ -183,20 +183,20 @@ jobs:
 
 | INPUT                                                                                           | TYPE   | REQUIRED | DEFAULT   | DESCRIPTION                                                                                                       |
 | ----------------------------------------------------------------------------------------------- | ------ | -------- | --------- | ----------------------------------------------------------------------------------------------------------------- |
-| <a name="input_automatic_release_tag"></a>[automatic_release_tag](#input_automatic_release_tag) | string | false    |           | git tag (for automatic releases).                                                                                 |
-| <a name="input_body_prefix"></a>[body_prefix](#input_body_prefix)                               | string | false    |           | Text to prepend before the <br>changelog in the release body.                                                     |
-| <a name="input_body_suffix"></a>[body_suffix](#input_body_suffix)                               | string | false    |           | Text to append after the <br>changelog in the release body.                                                       |
-| <a name="input_changelog_artifact"></a>[changelog_artifact](#input_changelog_artifact)          | string | false    |           | Name of a file to <br>save the changelog metadata into. <br>Will be attached to the <br>workflow run.             |
+| <a name="input_automatic-release-tag"></a>[automatic-release-tag](#input_automatic-release-tag) | string | false    |           | git tag (for automatic releases).                                                                                 |
+| <a name="input_body-prefix"></a>[body-prefix](#input_body-prefix)                               | string | false    |           | Text to prepend before the <br>changelog in the release body.                                                     |
+| <a name="input_body-suffix"></a>[body-suffix](#input_body-suffix)                               | string | false    |           | Text to append after the <br>changelog in the release body.                                                       |
+| <a name="input_changelog-artifact"></a>[changelog-artifact](#input_changelog-artifact)          | string | false    |           | Name of a file to <br>save the changelog metadata into. <br>Will be attached to the <br>workflow run.             |
 | <a name="input_draft"></a>[draft](#input_draft)                                                 | string | false    | `"false"` | Should this release be marked <br>as a draft?                                                                     |
-| <a name="input_dry_run"></a>[dry_run](#input_dry_run)                                           | string | false    | `"false"` | If set to "true", no <br>tags will be moved. If <br>you also don't want an <br>actual release, disable `publish`. |
+| <a name="input_dry-run"></a>[dry-run](#input_dry-run)                                           | string | false    | `"false"` | If set to "true", no <br>tags will be moved. If <br>you also don't want an <br>actual release, disable `publish`. |
 | <a name="input_files"></a>[files](#input_files)                                                 | string | false    |           | Assets to upload to the <br>release.                                                                              |
-| <a name="input_merge_similar"></a>[merge_similar](#input_merge_similar)                         | string | false    | `"true"`  | Should similar changes be consolidated <br>to take up less space <br>in the changelog?                            |
+| <a name="input_merge-similar"></a>[merge-similar](#input_merge-similar)                         | string | false    | `"true"`  | Should similar changes be consolidated <br>to take up less space <br>in the changelog?                            |
 | <a name="input_prerelease"></a>[prerelease](#input_prerelease)                                  | string | false    | `"true"`  | Should this release be marked <br>as a pre-release?                                                               |
 | <a name="input_publish"></a>[publish](#input_publish)                                           | string | false    | `"true"`  | Should we actually publish a <br>GitHub release, or just do <br>other work?                                       |
-| <a name="input_repo_token"></a>[repo_token](#input_repo_token)                                  | string | true     |           | GitHub secret token.                                                                                              |
-| <a name="input_root_version"></a>[root_version](#input_root_version)                            | string | false    |           | Provide the current version of <br>your project to determine the <br>release version automatically.               |
+| <a name="input_repo-token"></a>[repo-token](#input_repo-token)                                  | string | true     |           | GitHub secret token.                                                                                              |
+| <a name="input_root-version"></a>[root-version](#input_root-version)                            | string | false    |           | Provide the current version of <br>your project to determine the <br>release version automatically.               |
 | <a name="input_title"></a>[title](#input_title)                                                 | string | false    |           | Release title (for automatic releases).                                                                           |
-| <a name="input_with_authors"></a>[with_authors](#input_with_authors)                            | string | false    | `"true"`  | If set to "true", render <br>the names of commit authors, <br>instead of the commit hash.                         |
+| <a name="input_with-authors"></a>[with-authors](#input_with-authors)                            | string | false    | `"true"`  | If set to "true", render <br>the names of commit authors, <br>instead of the commit hash.                         |
 
 <!-- AUTO-DOC-INPUT:END -->
 
@@ -207,8 +207,8 @@ jobs:
 - minor_total
 - patch_total
 - lifecycle_total
-- upload_url
-- automatic_releases_tag
+- upload-url
+- automatic-releases-tag
 - version_current
 - version_root
 - version_extension

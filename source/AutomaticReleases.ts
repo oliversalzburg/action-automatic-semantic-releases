@@ -47,7 +47,7 @@ export class AutomaticReleases {
         : parseGitTag(core, context.ref);
     if (!releaseTag) {
       throw new Error(
-        `The parameter "automatic_release_tag" was not set and this does not appear to be a GitHub tag event. (Event: ${context.ref})`,
+        `The parameter "automatic-release-tag" was not set and this does not appear to be a GitHub tag event. (Event: ${context.ref})`,
       );
     }
 
@@ -162,11 +162,11 @@ export class AutomaticReleases {
 
       await uploadReleaseArtifacts(octokit, context, release, this.#args.files);
 
-      core.setOutput("upload_url", release.upload_url);
+      core.setOutput("upload-url", release.upload_url);
     }
 
     core.debug(`Exporting environment variable AUTOMATIC_RELEASES_TAG with value ${tagName}`);
     core.exportVariable("AUTOMATIC_RELEASES_TAG", tagName);
-    core.setOutput("automatic_releases_tag", tagName);
+    core.setOutput("automatic-releases-tag", tagName);
   }
 }
