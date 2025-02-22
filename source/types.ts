@@ -11,6 +11,7 @@ export type CoreType = typeof core;
 
 /**
  * The arguments for the action.
+ * Keep these in sync with the parameter declaration in 'action.yml' and 'getAndValidateArgs'.
  */
 export interface ActionParameters {
   /**
@@ -21,17 +22,37 @@ export interface ActionParameters {
   /**
    * A prefix for the release body.
    */
-  bodyPrefix?: string;
+  bodyPrefix: string;
 
   /**
    * A suffix for the release body.
    */
-  bodySuffix?: string;
+  bodySuffix: string;
+
+  /**
+   * Name for the changelog metadata artifact.
+   */
+  changelogArtifact: string;
 
   /**
    * Is this still a draft?
    */
   draftRelease: boolean;
+
+  /**
+   * If enabled, no tags will be moved.
+   */
+  dryRun: boolean;
+
+  /**
+   * Files to put into the release.
+   */
+  files: Array<string>;
+
+  /**
+   * If enabled, similar changes will be grouped in the changelog.
+   */
+  mergeSimilar: boolean;
 
   /**
    * Is this a pre-release?
@@ -41,22 +62,7 @@ export interface ActionParameters {
   /**
    * Title of the release.
    */
-  releaseTitle: string;
-
-  /**
-   * Files to put into the release.
-   */
-  files: Array<string>;
-
-  /**
-   * If enabled, no tags will be moved.
-   */
-  dryRun: boolean;
-
-  /**
-   * If enabled, similar changes will be grouped in the changelog.
-   */
-  mergeSimilar: boolean;
+  title: string;
 
   /**
    * If enabled, render the names of commit authors, instead of the commit hash.

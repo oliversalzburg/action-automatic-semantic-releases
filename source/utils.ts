@@ -41,12 +41,13 @@ export const getAndValidateArgs = (core: CoreType): ActionParameters => {
     }),
     bodyPrefix: core.getInput("body_prefix", { required: false }),
     bodySuffix: core.getInput("body_suffix", { required: false }),
-    draftRelease: core.getBooleanInput("draft", { required: true }),
-    preRelease: core.getBooleanInput("prerelease", { required: true }),
-    releaseTitle: core.getInput("title", { required: false }),
-    files: [] as Array<string>,
+    changelogArtifact: core.getInput("changelog_artifact", { required: false }),
+    draftRelease: core.getBooleanInput("draft", { required: false }),
     dryRun: core.getBooleanInput("dry_run", { required: false }),
+    files: [] as Array<string>,
     mergeSimilar: core.getBooleanInput("merge_similar", { required: false }),
+    preRelease: core.getBooleanInput("prerelease", { required: true }),
+    title: core.getInput("title", { required: false }),
     withAuthors: core.getBooleanInput("with_authors", { required: false }),
   };
 

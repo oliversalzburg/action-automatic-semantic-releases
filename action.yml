@@ -12,33 +12,36 @@ inputs:
   automatic_release_tag:
     description: git tag (for automatic releases).
     required: false
-  draft:
-    description: Should this release be marked as a draft?
-    required: false
-    default: "false"
-  prerelease:
-    description: Should this release be marked as a pre-release?
-    required: false
-    default: "true"
-  title:
-    description: Release title (for automatic releases).
-    required: false
   body_prefix:
     description: Text to prepend before the changelog in the release body.
     required: false
   body_suffix:
     description: Text to append after the changelog in the release body.
     required: false
-  files:
-    description: Assets to upload to the release.
+  changelog_artifact:
+    description: Name of a file to save the changelog metadata into. Will be attached to the workflow run.
     required: false
+  draft:
+    description: Should this release be marked as a draft?
+    required: false
+    default: "false"
   dry_run:
     default: "false"
     description: If set to "true", no tags will be moved.
     required: false
+  files:
+    description: Assets to upload to the release.
+    required: false
   merge_similar:
     default: "true"
     description: Should similar changes be consolidated to take up less space in the changelog?
+    required: false
+  prerelease:
+    description: Should this release be marked as a pre-release?
+    required: false
+    default: "true"
+  title:
+    description: Release title (for automatic releases).
     required: false
   with_authors:
     default: "true"

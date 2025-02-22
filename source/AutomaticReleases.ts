@@ -1,3 +1,4 @@
+import { writeFile } from "node:fs/promises";
 import { ActionParameters, AutomaticReleasesOptions, CommitsSinceRelease } from "./types.js";
 import { uploadReleaseArtifacts } from "./uploadReleaseArtifacts.js";
 import {
@@ -76,6 +77,13 @@ export class AutomaticReleases {
       this.#args.mergeSimilar,
     );
 
+    const filename = this.#args.changelogArtifact;
+    if (filename !== "") {
+      core.debug(`Writing changelog metadata to '${filename}'...`);
+      await writeFile(filename, JSON.stringify(changelog));
+      core.debug(`Changelog metadata written to '${filename}'.`);
+    }
+
     if (this.#args.automaticReleaseTag && !this.#args.dryRun) {
       await createReleaseTag(core, octokit, {
         owner: context.repo.owner,
@@ -92,7 +100,7 @@ export class AutomaticReleases {
     }
 
     const tagName = releaseTag + (this.#args.dryRun ? `-${new Date().getTime()}` : "");
-    let body = `${this.#args.bodyPrefix ? this.#args.bodyPrefix + "\n" : ""}${changelog}${this.#args.bodySuffix ? "\n" + this.#args.bodySuffix : ""}`;
+    let body = `${this.#args.bodyPrefix !== "" ? this.#args.bodyPrefix + "\n" : ""}${changelog}${this.#args.bodySuffix !== "" ? "\n" + this.#args.bodySuffix : ""}`;
     if (125000 < body.length) {
       core.warning(
         `Release body exceeds 125000 characters! Actual length: ${body.length}. Body will be truncated.`,
@@ -103,7 +111,7 @@ export class AutomaticReleases {
       owner: context.repo.owner,
       repo: context.repo.repo,
       tag_name: tagName,
-      name: this.#args.releaseTitle ? this.#args.releaseTitle : releaseTag,
+      name: this.#args.title ? this.#args.title : releaseTag,
       draft: this.#args.draftRelease,
       prerelease: this.#args.preRelease,
       body,

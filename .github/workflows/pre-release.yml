@@ -35,10 +35,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
       - name: Generate release
         uses: ./
         with:
           automatic_release_tag: latest
+          changelog_artifact: changelog.json
           draft: true
           dry_run: true
           files: "**/*"
@@ -47,6 +49,12 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           title: Test Build
           with_authors: false
+
+      - name: Store Changelog
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        with:
+          name: changelog.json
+          path: changelog.json
 
   pre-release:
     name: 🔹 Publish
