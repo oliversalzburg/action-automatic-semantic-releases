@@ -1,6 +1,6 @@
 import { GitHub } from "@actions/github/lib/utils.js";
 import { isNil, mustExist } from "@oliversalzburg/js-utils/data/nil.js";
-import { Commit, CommitMeta, CommitParser } from "conventional-commits-parser";
+import { Commit, CommitMeta, CommitParser, ParserOptions } from "conventional-commits-parser";
 import {
   Changelog,
   CommitsSinceRelease,
@@ -313,8 +313,9 @@ export const generateChangelogMetadataFromParsedCommits = (
  * @param core - GitHub core to use.
  * @returns The default changelog options.
  */
-export const getChangelogOptions = (core: CoreType) => {
-  const defaultOpts = {
+export const getChangelogOptions = (core: CoreType): ParserOptions => {
+  const defaultOpts: ParserOptions = {
+    breakingHeaderPattern: /^(\w*)(?:\((.*)\))?!: (.*)$/,
     headerPattern: /^(\w*)(?:\((.*)\))?: (.*)$/,
     headerCorrespondence: ["type", "scope", "subject"],
     noteKeywords: ["BREAKING CHANGE"],
