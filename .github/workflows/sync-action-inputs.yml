@@ -23,6 +23,9 @@ jobs:
 
       - name: Run auto-doc
         uses: tj-actions/auto-doc@79cbc18cd7c4b037bb2fe25199cb14fef4bbad43 # v3
+        with:
+          use_code_blocks: true
+          use_major_version: true
 
       - name: Verify Changed files
         uses: tj-actions/verify-changed-files@6ed7632824d235029086612d4330d659005af687 # v20

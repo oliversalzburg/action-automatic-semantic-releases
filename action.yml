@@ -57,8 +57,36 @@ inputs:
 outputs:
   automatic-releases-tag:
     description: The release tag this action just processed.
+  commits-total:
+    description: Total amount of commits since last release.
+  lifecycle-total:
+    description: Total amount of commits that fall into the "lifecycle" category.
+  major-total:
+    description: Total amount of commits that fall into the "major change" category.
+  minor-total:
+    description: Total amount of commits that fall into the "minor change" category.
   upload-url:
     description: The URL for uploading additional assets to the release.
+  version-current:
+    description: Current version in the manifest.
+  version-extensions:
+    description: Extension that was found on your current manifest version.
+  version-dev:
+    description: Version number to use for a transient development release.
+  version-dev-extended:
+    description: Version number to use for a transient development release, including extension.
+  version-major:
+    description: Version number to use for a major bump.
+  version-minor:
+    description: Version number to use for a minor bump.
+  version-nightly:
+    description: Version number to use for a transient nightly release.
+  version-nightly-extended:
+    description: Version number to use for a transient nightly release, including extensions.
+  version-patch:
+    description: Version number to use for a patch bump.
+  version-root:
+    description: Current manifest version stripped of extensions.
 runs:
   using: node20
   main: lib/main.js
