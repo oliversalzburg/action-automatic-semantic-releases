@@ -66,4 +66,6 @@ it("runs", async () => {
   await automaticReleases.main();
 });
 
-it("parses", () => {});
+it("parses", () => {
+  /* intentionally left blank */
+});

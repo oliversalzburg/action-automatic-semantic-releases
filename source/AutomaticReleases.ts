@@ -1,5 +1,5 @@
-import { isNil } from "@oliversalzburg/js-utils/data/nil.js";
 import { readFile, writeFile } from "node:fs/promises";
+import { isNil } from "@oliversalzburg/js-utils/data/nil.js";
 import { getChangelog, renderChangelog } from "./changelog.js";
 import {
   ActionParameters,
