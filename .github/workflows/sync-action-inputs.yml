@@ -34,23 +34,6 @@ jobs:
           files: |
             README.md
 
-      - name: Select NodeJS version
-        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4
-        env:
-          # renovate: datasource=docker depName=node versioning=node
-          NODE_VERSION: "22.14.0"
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: yarn install
-
-      - name: Format properly
-        run: yarn lint:prettier --write
-
       - name: Create Pull Request
         if: steps.verify-changed-files.outputs.files_changed == 'true'
         uses: peter-evans/create-pull-request@dd2324fc52d5d43c699a5636bcf19fceaa70c284 # v7
