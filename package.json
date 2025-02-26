@@ -7,20 +7,8 @@
   "author": "Oliver Salzburg <oliver.salzburg@gmail.com>",
   "type": "module",
   "scripts": {
-    "build": "node build.js",
-    "build:commit": "yarn run build:export && git add . && git commit -s -m 'chore: Rebuild entrypoint'",
-    "build:export": "yarn run rebuild && cp output/main.js lib/main.js",
-    "clean": "rm -rf ./output",
-    "lint": "yarn run lint:all",
-    "lint:all": "yarn run lint:biome && yarn run lint:tsc",
-    "lint:biome": "biome check .",
-    "lint:tsc": "tsc --noEmit",
-    "nextversion": "./examples/manifest-version.cjs",
-    "rebuild": "yarn run clean && yarn run build",
-    "test": "tsc && node $(yarn bin mocha) output/*.test.js",
-    "test:coverage": "tsc && c8 --reporter=html-spa node $(yarn bin mocha) output/*.test.js",
-    "preversion": "yarn run lint && yarn run test",
-    "version": "yarn run build:export && git add --all lib",
+    "preversion": "make lint test",
+    "version": "make && git add --all lib",
     "postversion": "git push"
   },
   "resolutions": {
