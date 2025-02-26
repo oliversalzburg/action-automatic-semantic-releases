@@ -179,7 +179,8 @@ export class AutomaticReleases {
           changelog.perf.length +
           changelog.refactor.length +
           changelog.revert.length +
-          changelog.style.length,
+          changelog.style.length +
+          changelog.deps.feat.length,
       );
       core.setOutput(
         "lifecycle-total",
@@ -187,7 +188,17 @@ export class AutomaticReleases {
           changelog.chore.length +
           changelog.ci.length +
           changelog.docs.length +
-          changelog.test.length,
+          changelog.test.length +
+          changelog.deps.build.length +
+          changelog.deps.chore.length +
+          changelog.deps.ci.length +
+          changelog.deps.docs.length +
+          changelog.deps.fix.length +
+          changelog.deps.perf.length +
+          changelog.deps.refactor.length +
+          changelog.deps.revert.length +
+          changelog.deps.style.length +
+          changelog.deps.test.length,
       );
     }
 
