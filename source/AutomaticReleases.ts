@@ -184,6 +184,7 @@ export class AutomaticReleases {
       core.setOutput(
         "lifecycle-total",
         changelog.build.length +
+          changelog.chore.length +
           changelog.ci.length +
           changelog.docs.length +
           changelog.test.length,
