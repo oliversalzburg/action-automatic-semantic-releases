@@ -180,117 +180,118 @@ jobs:
 ## Inputs
 
 <!-- AUTO-DOC-INPUT:START - Do not remove or modify this section -->
-
 ```yaml
 - uses: oliversalzburg/action-automatic-semantic-releases@v0
   id: action-automatic-semantic-releases
   with:
     # git tag (for automatic releases).
     # Type: string
-    automatic-release-tag: ""
+    automatic-release-tag: ''
 
-    # Text to prepend before the
-    # changelog in the release body.
+    # Text to prepend before the 
+    # changelog in the release body. 
     # Type: string
-    body-prefix: ""
+    body-prefix: ''
 
-    # Text to append after the
-    # changelog in the release body.
+    # Text to append after the 
+    # changelog in the release body. 
     # Type: string
-    body-suffix: ""
+    body-suffix: ''
 
-    # Name of a file to
-    # save the changelog metadata into.
-    # Will be attached to the
-    # workflow run.
+    # Name of a file to 
+    # save the changelog metadata into. 
+    # Will be attached to the 
+    # workflow run. 
     # Type: string
-    changelog-artifact: ""
+    changelog-artifact: ''
 
-    # Should this release be marked
-    # as a draft?
+    # Should this release be marked 
+    # as a draft? 
     # Type: boolean
     # Default: "false"
-    draft: ""
+    draft: ''
 
-    # If set to "true", no
-    # tags will be moved. If
-    # you also don't want an
-    # actual release, disable `publish`.
+    # If set to "true", no 
+    # tags will be moved. If 
+    # you also don't want an 
+    # actual release, disable `publish`. 
     # Type: boolean
     # Default: "false"
-    dry-run: ""
+    dry-run: ''
 
-    # Assets to upload to the
-    # release.
+    # Assets to upload to the 
+    # release. 
     # Type: string
-    files: ""
+    files: ''
 
-    # Should similar changes be consolidated
-    # to take up less space
-    # in the changelog?
+    # Should similar changes be consolidated 
+    # to take up less space 
+    # in the changelog? 
     # Type: boolean
     # Default: "true"
-    merge-similar: ""
+    merge-similar: ''
 
-    # Should this release be marked
-    # as a pre-release?
+    # Should this release be marked 
+    # as a pre-release? 
     # Type: boolean
     # Default: "true"
-    prerelease: ""
+    prerelease: ''
 
-    # Should we actually publish a
-    # GitHub release, or just do
-    # other work?
+    # Should we actually publish a 
+    # GitHub release, or just do 
+    # other work? 
     # Type: boolean
     # Default: "true"
-    publish: ""
+    publish: ''
 
     # GitHub secret token.
     # Type: string
-    repo-token: ""
+    repo-token: ''
 
-    # Provide the current version of
-    # your project to determine the
-    # release version automatically.
+    # Provide the current version of 
+    # your project to determine the 
+    # release version automatically. 
     # Type: string
-    root-version: ""
+    root-version: ''
 
     # Release title (for automatic releases).
     # Type: string
-    title: ""
+    title: ''
 
-    # If set to "true", render
-    # the names of commit authors,
-    # instead of the commit hash.
+    # If set to "true", render 
+    # the names of commit authors, 
+    # instead of the commit hash. 
     # Type: boolean
     # Default: "true"
-    with-authors: ""
-```
+    with-authors: ''
 
+```
 <!-- AUTO-DOC-INPUT:END -->
 
 ## Outputs
 
 <!-- AUTO-DOC-OUTPUT:START - Do not remove or modify this section -->
 
-| OUTPUT                                                                                                     | TYPE   | DESCRIPTION                                                                             |
-| ---------------------------------------------------------------------------------------------------------- | ------ | --------------------------------------------------------------------------------------- |
-| <a name="output_automatic-releases-tag"></a>[automatic-releases-tag](#output_automatic-releases-tag)       | string | The release tag this action <br>just processed.                                         |
-| <a name="output_commits-total"></a>[commits-total](#output_commits-total)                                  | string | Total amount of commits since <br>last release.                                         |
-| <a name="output_lifecycle-total"></a>[lifecycle-total](#output_lifecycle-total)                            | string | Total amount of commits that <br>fall into the "lifecycle" category.                    |
-| <a name="output_major-total"></a>[major-total](#output_major-total)                                        | string | Total amount of commits that <br>fall into the "major change" <br>category.             |
-| <a name="output_minor-total"></a>[minor-total](#output_minor-total)                                        | string | Total amount of commits that <br>fall into the "minor change" <br>category.             |
-| <a name="output_upload-url"></a>[upload-url](#output_upload-url)                                           | string | The URL for uploading additional <br>assets to the release.                             |
-| <a name="output_version-current"></a>[version-current](#output_version-current)                            | string | Current version in the manifest.                                                        |
-| <a name="output_version-dev"></a>[version-dev](#output_version-dev)                                        | string | Version number to use for <br>a transient development release.                          |
-| <a name="output_version-dev-extended"></a>[version-dev-extended](#output_version-dev-extended)             | string | Version number to use for <br>a transient development release, including <br>extension. |
-| <a name="output_version-extensions"></a>[version-extensions](#output_version-extensions)                   | string | Extension that was found on <br>your current manifest version.                          |
-| <a name="output_version-major"></a>[version-major](#output_version-major)                                  | string | Version number to use for <br>a major bump.                                             |
-| <a name="output_version-minor"></a>[version-minor](#output_version-minor)                                  | string | Version number to use for <br>a minor bump.                                             |
-| <a name="output_version-nightly"></a>[version-nightly](#output_version-nightly)                            | string | Version number to use for <br>a transient nightly release.                              |
-| <a name="output_version-nightly-extended"></a>[version-nightly-extended](#output_version-nightly-extended) | string | Version number to use for <br>a transient nightly release, including <br>extensions.    |
-| <a name="output_version-patch"></a>[version-patch](#output_version-patch)                                  | string | Version number to use for <br>a patch bump.                                             |
-| <a name="output_version-root"></a>[version-root](#output_version-root)                                     | string | Current manifest version stripped of <br>extensions.                                    |
+|                                                   OUTPUT                                                   |  TYPE  |                                       DESCRIPTION                                        |
+|------------------------------------------------------------------------------------------------------------|--------|------------------------------------------------------------------------------------------|
+|    <a name="output_automatic-releases-tag"></a>[automatic-releases-tag](#output_automatic-releases-tag)    | string |                     The release tag this action <br>just processed.                      |
+|                 <a name="output_commits-total"></a>[commits-total](#output_commits-total)                  | string |                     Total amount of commits since <br>last release.                      |
+|              <a name="output_lifecycle-total"></a>[lifecycle-total](#output_lifecycle-total)               | string |          Total amount of commits that <br>fall into the "lifecycle" category.            |
+|                    <a name="output_major-total"></a>[major-total](#output_major-total)                     | string |       Total amount of commits that <br>fall into the "major change" <br>category.        |
+|                    <a name="output_minor-total"></a>[minor-total](#output_minor-total)                     | string |       Total amount of commits that <br>fall into the "minor change" <br>category.        |
+|                    <a name="output_patch-total"></a>[patch-total](#output_patch-total)                     | string |       Total amount of commits that <br>fall into the "patch change" <br>category.        |
+|       <a name="output_unconventional-total"></a>[unconventional-total](#output_unconventional-total)       | string |                     Total amount of commits without <br>convention.                      |
+|                      <a name="output_upload-url"></a>[upload-url](#output_upload-url)                      | string |               The URL for uploading additional <br>assets to the release.                |
+|              <a name="output_version-current"></a>[version-current](#output_version-current)               | string |                             Current version in the manifest.                             |
+|                    <a name="output_version-dev"></a>[version-dev](#output_version-dev)                     | string |             Version number to use for <br>a transient development release.               |
+|       <a name="output_version-dev-extended"></a>[version-dev-extended](#output_version-dev-extended)       | string | Version number to use for <br>a transient development release, including <br>extension.  |
+|          <a name="output_version-extensions"></a>[version-extensions](#output_version-extensions)          | string |             Extension that was found on <br>your current manifest version.               |
+|                 <a name="output_version-major"></a>[version-major](#output_version-major)                  | string |                       Version number to use for <br>a major bump.                        |
+|                 <a name="output_version-minor"></a>[version-minor](#output_version-minor)                  | string |                       Version number to use for <br>a minor bump.                        |
+|              <a name="output_version-nightly"></a>[version-nightly](#output_version-nightly)               | string |               Version number to use for <br>a transient nightly release.                 |
+| <a name="output_version-nightly-extended"></a>[version-nightly-extended](#output_version-nightly-extended) | string |  Version number to use for <br>a transient nightly release, including <br>extensions.    |
+|                 <a name="output_version-patch"></a>[version-patch](#output_version-patch)                  | string |                       Version number to use for <br>a patch bump.                        |
+|                   <a name="output_version-root"></a>[version-root](#output_version-root)                   | string |                  Current manifest version stripped of <br>extensions.                    |
 
 <!-- AUTO-DOC-OUTPUT:END -->
 
