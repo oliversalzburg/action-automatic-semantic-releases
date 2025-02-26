@@ -107,25 +107,6 @@ export class AutomaticReleases {
         await writeFile(filename, JSON.stringify(changelog));
         core.info(`Changelog metadata written to '${filename}'.`);
       }
-
-      core.setOutput("commits-total", commitsSinceRelease.length);
-      core.setOutput("major-total", changelog.breakingChanges.length);
-      core.setOutput("minor-total", changelog.feat.length);
-      core.setOutput(
-        "patch-total",
-        changelog.fix.length +
-          changelog.perf.length +
-          changelog.refactor.length +
-          changelog.revert.length +
-          changelog.style.length,
-      );
-      core.setOutput(
-        "lifecycle-total",
-        changelog.build.length +
-          changelog.ci.length +
-          changelog.docs.length +
-          changelog.test.length,
-      );
     }
 
     const tagName = releaseTag + (this.#args.dryRun ? `-${new Date().getTime()}` : "");
@@ -185,6 +166,28 @@ export class AutomaticReleases {
       await uploadReleaseArtifacts(octokit, context, release, this.#args.files);
 
       core.setOutput("upload-url", release.upload_url);
+    }
+
+    if (!isNil(changelog)) {
+      core.setOutput("commits-total", changelog.commits.length);
+      core.setOutput("unconventional-total", changelog.unconventional.length);
+      core.setOutput("major-total", changelog.breakingChanges.length);
+      core.setOutput("minor-total", changelog.feat.length);
+      core.setOutput(
+        "patch-total",
+        changelog.fix.length +
+          changelog.perf.length +
+          changelog.refactor.length +
+          changelog.revert.length +
+          changelog.style.length,
+      );
+      core.setOutput(
+        "lifecycle-total",
+        changelog.build.length +
+          changelog.ci.length +
+          changelog.docs.length +
+          changelog.test.length,
+      );
     }
 
     core.debug(`Exporting environment variable AUTOMATIC_RELEASES_TAG with value ${tagName}`);

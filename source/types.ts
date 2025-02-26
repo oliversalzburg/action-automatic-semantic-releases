@@ -388,7 +388,12 @@ export interface Changelog
   deps: Record<keyof typeof ConventionalCommitTypes, Array<ParsedCommit>>;
 
   /**
-   * Non-Conventional Commits
+   * All commits.
    */
   commits: Array<ParsedCommit>;
+
+  /**
+   * Non-Conventional Commits
+   */
+  unconventional: Array<ParsedCommit>;
 }

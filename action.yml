@@ -59,6 +59,8 @@ outputs:
     description: The release tag this action just processed.
   commits-total:
     description: Total amount of commits since last release.
+  unconventional-total:
+    description: Total amount of commits without convention.
   lifecycle-total:
     description: Total amount of commits that fall into the "lifecycle" category.
   major-total:

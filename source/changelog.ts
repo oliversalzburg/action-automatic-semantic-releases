@@ -249,7 +249,7 @@ export const renderChangelogFromChangelog = (
   }
 
   // Commits
-  const commits = changelog.commits ?? [];
+  const commits = changelog.unconventional ?? [];
   let mergedCount = 0;
 
   const block = mergeSimilar
@@ -277,6 +277,8 @@ export const generateChangelogMetadataFromParsedCommits = (
 ): Changelog => {
   const changelog: Partial<Changelog> = {};
 
+  changelog.commits = [...parsedCommits];
+
   const commitsWithoutDeps = parsedCommits.filter(commit => commit.scope !== "deps");
   const commitsDeps = parsedCommits.filter(commit => commit.scope === "deps");
 
@@ -303,7 +305,7 @@ export const generateChangelogMetadataFromParsedCommits = (
   const commits = commitsWithoutDeps.filter(
     val => !Object.keys(ConventionalCommitTypes).includes(val.type),
   );
-  changelog.commits = commits;
+  changelog.unconventional = commits;
 
   return changelog as Changelog;
 };
