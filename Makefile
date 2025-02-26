@@ -30,6 +30,9 @@ refresh: default
 	git add .
 	git commit -s -m 'chore: Rebuild entrypoint'
 
-output:
+node_modules:
+	yarn install
+
+output: node_modules
 	node build.js
 	cp output/main.js lib/main.js
