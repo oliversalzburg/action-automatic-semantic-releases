@@ -4,6 +4,8 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "checkJs": true,
+    "declaration": true,
+    "declarationMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
@@ -14,6 +16,7 @@
     "moduleResolution": "NodeNext",
     "outDir": "output",
     "resolveJsonModule": true,
+    "rootDir": "source",
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
@@ -21,6 +24,5 @@
     "types": ["@types/node"],
     "useDefineForClassFields": true
   },
-  "include": ["./@types", "./source"],
-  "exclude": ["./output"]
+  "include": ["@types", "source"]
 }
