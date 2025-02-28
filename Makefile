@@ -26,7 +26,7 @@ test:
 	yarn c8 --reporter=html-spa node $(shell yarn bin mocha) output/*.test.js
 
 run: build
-	node ./output/main.js
+	node ./lib/main.js
 
 
 .PHONY: refresh
@@ -39,4 +39,3 @@ node_modules:
 
 output: node_modules
 	node build.js
-	cp output/main.js lib/main.js
