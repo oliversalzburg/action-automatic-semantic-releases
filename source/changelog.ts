@@ -226,24 +226,30 @@ export const renderChangelogFromChangelog = (
 
   // Dependency Changes
   if (!isNil(changelog.deps)) {
-    changelogText += `\n\n## Dependency Changes\n`;
+    const dependencyChangesTotal = Object.values(changelog.deps).reduce(
+      (commitsTotal: number, commits: Array<ParsedCommit>) => commitsTotal + commits.length,
+      0,
+    );
+    if (0 < dependencyChangesTotal) {
+      changelogText += `\n\n## Dependency Changes\n`;
 
-    for (const key of Object.keys(ConventionalCommitTypes) as Array<ConventionalCommitType>) {
-      const commits = changelog.deps[key].sort((a, b) => a.header.localeCompare(b.header));
-      let mergedCount = 0;
+      for (const key of Object.keys(ConventionalCommitTypes) as Array<ConventionalCommitType>) {
+        const commits = changelog.deps[key].sort((a, b) => a.header.localeCompare(b.header));
+        let mergedCount = 0;
 
-      const block = mergeSimilar
-        ? mergeSimilarCommits(commits, withAuthors, groupedCommitsCache => {
-            mergedCount += groupedCommitsCache.length;
-            return `<sup>${groupedCommitsCache.length.toString()} similar commit${groupedCommitsCache.length !== 1 ? "s" : ""} not listed: ${groupedCommitsCache.map(commit => commit.sha).join(", ")}</sup>`;
-          })
-        : commits.map(commit => getFormattedChangelogEntry(commit, withAuthors));
+        const block = mergeSimilar
+          ? mergeSimilarCommits(commits, withAuthors, groupedCommitsCache => {
+              mergedCount += groupedCommitsCache.length;
+              return `<sup>${groupedCommitsCache.length.toString()} similar commit${groupedCommitsCache.length !== 1 ? "s" : ""} not listed: ${groupedCommitsCache.map(commit => commit.sha).join(", ")}</sup>`;
+            })
+          : commits.map(commit => getFormattedChangelogEntry(commit, withAuthors));
 
-      if (block.length) {
-        changelogText += `\n<details>\n`;
-        changelogText += `<summary>${ConventionalCommitTypes[key]} (${countChanges(commits.length, mergedCount)})</summary>\n\n`;
-        changelogText += block.join("\n").trim();
-        changelogText += `\n</details>\n`;
+        if (block.length) {
+          changelogText += `\n<details>\n`;
+          changelogText += `<summary>${ConventionalCommitTypes[key]} (${countChanges(commits.length, mergedCount)})</summary>\n\n`;
+          changelogText += block.join("\n").trim();
+          changelogText += `\n</details>\n`;
+        }
       }
     }
   }
