@@ -2,7 +2,7 @@
 
 default: build
 
-build: output
+build: lib
 
 clean:
 	rm --force --recursive node_modules output tsconfig.tsbuildinfo
@@ -21,7 +21,7 @@ lint: node_modules
 	yarn biome check .
 	yarn tsc --noEmit
 
-test:
+test: node_modules
 	yarn tsc
 	yarn c8 --reporter=html-spa node $(shell yarn bin mocha) output/*.test.js
 
@@ -37,5 +37,5 @@ refresh: default
 node_modules:
 	yarn install
 
-output: node_modules
+lib: node_modules
 	node build.js
