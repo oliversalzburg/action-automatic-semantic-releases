@@ -66,6 +66,8 @@ export class AutomaticReleases {
       const versions = suggestVersions(
         this.#args.rootVersion !== "" ? this.#args.rootVersion : releaseTag,
       );
+      core.info(JSON.stringify(versions, undefined, "\t"));
+
       core.setOutput("version-current", versions.current);
       core.setOutput("version-root", versions.root);
       core.setOutput("version-extension", versions.extension);
@@ -76,6 +78,18 @@ export class AutomaticReleases {
       core.setOutput("version-major", versions.major);
       core.setOutput("version-minor", versions.minor);
       core.setOutput("version-patch", versions.patch);
+      core.setOutput("version-major-dev", versions.majorDev);
+      core.setOutput("version-minor-dev", versions.minorDev);
+      core.setOutput("version-patch-dev", versions.patchDev);
+      core.setOutput("version-major-dev-extended", versions.majorDevExtended);
+      core.setOutput("version-minor-dev-extended", versions.minorDevExtended);
+      core.setOutput("version-patch-dev-extended", versions.patchDevExtended);
+      core.setOutput("version-major-nightly", versions.majorNightly);
+      core.setOutput("version-minor-nightly", versions.minorNightly);
+      core.setOutput("version-patch-nightly", versions.patchNightly);
+      core.setOutput("version-major-nightly-extended", versions.majorNightlyExtended);
+      core.setOutput("version-minor-nightly-extended", versions.minorNightlyExtended);
+      core.setOutput("version-patch-nightly-extended", versions.patchNightlyExtended);
     }
 
     if (

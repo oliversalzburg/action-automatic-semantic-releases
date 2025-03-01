@@ -47,6 +47,10 @@ export const suggestVersions = (currentVersion: string) => {
   const versionExtension = getVersionExtension(currentVersion);
   const hash = process.env.GITHUB_SHA ? `-${String(process.env.GITHUB_SHA).substring(0, 7)}` : "";
 
+  const major = bumpVersion(rootVersion, "major");
+  const minor = bumpVersion(rootVersion, "minor");
+  const patch = bumpVersion(rootVersion, "patch");
+
   return {
     current: currentVersion,
     root: rootVersion,
@@ -55,8 +59,20 @@ export const suggestVersions = (currentVersion: string) => {
     devExtended: [rootVersion, versionExtension, "-dev", hash].join(""),
     nightly: [rootVersion, `-${getDateString()}`, hash].join(""),
     nightlyExtended: [rootVersion, versionExtension, `-${getDateString()}`, hash].join(""),
-    major: bumpVersion(rootVersion, "major"),
-    minor: bumpVersion(rootVersion, "minor"),
-    patch: bumpVersion(rootVersion, "patch"),
+    major,
+    majorDev: [major, "-dev", hash].join(""),
+    majorDevExtended: [major, versionExtension, "-dev", hash].join(""),
+    majorNightly: [major, `-${getDateString()}`, hash].join(""),
+    majorNightlyExtended: [major, versionExtension, `-${getDateString()}`, hash].join(""),
+    minor,
+    minorDev: [minor, "-dev", hash].join(""),
+    minorDevExtended: [minor, versionExtension, "-dev", hash].join(""),
+    minorNightly: [minor, `-${getDateString()}`, hash].join(""),
+    minorNightlyExtended: [minor, versionExtension, `-${getDateString()}`, hash].join(""),
+    patch,
+    patchDev: [patch, "-dev", hash].join(""),
+    patchDevExtended: [patch, versionExtension, "-dev", hash].join(""),
+    patchNightly: [patch, `-${getDateString()}`, hash].join(""),
+    patchNightlyExtended: [patch, versionExtension, `-${getDateString()}`, hash].join(""),
   };
 };
