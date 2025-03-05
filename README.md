@@ -272,26 +272,38 @@ jobs:
 
 <!-- AUTO-DOC-OUTPUT:START - Do not remove or modify this section -->
 
-|                                                   OUTPUT                                                   |  TYPE  |                                       DESCRIPTION                                        |
-|------------------------------------------------------------------------------------------------------------|--------|------------------------------------------------------------------------------------------|
-|    <a name="output_automatic-releases-tag"></a>[automatic-releases-tag](#output_automatic-releases-tag)    | string |                     The release tag this action <br>just processed.                      |
-|                 <a name="output_commits-total"></a>[commits-total](#output_commits-total)                  | string |                     Total amount of commits since <br>last release.                      |
-|              <a name="output_lifecycle-total"></a>[lifecycle-total](#output_lifecycle-total)               | string |          Total amount of commits that <br>fall into the "lifecycle" category.            |
-|                    <a name="output_major-total"></a>[major-total](#output_major-total)                     | string |       Total amount of commits that <br>fall into the "major change" <br>category.        |
-|                    <a name="output_minor-total"></a>[minor-total](#output_minor-total)                     | string |       Total amount of commits that <br>fall into the "minor change" <br>category.        |
-|                    <a name="output_patch-total"></a>[patch-total](#output_patch-total)                     | string |       Total amount of commits that <br>fall into the "patch change" <br>category.        |
-|       <a name="output_unconventional-total"></a>[unconventional-total](#output_unconventional-total)       | string |                     Total amount of commits without <br>convention.                      |
-|                      <a name="output_upload-url"></a>[upload-url](#output_upload-url)                      | string |               The URL for uploading additional <br>assets to the release.                |
-|              <a name="output_version-current"></a>[version-current](#output_version-current)               | string |                             Current version in the manifest.                             |
-|                    <a name="output_version-dev"></a>[version-dev](#output_version-dev)                     | string |             Version number to use for <br>a transient development release.               |
-|       <a name="output_version-dev-extended"></a>[version-dev-extended](#output_version-dev-extended)       | string | Version number to use for <br>a transient development release, including <br>extension.  |
-|          <a name="output_version-extensions"></a>[version-extensions](#output_version-extensions)          | string |             Extension that was found on <br>your current manifest version.               |
-|                 <a name="output_version-major"></a>[version-major](#output_version-major)                  | string |                       Version number to use for <br>a major bump.                        |
-|                 <a name="output_version-minor"></a>[version-minor](#output_version-minor)                  | string |                       Version number to use for <br>a minor bump.                        |
-|              <a name="output_version-nightly"></a>[version-nightly](#output_version-nightly)               | string |               Version number to use for <br>a transient nightly release.                 |
-| <a name="output_version-nightly-extended"></a>[version-nightly-extended](#output_version-nightly-extended) | string |  Version number to use for <br>a transient nightly release, including <br>extensions.    |
-|                 <a name="output_version-patch"></a>[version-patch](#output_version-patch)                  | string |                       Version number to use for <br>a patch bump.                        |
-|                   <a name="output_version-root"></a>[version-root](#output_version-root)                   | string |                  Current manifest version stripped of <br>extensions.                    |
+|                                                            OUTPUT                                                            |  TYPE  |                                       DESCRIPTION                                        |
+|------------------------------------------------------------------------------------------------------------------------------|--------|------------------------------------------------------------------------------------------|
+|             <a name="output_automatic-releases-tag"></a>[automatic-releases-tag](#output_automatic-releases-tag)             | string |                     The release tag this action <br>just processed.                      |
+|                          <a name="output_commits-total"></a>[commits-total](#output_commits-total)                           | string |                     Total amount of commits since <br>last release.                      |
+|                       <a name="output_lifecycle-total"></a>[lifecycle-total](#output_lifecycle-total)                        | string |          Total amount of commits that <br>fall into the "lifecycle" category.            |
+|                             <a name="output_major-total"></a>[major-total](#output_major-total)                              | string |       Total amount of commits that <br>fall into the "major change" <br>category.        |
+|                             <a name="output_minor-total"></a>[minor-total](#output_minor-total)                              | string |       Total amount of commits that <br>fall into the "minor change" <br>category.        |
+|                             <a name="output_patch-total"></a>[patch-total](#output_patch-total)                              | string |       Total amount of commits that <br>fall into the "patch change" <br>category.        |
+|                <a name="output_unconventional-total"></a>[unconventional-total](#output_unconventional-total)                | string |                     Total amount of commits without <br>convention.                      |
+|                               <a name="output_upload-url"></a>[upload-url](#output_upload-url)                               | string |               The URL for uploading additional <br>assets to the release.                |
+|                       <a name="output_version-current"></a>[version-current](#output_version-current)                        | string |                             Current version in the manifest.                             |
+|                             <a name="output_version-dev"></a>[version-dev](#output_version-dev)                              | string |             Version number to use for <br>a transient development release.               |
+|                <a name="output_version-dev-extended"></a>[version-dev-extended](#output_version-dev-extended)                | string | Version number to use for <br>a transient development release, including <br>extension.  |
+|                    <a name="output_version-extension"></a>[version-extension](#output_version-extension)                     | string |             Extension that was found on <br>your current manifest version.               |
+|                          <a name="output_version-major"></a>[version-major](#output_version-major)                           | string |                       Version number to use for <br>a major bump.                        |
+|                    <a name="output_version-major-dev"></a>[version-major-dev](#output_version-major-dev)                     | string |                                         pending                                          |
+|       <a name="output_version-major-dev-extended"></a>[version-major-dev-extended](#output_version-major-dev-extended)       | string |                                         pending                                          |
+|              <a name="output_version-major-nightly"></a>[version-major-nightly](#output_version-major-nightly)               | string |                                         pending                                          |
+| <a name="output_version-major-nightly-extended"></a>[version-major-nightly-extended](#output_version-major-nightly-extended) | string |                                         pending                                          |
+|                          <a name="output_version-minor"></a>[version-minor](#output_version-minor)                           | string |                       Version number to use for <br>a minor bump.                        |
+|                    <a name="output_version-minor-dev"></a>[version-minor-dev](#output_version-minor-dev)                     | string |                                         pending                                          |
+|       <a name="output_version-minor-dev-extended"></a>[version-minor-dev-extended](#output_version-minor-dev-extended)       | string |                                         pending                                          |
+|              <a name="output_version-minor-nightly"></a>[version-minor-nightly](#output_version-minor-nightly)               | string |                                         pending                                          |
+| <a name="output_version-minor-nightly-extended"></a>[version-minor-nightly-extended](#output_version-minor-nightly-extended) | string |                                         pending                                          |
+|                       <a name="output_version-nightly"></a>[version-nightly](#output_version-nightly)                        | string |               Version number to use for <br>a transient nightly release.                 |
+|          <a name="output_version-nightly-extended"></a>[version-nightly-extended](#output_version-nightly-extended)          | string |  Version number to use for <br>a transient nightly release, including <br>extensions.    |
+|                          <a name="output_version-patch"></a>[version-patch](#output_version-patch)                           | string |                       Version number to use for <br>a patch bump.                        |
+|                    <a name="output_version-patch-dev"></a>[version-patch-dev](#output_version-patch-dev)                     | string |                                         pending                                          |
+|       <a name="output_version-patch-dev-extended"></a>[version-patch-dev-extended](#output_version-patch-dev-extended)       | string |                                         pending                                          |
+|              <a name="output_version-patch-nightly"></a>[version-patch-nightly](#output_version-patch-nightly)               | string |                                         pending                                          |
+| <a name="output_version-patch-nightly-extended"></a>[version-patch-nightly-extended](#output_version-patch-nightly-extended) | string |                                         pending                                          |
+|                            <a name="output_version-root"></a>[version-root](#output_version-root)                            | string |                  Current manifest version stripped of <br>extensions.                    |
 
 <!-- AUTO-DOC-OUTPUT:END -->
 
