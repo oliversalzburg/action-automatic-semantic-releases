@@ -73,20 +73,44 @@ outputs:
     description: The URL for uploading additional assets to the release.
   version-current:
     description: Current version in the manifest.
-  version-extensions:
-    description: Extension that was found on your current manifest version.
-  version-dev:
-    description: Version number to use for a transient development release.
   version-dev-extended:
     description: Version number to use for a transient development release, including extension.
+  version-dev:
+    description: Version number to use for a transient development release.
+  version-extension:
+    description: Extension that was found on your current manifest version.
+  version-major-dev-extended:
+    description: pending
+  version-major-dev:
+    description: pending
+  version-major-nightly-extended:
+    description: pending
+  version-major-nightly:
+    description: pending
   version-major:
     description: Version number to use for a major bump.
+  version-minor-dev-extended:
+    description: pending
+  version-minor-dev:
+    description: pending
+  version-minor-nightly-extended:
+    description: pending
+  version-minor-nightly:
+    description: pending
   version-minor:
     description: Version number to use for a minor bump.
-  version-nightly:
-    description: Version number to use for a transient nightly release.
   version-nightly-extended:
     description: Version number to use for a transient nightly release, including extensions.
+  version-nightly:
+    description: Version number to use for a transient nightly release.
+  version-patch-dev-extended:
+    description: pending
+  version-patch-dev:
+    description: pending
+  version-patch-nightly-extended:
+    description: pending
+  version-patch-nightly:
+    description: pending
   version-patch:
     description: Version number to use for a patch bump.
   version-root:

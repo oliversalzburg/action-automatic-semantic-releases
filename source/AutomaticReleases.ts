@@ -69,27 +69,27 @@ export class AutomaticReleases {
       core.info(JSON.stringify(versions, undefined, "\t"));
 
       core.setOutput("version-current", versions.current);
-      core.setOutput("version-root", versions.root);
-      core.setOutput("version-extension", versions.extension);
-      core.setOutput("version-dev", versions.dev);
       core.setOutput("version-dev-extended", versions.devExtended);
-      core.setOutput("version-nightly", versions.nightly);
-      core.setOutput("version-nightly-extended", versions.nightlyExtended);
-      core.setOutput("version-major", versions.major);
-      core.setOutput("version-minor", versions.minor);
-      core.setOutput("version-patch", versions.patch);
-      core.setOutput("version-major-dev", versions.majorDev);
-      core.setOutput("version-minor-dev", versions.minorDev);
-      core.setOutput("version-patch-dev", versions.patchDev);
+      core.setOutput("version-dev", versions.dev);
+      core.setOutput("version-extension", versions.extension);
       core.setOutput("version-major-dev-extended", versions.majorDevExtended);
-      core.setOutput("version-minor-dev-extended", versions.minorDevExtended);
-      core.setOutput("version-patch-dev-extended", versions.patchDevExtended);
-      core.setOutput("version-major-nightly", versions.majorNightly);
-      core.setOutput("version-minor-nightly", versions.minorNightly);
-      core.setOutput("version-patch-nightly", versions.patchNightly);
+      core.setOutput("version-major-dev", versions.majorDev);
       core.setOutput("version-major-nightly-extended", versions.majorNightlyExtended);
+      core.setOutput("version-major-nightly", versions.majorNightly);
+      core.setOutput("version-major", versions.major);
+      core.setOutput("version-minor-dev-extended", versions.minorDevExtended);
+      core.setOutput("version-minor-dev", versions.minorDev);
       core.setOutput("version-minor-nightly-extended", versions.minorNightlyExtended);
+      core.setOutput("version-minor-nightly", versions.minorNightly);
+      core.setOutput("version-minor", versions.minor);
+      core.setOutput("version-nightly-extended", versions.nightlyExtended);
+      core.setOutput("version-nightly", versions.nightly);
+      core.setOutput("version-patch-dev-extended", versions.patchDevExtended);
+      core.setOutput("version-patch-dev", versions.patchDev);
       core.setOutput("version-patch-nightly-extended", versions.patchNightlyExtended);
+      core.setOutput("version-patch-nightly", versions.patchNightly);
+      core.setOutput("version-patch", versions.patch);
+      core.setOutput("version-root", versions.root);
     }
 
     if (
