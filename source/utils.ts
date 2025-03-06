@@ -36,8 +36,8 @@ export const getAndValidateArgs = (core: CoreType): ActionParameters => {
     automaticReleaseTag: core.getInput("automatic-release-tag", {
       required: false,
     }),
-    bodyPrefix: core.getInput("body-prefix", { required: false }),
-    bodySuffix: core.getInput("body-suffix", { required: false }),
+    bodyPrefix: core.getInput("body-prefix", { required: false, trimWhitespace: false }),
+    bodySuffix: core.getInput("body-suffix", { required: false, trimWhitespace: false }),
     changelogArtifact: core.getInput("changelog-artifact", { required: false }),
     draftRelease: core.getBooleanInput("draft", { required: false }),
     dryRun: core.getBooleanInput("dry-run", { required: false }),
