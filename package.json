@@ -20,7 +20,7 @@
     "@octokit/rest": "21.1.1",
     "@oliversalzburg/js-utils": "0.3.0",
     "conventional-commits-parser": "6.1.0",
-    "fdir": "6.4.3",
+    "fdir": "6.4.4",
     "picomatch": "4.0.2",
     "semver": "7.7.1",
     "tslib": "2.8.1"
