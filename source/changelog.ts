@@ -1,13 +1,21 @@
 import { GitHub } from "@actions/github/lib/utils.js";
 import { isNil, mustExist } from "@oliversalzburg/js-utils/data/nil.js";
-import { Commit, CommitMeta, CommitParser, ParserOptions } from "conventional-commits-parser";
+import {
+  Commit,
+  CommitMeta,
+  type CommitNote,
+  CommitParser,
+  ParserOptions,
+} from "conventional-commits-parser";
 import {
   Changelog,
+  type CommitSinceRelease,
   CommitsSinceRelease,
   ConventionalCommitType,
   ConventionalCommitTypes,
   CoreType,
   ParsedCommit,
+  type PullRequestsAssociatedWithCommit,
 } from "./types.js";
 
 /**
@@ -341,9 +349,70 @@ export const getChangelogOptions = (core: CoreType): ParserOptions => {
  * @param commit - The commit metadata.
  * @returns Whether the commit signifies a breaking change.
  */
-export const isBreakingChange = (commit: CommitMeta): boolean => {
+export const isBreakingChange = (commit: {
+  body: string;
+  footer: string;
+  notes: Array<CommitNote>;
+}): boolean => {
   const re = /^BREAKING\s+CHANGES?:\s+/;
-  return re.test(commit.body || "") || re.test(commit.footer || "");
+  return (
+    commit.notes.some(_ => re.test(_.title)) ||
+    re.test(commit.body || "") ||
+    re.test(commit.footer || "")
+  );
+};
+
+export const parseCommit = (
+  core: CoreType,
+  commit: CommitSinceRelease,
+  pulls?: PullRequestsAssociatedWithCommit | undefined,
+) => {
+  const clOptions = getChangelogOptions(core);
+  const parsedCommitMsg: Exclude<Commit, "type"> & {
+    type?: string | null;
+  } = new CommitParser(clOptions).parse(commit.commit.message);
+
+  // istanbul ignore next
+  if (parsedCommitMsg.merge) {
+    core.debug(`Ignoring merge commit: ${parsedCommitMsg.merge}`);
+    return null;
+  }
+
+  const expandedCommitMsg: ParsedCommit = {
+    sha: commit.sha,
+    type: parsedCommitMsg.type as ConventionalCommitType,
+    scope: parsedCommitMsg.scope ?? "",
+    subject: parsedCommitMsg.subject ?? "",
+    merge: parsedCommitMsg.merge ?? "",
+    header: parsedCommitMsg.header ?? "",
+    body: parsedCommitMsg.body ?? "",
+    footer: parsedCommitMsg.footer ?? "",
+    notes: parsedCommitMsg.notes,
+    references: parsedCommitMsg.references,
+    mentions: parsedCommitMsg.mentions,
+    revert: parsedCommitMsg.revert ?? null,
+    extra: {
+      commit: commit,
+      pullRequests: [],
+      breakingChange: false,
+    },
+  };
+
+  expandedCommitMsg.extra.pullRequests =
+    pulls?.map(pr => {
+      return {
+        number: pr.number,
+        url: pr.html_url,
+      };
+    }) ?? [];
+
+  expandedCommitMsg.extra.breakingChange = isBreakingChange({
+    body: parsedCommitMsg.body ?? "",
+    footer: parsedCommitMsg.footer ?? "",
+    notes: parsedCommitMsg.notes ?? [],
+  });
+
+  return expandedCommitMsg;
 };
 
 /**
@@ -379,53 +448,15 @@ export const getChangelog = async (
       );
     }
 
-    const clOptions = getChangelogOptions(core);
-    const parsedCommitMsg: Exclude<Commit, "type"> & {
-      type?: string | null;
-    } = new CommitParser(clOptions).parse(commit.commit.message);
-
-    // istanbul ignore next
-    if (parsedCommitMsg.merge) {
-      core.debug(`Ignoring merge commit: ${parsedCommitMsg.merge}`);
+    const expandedCommitMsg = parseCommit(core, commit, pulls.data);
+    if (expandedCommitMsg === null) {
       continue;
     }
 
-    const expandedCommitMsg: ParsedCommit = {
-      sha: commit.sha,
-      type: parsedCommitMsg.type as ConventionalCommitType,
-      scope: parsedCommitMsg.scope ?? "",
-      subject: parsedCommitMsg.subject ?? "",
-      merge: parsedCommitMsg.merge ?? "",
-      header: parsedCommitMsg.header ?? "",
-      body: parsedCommitMsg.body ?? "",
-      footer: parsedCommitMsg.footer ?? "",
-      notes: parsedCommitMsg.notes,
-      references: parsedCommitMsg.references,
-      mentions: parsedCommitMsg.mentions,
-      revert: parsedCommitMsg.revert ?? null,
-      extra: {
-        commit: commit,
-        pullRequests: [],
-        breakingChange: false,
-      },
-    };
-
-    expandedCommitMsg.extra.pullRequests = pulls.data.map(pr => {
-      return {
-        number: pr.number,
-        url: pr.html_url,
-      };
-    });
-
-    expandedCommitMsg.extra.breakingChange = isBreakingChange({
-      body: parsedCommitMsg.body ?? "",
-      footer: parsedCommitMsg.footer ?? "",
-    });
-
-    core.debug(`Parsed commit: ${JSON.stringify(parsedCommitMsg)}`);
+    core.debug(`Parsed commit: ${JSON.stringify(expandedCommitMsg)}`);
 
     parsedCommits.push(expandedCommitMsg);
-    core.info(`Adding commit "${mustExist(parsedCommitMsg.header)}" to the changelog`);
+    core.info(`Adding commit "${mustExist(expandedCommitMsg.header)}" to the changelog`);
   }
 
   const changelogMeta = generateChangelogMetadataFromParsedCommits(parsedCommits);

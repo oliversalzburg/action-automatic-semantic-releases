@@ -21,12 +21,19 @@ export type NewGitHubRelease = GetResponseDataTypeFromEndpointMethod<
 export type CommitsSinceRelease = GetResponseDataTypeFromEndpointMethod<
   InstanceType<typeof GitHub>["rest"]["repos"]["compareCommits"]
 >["commits"];
+export type CommitSinceRelease = CommitsSinceRelease[number];
 /**
  * The type of the API response for comparing commits.
  */
 export type CompareCommitsItem = GetResponseDataTypeFromEndpointMethod<
   InstanceType<typeof GitHub>["rest"]["repos"]["compareCommits"]
 >["commits"][number];
+/**
+ * The type of the API response for listing PRs.
+ */
+export type PullRequestsAssociatedWithCommit = GetResponseDataTypeFromEndpointMethod<
+  InstanceType<typeof GitHub>["rest"]["repos"]["listPullRequestsAssociatedWithCommit"]
+>;
 
 /**
  * The arguments for the action.
