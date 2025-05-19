@@ -181,7 +181,7 @@ jobs:
 
 <!-- AUTO-DOC-INPUT:START - Do not remove or modify this section -->
 ```yaml
-- uses: oliversalzburg/action-automatic-semantic-releases@v0
+- uses: oliversalzburg/action-automatic-semantic-releases@v1
   id: action-automatic-semantic-releases
   with:
     # git tag (for automatic releases).
@@ -272,38 +272,56 @@ jobs:
 
 <!-- AUTO-DOC-OUTPUT:START - Do not remove or modify this section -->
 
-|                                                            OUTPUT                                                            |  TYPE  |                                       DESCRIPTION                                        |
-|------------------------------------------------------------------------------------------------------------------------------|--------|------------------------------------------------------------------------------------------|
-|             <a name="output_automatic-releases-tag"></a>[automatic-releases-tag](#output_automatic-releases-tag)             | string |                     The release tag this action <br>just processed.                      |
-|                          <a name="output_commits-total"></a>[commits-total](#output_commits-total)                           | string |                     Total amount of commits since <br>last release.                      |
-|                       <a name="output_lifecycle-total"></a>[lifecycle-total](#output_lifecycle-total)                        | string |          Total amount of commits that <br>fall into the "lifecycle" category.            |
-|                             <a name="output_major-total"></a>[major-total](#output_major-total)                              | string |       Total amount of commits that <br>fall into the "major change" <br>category.        |
-|                             <a name="output_minor-total"></a>[minor-total](#output_minor-total)                              | string |       Total amount of commits that <br>fall into the "minor change" <br>category.        |
-|                             <a name="output_patch-total"></a>[patch-total](#output_patch-total)                              | string |       Total amount of commits that <br>fall into the "patch change" <br>category.        |
-|                <a name="output_unconventional-total"></a>[unconventional-total](#output_unconventional-total)                | string |                     Total amount of commits without <br>convention.                      |
-|                               <a name="output_upload-url"></a>[upload-url](#output_upload-url)                               | string |               The URL for uploading additional <br>assets to the release.                |
-|                       <a name="output_version-current"></a>[version-current](#output_version-current)                        | string |                             Current version in the manifest.                             |
-|                             <a name="output_version-dev"></a>[version-dev](#output_version-dev)                              | string |             Version number to use for <br>a transient development release.               |
-|                <a name="output_version-dev-extended"></a>[version-dev-extended](#output_version-dev-extended)                | string | Version number to use for <br>a transient development release, including <br>extension.  |
-|                    <a name="output_version-extension"></a>[version-extension](#output_version-extension)                     | string |             Extension that was found on <br>your current manifest version.               |
-|                          <a name="output_version-major"></a>[version-major](#output_version-major)                           | string |                       Version number to use for <br>a major bump.                        |
-|                    <a name="output_version-major-dev"></a>[version-major-dev](#output_version-major-dev)                     | string |                                         pending                                          |
-|       <a name="output_version-major-dev-extended"></a>[version-major-dev-extended](#output_version-major-dev-extended)       | string |                                         pending                                          |
-|              <a name="output_version-major-nightly"></a>[version-major-nightly](#output_version-major-nightly)               | string |                                         pending                                          |
-| <a name="output_version-major-nightly-extended"></a>[version-major-nightly-extended](#output_version-major-nightly-extended) | string |                                         pending                                          |
-|                          <a name="output_version-minor"></a>[version-minor](#output_version-minor)                           | string |                       Version number to use for <br>a minor bump.                        |
-|                    <a name="output_version-minor-dev"></a>[version-minor-dev](#output_version-minor-dev)                     | string |                                         pending                                          |
-|       <a name="output_version-minor-dev-extended"></a>[version-minor-dev-extended](#output_version-minor-dev-extended)       | string |                                         pending                                          |
-|              <a name="output_version-minor-nightly"></a>[version-minor-nightly](#output_version-minor-nightly)               | string |                                         pending                                          |
-| <a name="output_version-minor-nightly-extended"></a>[version-minor-nightly-extended](#output_version-minor-nightly-extended) | string |                                         pending                                          |
-|                       <a name="output_version-nightly"></a>[version-nightly](#output_version-nightly)                        | string |               Version number to use for <br>a transient nightly release.                 |
-|          <a name="output_version-nightly-extended"></a>[version-nightly-extended](#output_version-nightly-extended)          | string |  Version number to use for <br>a transient nightly release, including <br>extensions.    |
-|                          <a name="output_version-patch"></a>[version-patch](#output_version-patch)                           | string |                       Version number to use for <br>a patch bump.                        |
-|                    <a name="output_version-patch-dev"></a>[version-patch-dev](#output_version-patch-dev)                     | string |                                         pending                                          |
-|       <a name="output_version-patch-dev-extended"></a>[version-patch-dev-extended](#output_version-patch-dev-extended)       | string |                                         pending                                          |
-|              <a name="output_version-patch-nightly"></a>[version-patch-nightly](#output_version-patch-nightly)               | string |                                         pending                                          |
-| <a name="output_version-patch-nightly-extended"></a>[version-patch-nightly-extended](#output_version-patch-nightly-extended) | string |                                         pending                                          |
-|                            <a name="output_version-root"></a>[version-root](#output_version-root)                            | string |                  Current manifest version stripped of <br>extensions.                    |
+|                                                                   OUTPUT                                                                    |  TYPE  |                                 DESCRIPTION                                  |
+|---------------------------------------------------------------------------------------------------------------------------------------------|--------|------------------------------------------------------------------------------|
+|                    <a name="output_automatic-releases-tag"></a>[automatic-releases-tag](#output_automatic-releases-tag)                     | string |               The release tag this action <br>just processed.                |
+|                                  <a name="output_commits-total"></a>[commits-total](#output_commits-total)                                  | string |               Total amount of commits since <br>last release.                |
+|                               <a name="output_lifecycle-total"></a>[lifecycle-total](#output_lifecycle-total)                               | string |    Total amount of commits that <br>fall into the "lifecycle" category.      |
+|                                     <a name="output_major-total"></a>[major-total](#output_major-total)                                     | string | Total amount of commits that <br>fall into the "major change" <br>category.  |
+|                                     <a name="output_minor-total"></a>[minor-total](#output_minor-total)                                     | string | Total amount of commits that <br>fall into the "minor change" <br>category.  |
+|                                     <a name="output_patch-total"></a>[patch-total](#output_patch-total)                                     | string | Total amount of commits that <br>fall into the "patch change" <br>category.  |
+|                       <a name="output_unconventional-total"></a>[unconventional-total](#output_unconventional-total)                        | string |               Total amount of commits without <br>convention.                |
+|                                      <a name="output_upload-url"></a>[upload-url](#output_upload-url)                                       | string |         The URL for uploading additional <br>assets to the release.          |
+|                               <a name="output_version-current"></a>[version-current](#output_version-current)                               | string |                               Current version                                |
+|                                     <a name="output_version-dev"></a>[version-dev](#output_version-dev)                                     | string |                              Version suggestion                              |
+|                       <a name="output_version-dev-extended"></a>[version-dev-extended](#output_version-dev-extended)                        | string |                              Version suggestion                              |
+|                <a name="output_version-dev-extended-hash"></a>[version-dev-extended-hash](#output_version-dev-extended-hash)                | string |                              Version suggestion                              |
+|                             <a name="output_version-dev-hash"></a>[version-dev-hash](#output_version-dev-hash)                              | string |                              Version suggestion                              |
+|                            <a name="output_version-extension"></a>[version-extension](#output_version-extension)                            | string |                              Version suggestion                              |
+|                                  <a name="output_version-major"></a>[version-major](#output_version-major)                                  | string |                              Version suggestion                              |
+|                            <a name="output_version-major-dev"></a>[version-major-dev](#output_version-major-dev)                            | string |                              Version suggestion                              |
+|                    <a name="output_version-major-dev-hash"></a>[version-major-dev-hash](#output_version-major-dev-hash)                     | string |                              Version suggestion                              |
+|              <a name="output_version-major-extended-dev"></a>[version-major-extended-dev](#output_version-major-extended-dev)               | string |                              Version suggestion                              |
+|       <a name="output_version-major-extended-dev-hash"></a>[version-major-extended-dev-hash](#output_version-major-extended-dev-hash)       | string |                              Version suggestion                              |
+|        <a name="output_version-major-extended-nightly"></a>[version-major-extended-nightly](#output_version-major-extended-nightly)         | string |                              Version suggestion                              |
+| <a name="output_version-major-extended-nightly-hash"></a>[version-major-extended-nightly-hash](#output_version-major-extended-nightly-hash) | string |                              Version suggestion                              |
+|                      <a name="output_version-major-nightly"></a>[version-major-nightly](#output_version-major-nightly)                      | string |                              Version suggestion                              |
+|              <a name="output_version-major-nightly-hash"></a>[version-major-nightly-hash](#output_version-major-nightly-hash)               | string |                              Version suggestion                              |
+|                                  <a name="output_version-minor"></a>[version-minor](#output_version-minor)                                  | string |                              Version suggestion                              |
+|                            <a name="output_version-minor-dev"></a>[version-minor-dev](#output_version-minor-dev)                            | string |                              Version suggestion                              |
+|                    <a name="output_version-minor-dev-hash"></a>[version-minor-dev-hash](#output_version-minor-dev-hash)                     | string |                              Version suggestion                              |
+|              <a name="output_version-minor-extended-dev"></a>[version-minor-extended-dev](#output_version-minor-extended-dev)               | string |                              Version suggestion                              |
+|       <a name="output_version-minor-extended-dev-hash"></a>[version-minor-extended-dev-hash](#output_version-minor-extended-dev-hash)       | string |                              Version suggestion                              |
+|        <a name="output_version-minor-extended-nightly"></a>[version-minor-extended-nightly](#output_version-minor-extended-nightly)         | string |                              Version suggestion                              |
+| <a name="output_version-minor-extended-nightly-hash"></a>[version-minor-extended-nightly-hash](#output_version-minor-extended-nightly-hash) | string |                              Version suggestion                              |
+|                          <a name="output_version-minor-hash"></a>[version-minor-hash](#output_version-minor-hash)                           | string |                              Version suggestion                              |
+|                      <a name="output_version-minor-nightly"></a>[version-minor-nightly](#output_version-minor-nightly)                      | string |                              Version suggestion                              |
+|              <a name="output_version-minor-nightly-hash"></a>[version-minor-nightly-hash](#output_version-minor-nightly-hash)               | string |                              Version suggestion                              |
+|                               <a name="output_version-nightly"></a>[version-nightly](#output_version-nightly)                               | string |                              Version suggestion                              |
+|                 <a name="output_version-nightly-extended"></a>[version-nightly-extended](#output_version-nightly-extended)                  | string |                              Version suggestion                              |
+|          <a name="output_version-nightly-extended-hash"></a>[version-nightly-extended-hash](#output_version-nightly-extended-hash)          | string |                              Version suggestion                              |
+|                       <a name="output_version-nightly-hash"></a>[version-nightly-hash](#output_version-nightly-hash)                        | string |                              Version suggestion                              |
+|                                  <a name="output_version-patch"></a>[version-patch](#output_version-patch)                                  | string |                              Version suggestion                              |
+|                            <a name="output_version-patch-dev"></a>[version-patch-dev](#output_version-patch-dev)                            | string |                              Version suggestion                              |
+|                    <a name="output_version-patch-dev-hash"></a>[version-patch-dev-hash](#output_version-patch-dev-hash)                     | string |                              Version suggestion                              |
+|              <a name="output_version-patch-extended-dev"></a>[version-patch-extended-dev](#output_version-patch-extended-dev)               | string |                              Version suggestion                              |
+|       <a name="output_version-patch-extended-dev-hash"></a>[version-patch-extended-dev-hash](#output_version-patch-extended-dev-hash)       | string |                              Version suggestion                              |
+|        <a name="output_version-patch-extended-nightly"></a>[version-patch-extended-nightly](#output_version-patch-extended-nightly)         | string |                              Version suggestion                              |
+| <a name="output_version-patch-extended-nightly-hash"></a>[version-patch-extended-nightly-hash](#output_version-patch-extended-nightly-hash) | string |                              Version suggestion                              |
+|                          <a name="output_version-patch-hash"></a>[version-patch-hash](#output_version-patch-hash)                           | string |                              Version suggestion                              |
+|                      <a name="output_version-patch-nightly"></a>[version-patch-nightly](#output_version-patch-nightly)                      | string |                              Version suggestion                              |
+|              <a name="output_version-patch-nightly-hash"></a>[version-patch-nightly-hash](#output_version-patch-nightly-hash)               | string |                              Version suggestion                              |
+|                                   <a name="output_version-root"></a>[version-root](#output_version-root)                                    | string |                   Current version stripped of extensions.                    |
 
 <!-- AUTO-DOC-OUTPUT:END -->
 
