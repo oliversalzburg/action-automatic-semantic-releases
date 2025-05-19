@@ -72,49 +72,85 @@ outputs:
   upload-url:
     description: The URL for uploading additional assets to the release.
   version-current:
-    description: Current version in the manifest.
-  version-dev-extended:
-    description: Version number to use for a transient development release, including extension.
+    description: Current version
   version-dev:
-    description: Version number to use for a transient development release.
+    description: Version suggestion
+  version-dev-extended:
+    description: Version suggestion
+  version-dev-extended-hash:
+    description: Version suggestion
+  version-dev-hash:
+    description: Version suggestion
   version-extension:
-    description: Extension that was found on your current manifest version.
-  version-major-dev-extended:
-    description: pending
-  version-major-dev:
-    description: pending
-  version-major-nightly-extended:
-    description: pending
-  version-major-nightly:
-    description: pending
+    description: Version suggestion
   version-major:
-    description: Version number to use for a major bump.
-  version-minor-dev-extended:
-    description: pending
-  version-minor-dev:
-    description: pending
-  version-minor-nightly-extended:
-    description: pending
-  version-minor-nightly:
-    description: pending
+    description: Version suggestion
+  version-major-dev:
+    description: Version suggestion
+  version-major-dev-hash:
+    description: Version suggestion
+  version-major-extended-dev:
+    description: Version suggestion
+  version-major-extended-dev-hash:
+    description: Version suggestion
+  version-major-extended-nightly:
+    description: Version suggestion
+  version-major-extended-nightly-hash:
+    description: Version suggestion
+  version-major-nightly:
+    description: Version suggestion
+  version-major-nightly-hash:
+    description: Version suggestion
   version-minor:
-    description: Version number to use for a minor bump.
-  version-nightly-extended:
-    description: Version number to use for a transient nightly release, including extensions.
+    description: Version suggestion
+  version-minor-dev:
+    description: Version suggestion
+  version-minor-dev-hash:
+    description: Version suggestion
+  version-minor-extended-dev:
+    description: Version suggestion
+  version-minor-extended-dev-hash:
+    description: Version suggestion
+  version-minor-extended-nightly:
+    description: Version suggestion
+  version-minor-extended-nightly-hash:
+    description: Version suggestion
+  version-minor-hash:
+    description: Version suggestion
+  version-minor-nightly:
+    description: Version suggestion
+  version-minor-nightly-hash:
+    description: Version suggestion
   version-nightly:
-    description: Version number to use for a transient nightly release.
-  version-patch-dev-extended:
-    description: pending
-  version-patch-dev:
-    description: pending
-  version-patch-nightly-extended:
-    description: pending
-  version-patch-nightly:
-    description: pending
+    description: Version suggestion
+  version-nightly-extended:
+    description: Version suggestion
+  version-nightly-extended-hash:
+    description: Version suggestion
+  version-nightly-hash:
+    description: Version suggestion
   version-patch:
-    description: Version number to use for a patch bump.
+    description: Version suggestion
+  version-patch-dev:
+    description: Version suggestion
+  version-patch-dev-hash:
+    description: Version suggestion
+  version-patch-extended-dev:
+    description: Version suggestion
+  version-patch-extended-dev-hash:
+    description: Version suggestion
+  version-patch-extended-nightly:
+    description: Version suggestion
+  version-patch-extended-nightly-hash:
+    description: Version suggestion
+  version-patch-hash:
+    description: Version suggestion
+  version-patch-nightly:
+    description: Version suggestion
+  version-patch-nightly-hash:
+    description: Version suggestion
   version-root:
-    description: Current manifest version stripped of extensions.
+    description: Current version stripped of extensions.
 runs:
   using: node20
   main: lib/main.js
