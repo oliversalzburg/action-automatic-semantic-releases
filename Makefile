@@ -14,16 +14,16 @@ git-hook:
 	echo "make pretty" > .git/hooks/pre-commit; chmod +x .git/hooks/pre-commit
 
 pretty: node_modules
-	yarn biome check --write --no-errors-on-unmatched
+	npm exec -- biome check --write --no-errors-on-unmatched
 	npm pkg fix
 
 lint: node_modules
-	yarn biome check .
-	yarn tsc --noEmit
+	npm exec -- biome check .
+	npm exec -- tsc --noEmit
 
 test: node_modules
-	yarn tsc
-	yarn c8 --reporter=html-spa node $(shell yarn bin mocha) output/*.test.js
+	npm exec -- tsc
+	NODE_OPTIONS=--enable-source-maps TZ=UTC npm exec -- c8 --reporter=html-spa mocha output/*.test.js
 
 run: build
 	node ./lib/main.js
@@ -35,7 +35,7 @@ refresh: default
 	git commit -s -m 'chore: Rebuild entrypoint'
 
 node_modules:
-	yarn install
+	npm install
 
 lib: node_modules
 	node build.js
