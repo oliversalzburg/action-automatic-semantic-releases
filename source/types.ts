@@ -292,17 +292,17 @@ export interface ParsedCommitsExtra {
 }
 
 export const ConventionalCommitTypes = {
+  build: "Builds",
+  chore: "Chores",
+  ci: "Continuous Integration",
+  docs: "Documentation",
   feat: "Features",
   fix: "Bug Fixes",
-  docs: "Documentation",
-  style: "Styles",
-  refactor: "Code Refactoring",
   perf: "Performance Improvements",
-  test: "Tests",
-  build: "Builds",
-  ci: "Continuous Integration",
-  chore: "Chores",
+  refactor: "Code Refactoring",
   revert: "Reverts",
+  style: "Styles",
+  test: "Tests",
 };
 /**
  * Just the identifiers.

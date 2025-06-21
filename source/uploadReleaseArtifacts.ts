@@ -57,16 +57,16 @@ export const uploadReleaseArtifacts = async (
       core.info(`Uploading: ${filePath}`);
       const nameWithExt = path.basename(filePath);
       const uploadArgs: UploadReleaseAssetOptions = {
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        release_id: release.id,
-        url: release.upload_url,
+        data: readFileSync(filePath) as unknown as string,
         headers: {
           "content-length": lstatSync(filePath).size,
           "content-type": "application/octet-stream",
         },
         name: nameWithExt,
-        data: readFileSync(filePath) as unknown as string,
+        owner: context.repo.owner,
+        release_id: release.id,
+        repo: context.repo.repo,
+        url: release.upload_url,
       };
 
       try {

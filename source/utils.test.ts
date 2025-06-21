@@ -11,14 +11,14 @@ it("parses commits as expected", () => {
   const parse = (message: string) => new CommitParser(clOptions).parse(message);
 
   expect(parse("Update Crowdin configuration file")).to.eql({
-    merge: null,
-    revert: null,
-    header: "Update Crowdin configuration file",
     body: null,
     footer: null,
+    header: "Update Crowdin configuration file",
     mentions: [],
+    merge: null,
     notes: [],
     references: [],
+    revert: null,
   });
 });
 
@@ -38,36 +38,36 @@ it("renders commits without convention as expected", () => {
     subject: string | null;
     type: string | null;
   } = {
-    merge: null,
-    revert: null,
-    header: "Update Crowdin configuration file",
     body: null,
     footer: null,
+    header: "Update Crowdin configuration file",
     mentions: new Array<string>(),
+    merge: null,
     notes: new Array<CommitNote>(),
     references: new Array<CommitReference>(),
+    revert: null,
     scope: null,
-    type: null,
     subject: null,
+    type: null,
   };
   const expandedCommitMsg: ParsedCommit = {
-    sha: commit.sha,
-    type: parsedCommitMsg.type as ConventionalCommitType,
-    scope: parsedCommitMsg.scope ?? "",
-    subject: parsedCommitMsg.subject ?? "",
-    merge: parsedCommitMsg.merge ?? "",
-    header: parsedCommitMsg.header ?? "",
     body: parsedCommitMsg.body ?? "",
-    footer: parsedCommitMsg.footer ?? "",
-    notes: parsedCommitMsg.notes,
-    references: parsedCommitMsg.references,
-    mentions: parsedCommitMsg.mentions,
-    revert: parsedCommitMsg.revert ?? null,
     extra: {
+      breakingChange: false,
       commit: commit as CommitsSinceRelease[number],
       pullRequests: [],
-      breakingChange: false,
     },
+    footer: parsedCommitMsg.footer ?? "",
+    header: parsedCommitMsg.header ?? "",
+    mentions: parsedCommitMsg.mentions,
+    merge: parsedCommitMsg.merge ?? "",
+    notes: parsedCommitMsg.notes,
+    references: parsedCommitMsg.references,
+    revert: parsedCommitMsg.revert ?? null,
+    scope: parsedCommitMsg.scope ?? "",
+    sha: commit.sha,
+    subject: parsedCommitMsg.subject ?? "",
+    type: parsedCommitMsg.type as ConventionalCommitType,
   };
 
   const entry = getFormattedChangelogEntry(expandedCommitMsg, false);

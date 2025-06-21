@@ -119,8 +119,8 @@ export class AutomaticReleases {
         octokit,
         {
           owner: context.repo.owner,
-          repo: context.repo.repo,
           ref: `tags/${previousReleaseTag}`,
+          repo: context.repo.repo,
         },
         context.sha,
       );
@@ -186,13 +186,13 @@ export class AutomaticReleases {
       }
 
       const release = await generateNewGitHubRelease(core, octokit, {
+        body,
+        draft: this.#args.draftRelease,
+        name: this.#args.title ? this.#args.title : releaseTag,
         owner: context.repo.owner,
+        prerelease: this.#args.preRelease,
         repo: context.repo.repo,
         tag_name: tagName,
-        name: this.#args.title ? this.#args.title : releaseTag,
-        draft: this.#args.draftRelease,
-        prerelease: this.#args.preRelease,
-        body,
       });
 
       await uploadReleaseArtifacts(octokit, context, release, this.#args.files);
