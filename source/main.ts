@@ -22,14 +22,14 @@ export const main = async (): Promise<void> => {
             debug: (...logArgs) => {
               core.debug(octokitLogger(...logArgs));
             },
+            error: (...logArgs) => {
+              core.error(octokitLogger(...logArgs));
+            },
             info: (...logArgs) => {
               core.debug(octokitLogger(...logArgs));
             },
             warn: (...logArgs) => {
               core.warning(octokitLogger(...logArgs));
-            },
-            error: (...logArgs) => {
-              core.error(octokitLogger(...logArgs));
             },
           },
         }),

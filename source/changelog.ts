@@ -332,13 +332,13 @@ export const generateChangelogMetadataFromParsedCommits = (
 export const getChangelogOptions = (core: CoreType): ParserOptions => {
   const defaultOpts: ParserOptions = {
     breakingHeaderPattern: /^(\w*)(?:\((.*)\))?!: (.*)$/,
-    headerPattern: /^(\w*)(?:\((.*)\))?: (.*)$/,
     headerCorrespondence: ["type", "scope", "subject"],
-    noteKeywords: ["BREAKING CHANGE"],
-    mergePattern: /^Merge pull request #(.*) from (.*)$/,
+    headerPattern: /^(\w*)(?:\((.*)\))?: (.*)$/,
     mergeCorrespondence: ["issueId", "source"],
-    revertPattern: /^(?:Revert|revert:)\s"?([\s\S]+?)"?\s*This reverts commit (\w{7,40})\b/i,
+    mergePattern: /^Merge pull request #(.*) from (.*)$/,
+    noteKeywords: ["BREAKING CHANGE"],
     revertCorrespondence: ["header", "hash"],
+    revertPattern: /^(?:Revert|revert:)\s"?([\s\S]+?)"?\s*This reverts commit (\w{7,40})\b/i,
   };
   core.debug(`Changelog options: ${JSON.stringify(defaultOpts)}`);
   return defaultOpts;
@@ -379,23 +379,23 @@ export const parseCommit = (
   }
 
   const expandedCommitMsg: ParsedCommit = {
-    sha: commit.sha,
-    type: parsedCommitMsg.type as ConventionalCommitType,
-    scope: parsedCommitMsg.scope ?? "",
-    subject: parsedCommitMsg.subject ?? "",
-    merge: parsedCommitMsg.merge ?? "",
-    header: parsedCommitMsg.header ?? "",
     body: parsedCommitMsg.body ?? "",
-    footer: parsedCommitMsg.footer ?? "",
-    notes: parsedCommitMsg.notes,
-    references: parsedCommitMsg.references,
-    mentions: parsedCommitMsg.mentions,
-    revert: parsedCommitMsg.revert ?? null,
     extra: {
+      breakingChange: false,
       commit: commit,
       pullRequests: [],
-      breakingChange: false,
     },
+    footer: parsedCommitMsg.footer ?? "",
+    header: parsedCommitMsg.header ?? "",
+    mentions: parsedCommitMsg.mentions,
+    merge: parsedCommitMsg.merge ?? "",
+    notes: parsedCommitMsg.notes,
+    references: parsedCommitMsg.references,
+    revert: parsedCommitMsg.revert ?? null,
+    scope: parsedCommitMsg.scope ?? "",
+    sha: commit.sha,
+    subject: parsedCommitMsg.subject ?? "",
+    type: parsedCommitMsg.type as ConventionalCommitType,
   };
 
   expandedCommitMsg.extra.pullRequests =
@@ -438,9 +438,9 @@ export const getChangelog = async (
     core.debug(`Processing commit: ${JSON.stringify(commit)}`);
     core.debug(`Searching for pull requests associated with commit ${commit.sha}`);
     const pulls = await client.rest.repos.listPullRequestsAssociatedWithCommit({
+      commit_sha: commit.sha,
       owner: owner,
       repo: repo,
-      commit_sha: commit.sha,
     });
     if (pulls.data.length) {
       core.info(

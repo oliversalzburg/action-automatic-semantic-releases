@@ -192,10 +192,10 @@ export const getCommitsSinceRelease = async (
     for await (const response of client.paginate.iterator(
       client.rest.repos.compareCommitsWithBasehead,
       {
-        owner: tagInfo.owner,
-        repo: tagInfo.repo,
         basehead: `${previousReleaseRef}...${currentSha}`,
+        owner: tagInfo.owner,
         per_page: 100,
+        repo: tagInfo.repo,
       },
     )) {
       commits.push(...response.data.commits);
@@ -245,8 +245,8 @@ export const createReleaseTag = async (
     );
     await client.rest.git.updateRef({
       ...refInfo,
-      ref: existingTag,
       force: true,
+      ref: existingTag,
     });
   }
 
@@ -273,8 +273,8 @@ export const deletePreviousGitHubRelease = async (
     core.info(`Deleting release: ${resp.data.id.toString()}`);
     await client.rest.repos.deleteRelease({
       owner: releaseInfo.owner,
-      repo: releaseInfo.repo,
       release_id: resp.data.id,
+      repo: releaseInfo.repo,
     });
   } catch (err) {
     core.info(

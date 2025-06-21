@@ -45,8 +45,8 @@ describe("Big Picture", () => {
         repo: "test",
       })
       .reply({
-        status: 404,
         data: {},
+        status: 404,
       });
 
     moctokit.rest.git
@@ -57,15 +57,15 @@ describe("Big Picture", () => {
         sha: "c0c8526b12c825637a12e9a700868b9568e5a0b2",
       })
       .reply({
-        status: 201,
         data: {},
+        status: 201,
       });
 
     moctokit.rest.repos
       .getReleaseByTag({ owner: "kitten-science", repo: "test", tag: "next" })
-      .reply({ status: 404, data: {} });
+      .reply({ data: {}, status: 404 });
 
-    moctokit.rest.repos.createRelease().reply({ status: 201, data: {} });
+    moctokit.rest.repos.createRelease().reply({ data: {}, status: 201 });
 
     const args = getAndValidateArgs(core);
 
