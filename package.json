@@ -18,7 +18,7 @@
     "@actions/core": "1.11.1",
     "@actions/github": "6.0.1",
     "@octokit/rest": "22.0.0",
-    "@oliversalzburg/js-utils": "0.4.0",
+    "@oliversalzburg/js-utils": "0.4.1",
     "conventional-commits-parser": "6.2.0",
     "fdir": "6.4.6",
     "picomatch": "4.0.2",
