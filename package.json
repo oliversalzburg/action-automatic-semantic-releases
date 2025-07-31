@@ -37,6 +37,6 @@
     "chai": "5.2.1",
     "esbuild": "0.25.8",
     "mocha": "11.7.1",
-    "typescript": "5.8.3"
+    "typescript": "5.9.2"
   }
 }
