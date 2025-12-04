@@ -12,7 +12,7 @@
     "postversion": "git push"
   },
   "resolutions": {
-    "express": "5.1.0"
+    "express": "5.2.1"
   },
   "dependencies": {
     "@actions/core": "1.11.1",
