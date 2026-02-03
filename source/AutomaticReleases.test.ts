@@ -1,6 +1,5 @@
 import * as core from "@actions/core";
-import { getOctokit } from "@actions/github";
-import { Context } from "@actions/github/lib/context.js";
+import { context, getOctokit } from "@actions/github";
 import { Moctokit } from "@kie/mock-github";
 import { beforeEach, it } from "mocha";
 import { AutomaticReleases } from "./AutomaticReleases.js";
@@ -71,7 +70,7 @@ describe("Big Picture", () => {
 
     const automaticReleases = new AutomaticReleases(
       {
-        context: new Context(),
+        context,
         core,
         octokit: getOctokit("invalid-token", { request: { fetch } }),
       },

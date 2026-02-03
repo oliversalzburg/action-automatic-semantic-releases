@@ -1,4 +1,4 @@
-import { type GitHub } from "@actions/github/lib/utils.js";
+import { GitHub } from "@actions/github/lib/utils";
 import { GetResponseDataTypeFromEndpointMethod } from "@octokit/types";
 import { mustExist } from "@oliversalzburg/js-utils/data/nil.js";
 import semverLt from "semver/functions/lt.js";
@@ -181,11 +181,6 @@ export const getCommitsSinceRelease = async (
     previousReleaseRef = "HEAD";
   }
 
-  let resp:
-    | GetResponseDataTypeFromEndpointMethod<
-        InstanceType<typeof GitHub>["rest"]["repos"]["compareCommitsWithBasehead"]
-      >
-    | undefined;
   let commits: CommitsSinceRelease = [];
   core.info(`Retrieving commits between ${previousReleaseRef} and ${currentSha}`);
   try {
@@ -198,7 +193,13 @@ export const getCommitsSinceRelease = async (
         repo: tagInfo.repo,
       },
     )) {
-      commits.push(...response.data.commits);
+      commits.push(
+        ...(
+          response.data as unknown as GetResponseDataTypeFromEndpointMethod<
+            InstanceType<typeof GitHub>["rest"]["repos"]["compareCommitsWithBasehead"]
+          >
+        ).commits,
+      );
     }
     core.info(
       `Successfully retrieved ${commits.length.toString()} commits between ${previousReleaseRef} and ${currentSha}`,
@@ -208,9 +209,6 @@ export const getCommitsSinceRelease = async (
     core.warning(`Could not find any commits between ${previousReleaseRef} and ${currentSha}`);
   }
 
-  if (resp?.commits) {
-    commits = resp.commits;
-  }
   core.debug(
     `Currently ${commits.length.toString()} number of commits between ${previousReleaseRef} and ${currentSha}`,
   );
@@ -237,6 +235,7 @@ export const createReleaseTag = async (
   try {
     await client.rest.git.createRef(refInfo);
   } catch (err) {
+    throw err;
     const existingTag = refInfo.ref.substring(5); // 'refs/tags/latest' => 'tags/latest'
     core.info(
       `Could not create new tag "${refInfo.ref}" (${

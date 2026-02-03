@@ -2,8 +2,8 @@ import crypto from "node:crypto";
 import fs, { lstatSync, readFileSync } from "node:fs";
 import path from "node:path";
 import * as core from "@actions/core";
-import { Context } from "@actions/github/lib/context.js";
-import { type GitHub } from "@actions/github/lib/utils.js";
+import { context as GitHubContext } from "@actions/github";
+import { type GitHub } from "@actions/github/lib/utils";
 import { RestEndpointMethodTypes } from "@octokit/rest";
 import { fdir } from "fdir";
 import picomatch from "picomatch";
@@ -24,7 +24,7 @@ export type UploadReleaseAssetOptions =
  */
 export const uploadReleaseArtifacts = async (
   client: InstanceType<typeof GitHub>,
-  context: Context,
+  context: typeof GitHubContext,
   release: NewGitHubRelease,
   files: Array<string>,
 ): Promise<void> => {
