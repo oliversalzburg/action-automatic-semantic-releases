@@ -1,4 +1,4 @@
-import core from "@actions/core";
+import * as core from "@actions/core";
 import { expect } from "chai";
 import { it } from "mocha";
 import { parseCommit } from "./changelog.js";

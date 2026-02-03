@@ -1,4 +1,4 @@
-import core from "@actions/core";
+import * as core from "@actions/core";
 import { expect } from "chai";
 import { CommitBase, CommitNote, CommitParser, CommitReference } from "conventional-commits-parser";
 import { it } from "mocha";

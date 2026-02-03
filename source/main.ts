@@ -1,4 +1,4 @@
-import core from "@actions/core";
+import * as core from "@actions/core";
 import { context, getOctokit } from "@actions/github";
 import { redirectErrorsToConsole } from "@oliversalzburg/js-utils/errors/console.js";
 import { AutomaticReleases } from "./AutomaticReleases.js";
