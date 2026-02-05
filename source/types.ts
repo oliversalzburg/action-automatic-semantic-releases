@@ -1,6 +1,6 @@
 import * as core from "@actions/core";
-import { Context } from "@actions/github/lib/context.js";
-import { type GitHub } from "@actions/github/lib/utils.js";
+import { context } from "@actions/github";
+import { type GitHub } from "@actions/github/lib/utils";
 import { GetResponseDataTypeFromEndpointMethod } from "@octokit/types";
 import { CommitMeta, CommitNote, CommitReference } from "conventional-commits-parser";
 
@@ -113,7 +113,7 @@ export interface AutomaticReleasesOptions {
   /**
    * The execution context.
    */
-  context: Context;
+  context: typeof context;
 
   /**
    * Instance of the GitHub core module.
