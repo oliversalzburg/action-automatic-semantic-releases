@@ -1,16 +1,16 @@
+import assert from "node:assert";
+import { it } from "node:test";
 import * as core from "@actions/core";
-import { expect } from "chai";
 import { CommitBase, CommitNote, CommitParser, CommitReference } from "conventional-commits-parser";
-import { it } from "mocha";
 import { getChangelogOptions, getFormattedChangelogEntry } from "./changelog.js";
 import { CommitsSinceRelease, ConventionalCommitType, ParsedCommit } from "./types.js";
 
-it("parses commits as expected", () => {
+it("parses commits as assert.strictEqualed", () => {
   const clOptions = getChangelogOptions(core);
 
   const parse = (message: string) => new CommitParser(clOptions).parse(message);
 
-  expect(parse("Update Crowdin configuration file")).to.eql({
+  assert.deepStrictEqual(parse("Update Crowdin configuration file"), {
     body: null,
     footer: null,
     header: "Update Crowdin configuration file",
@@ -22,7 +22,7 @@ it("parses commits as expected", () => {
   });
 });
 
-it("renders commits without convention as expected", () => {
+it("renders commits without convention as assert.strictEqualed", () => {
   const commit = {
     commit: {
       author: {
@@ -71,7 +71,8 @@ it("renders commits without convention as expected", () => {
   };
 
   const entry = getFormattedChangelogEntry(expandedCommitMsg, false);
-  expect(entry).to.equal(
+  assert.strictEqual(
+    entry,
     "- Update Crowdin configuration file (8f5fd3a938a1162daedf135293e163fba99d07ef)",
   );
 });

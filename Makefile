@@ -26,7 +26,7 @@ lint: node_modules/.package-lock.json
 
 test: node_modules/.package-lock.json
 	npm exec -- tsc
-	NODE_OPTIONS=--enable-source-maps TZ=UTC npm exec -- c8 --reporter=html-spa mocha output/*.test.js
+	TZ=UTC node --enable-source-maps --test output/*.test.js
 
 run: lib/main.js
 	node ./lib/main.js

@@ -1,148 +1,218 @@
+import assert from "node:assert";
+import { describe, it } from "node:test";
 import * as core from "@actions/core";
-import { expect } from "chai";
-import { it } from "mocha";
 import { parseCommit } from "./changelog.js";
 import type { CommitSinceRelease } from "./types.js";
 import { suggestVersions } from "./version.js";
 
 describe("Version Suggestions", () => {
-  it("suggests the expected versions for '1.2.3'", () => {
+  it("suggests the assert.strictEqualed versions for '1.2.3'", () => {
     const result = suggestVersions("1.2.3", new Date(1747651323000));
-    expect(result.current).to.equal("1.2.3", "current");
-    expect(result.dev).to.equal("1.2.3-dev.20250519104203", "dev");
-    expect(result.devExtended).to.equal("1.2.3-dev.20250519104203", "devExtended");
-    expect(result.devExtendedHash).to.equal("1.2.3-dev.20250519104203+unknown", "devExtendedHash");
-    expect(result.devHash).to.equal("1.2.3-dev.20250519104203+unknown", "devHash");
-    expect(result.extension).to.equal("", "extension");
-    expect(result.major).to.equal("2.0.0", "major");
-    expect(result.majorDev).to.equal("2.0.0-dev.20250519104203", "majorDev");
-    expect(result.majorDevHash).to.equal("2.0.0-dev.20250519104203+unknown", "majorDevHash");
-    expect(result.majorExtendedDev).to.equal("2.0.0-dev.20250519104203", "majorExtendedDev");
-    expect(result.majorExtendedDevHash).to.equal(
+    assert.strictEqual(result.current, "1.2.3", "current");
+    assert.strictEqual(result.dev, "1.2.3-dev.20250519104203", "dev");
+    assert.strictEqual(result.devExtended, "1.2.3-dev.20250519104203", "devExtended");
+    assert.strictEqual(
+      result.devExtendedHash,
+      "1.2.3-dev.20250519104203+unknown",
+      "devExtendedHash",
+    );
+    assert.strictEqual(result.devHash, "1.2.3-dev.20250519104203+unknown", "devHash");
+    assert.strictEqual(result.extension, "", "extension");
+    assert.strictEqual(result.major, "2.0.0", "major");
+    assert.strictEqual(result.majorDev, "2.0.0-dev.20250519104203", "majorDev");
+    assert.strictEqual(result.majorDevHash, "2.0.0-dev.20250519104203+unknown", "majorDevHash");
+    assert.strictEqual(result.majorExtendedDev, "2.0.0-dev.20250519104203", "majorExtendedDev");
+    assert.strictEqual(
+      result.majorExtendedDevHash,
       "2.0.0-dev.20250519104203+unknown",
       "majorExtendedDevHash",
     );
-    expect(result.majorExtendedNightly).to.equal("2.0.0-nightly.20250519", "majorExtendedNightly");
-    expect(result.majorExtendedNightlyHash).to.equal(
+    assert.strictEqual(
+      result.majorExtendedNightly,
+      "2.0.0-nightly.20250519",
+      "majorExtendedNightly",
+    );
+    assert.strictEqual(
+      result.majorExtendedNightlyHash,
       "2.0.0-nightly.20250519+unknown",
       "majorExtendedNightlyHash",
     );
-    expect(result.majorNightly).to.equal("2.0.0-nightly.20250519", "majorNightly");
-    expect(result.majorNightlyHash).to.equal("2.0.0-nightly.20250519+unknown", "majorNightlyHash");
-    expect(result.minor).to.equal("1.3.0", "minor");
-    expect(result.minorDev).to.equal("1.3.0-dev.20250519104203", "minorDev");
-    expect(result.minorDevHash).to.equal("1.3.0-dev.20250519104203+unknown", "minorDevHash");
-    expect(result.minorExtendedDev).to.equal("1.3.0-dev.20250519104203", "minorExtendedDev");
-    expect(result.minorExtendedDevHash).to.equal(
+    assert.strictEqual(result.majorNightly, "2.0.0-nightly.20250519", "majorNightly");
+    assert.strictEqual(
+      result.majorNightlyHash,
+      "2.0.0-nightly.20250519+unknown",
+      "majorNightlyHash",
+    );
+    assert.strictEqual(result.minor, "1.3.0", "minor");
+    assert.strictEqual(result.minorDev, "1.3.0-dev.20250519104203", "minorDev");
+    assert.strictEqual(result.minorDevHash, "1.3.0-dev.20250519104203+unknown", "minorDevHash");
+    assert.strictEqual(result.minorExtendedDev, "1.3.0-dev.20250519104203", "minorExtendedDev");
+    assert.strictEqual(
+      result.minorExtendedDevHash,
       "1.3.0-dev.20250519104203+unknown",
       "minorExtendedDevHash",
     );
-    expect(result.minorExtendedNightly).to.equal("1.3.0-nightly.20250519", "minorExtendedNightly");
-    expect(result.minorExtendedNightlyHash).to.equal(
+    assert.strictEqual(
+      result.minorExtendedNightly,
+      "1.3.0-nightly.20250519",
+      "minorExtendedNightly",
+    );
+    assert.strictEqual(
+      result.minorExtendedNightlyHash,
       "1.3.0-nightly.20250519+unknown",
       "minorExtendedNightlyHash",
     );
-    expect(result.minorNightly).to.equal("1.3.0-nightly.20250519", "minorNightly");
-    expect(result.minorNightlyHash).to.equal("1.3.0-nightly.20250519+unknown", "minorNightlyHash");
-    expect(result.nightly).to.equal("1.2.3-nightly.20250519", "nightly");
-    expect(result.nightlyExtended).to.equal("1.2.3-nightly.20250519", "nightlyExtended");
-    expect(result.nightlyExtendedHash).to.equal(
+    assert.strictEqual(result.minorNightly, "1.3.0-nightly.20250519", "minorNightly");
+    assert.strictEqual(
+      result.minorNightlyHash,
+      "1.3.0-nightly.20250519+unknown",
+      "minorNightlyHash",
+    );
+    assert.strictEqual(result.nightly, "1.2.3-nightly.20250519", "nightly");
+    assert.strictEqual(result.nightlyExtended, "1.2.3-nightly.20250519", "nightlyExtended");
+    assert.strictEqual(
+      result.nightlyExtendedHash,
       "1.2.3-nightly.20250519+unknown",
       "nightlyExtendedHash",
     );
-    expect(result.nightlyHash).to.equal("1.2.3-nightly.20250519+unknown", "nightlyHash");
-    expect(result.patch).to.equal("1.2.4", "patch");
-    expect(result.patchDev).to.equal("1.2.4-dev.20250519104203", "patchDev");
-    expect(result.patchDevHash).to.equal("1.2.4-dev.20250519104203+unknown", "patchDevHash");
-    expect(result.patchExtendedDev).to.equal("1.2.4-dev.20250519104203", "patchExtendedDev");
-    expect(result.patchExtendedDevHash).to.equal(
+    assert.strictEqual(result.nightlyHash, "1.2.3-nightly.20250519+unknown", "nightlyHash");
+    assert.strictEqual(result.patch, "1.2.4", "patch");
+    assert.strictEqual(result.patchDev, "1.2.4-dev.20250519104203", "patchDev");
+    assert.strictEqual(result.patchDevHash, "1.2.4-dev.20250519104203+unknown", "patchDevHash");
+    assert.strictEqual(result.patchExtendedDev, "1.2.4-dev.20250519104203", "patchExtendedDev");
+    assert.strictEqual(
+      result.patchExtendedDevHash,
       "1.2.4-dev.20250519104203+unknown",
       "patchExtendedDevHash",
     );
-    expect(result.patchExtendedNightly).to.equal("1.2.4-nightly.20250519", "patchExtendedNightly");
-    expect(result.patchExtendedNightlyHash).to.equal(
+    assert.strictEqual(
+      result.patchExtendedNightly,
+      "1.2.4-nightly.20250519",
+      "patchExtendedNightly",
+    );
+    assert.strictEqual(
+      result.patchExtendedNightlyHash,
       "1.2.4-nightly.20250519+unknown",
       "patchExtendedNightlyHash",
     );
-    expect(result.patchNightly).to.equal("1.2.4-nightly.20250519", "patchNightly");
-    expect(result.patchNightlyHash).to.equal("1.2.4-nightly.20250519+unknown", "patchNightlyHash");
+    assert.strictEqual(result.patchNightly, "1.2.4-nightly.20250519", "patchNightly");
+    assert.strictEqual(
+      result.patchNightlyHash,
+      "1.2.4-nightly.20250519+unknown",
+      "patchNightlyHash",
+    );
 
-    expect(result.root).to.equal("1.2.3", "root");
+    assert.strictEqual(result.root, "1.2.3", "root");
   });
 
-  it("suggests the expected versions for '1.2.3-pre.19'", () => {
+  it("suggests the assert.strictEqualed versions for '1.2.3-pre.19'", () => {
     const result = suggestVersions("1.2.3-pre.19", new Date(1747651323000));
-    expect(result.current).to.equal("1.2.3-pre.19", "current");
-    expect(result.dev).to.equal("1.2.3-dev.20250519104203", "dev");
-    expect(result.devExtended).to.equal("1.2.3-pre.19-dev.20250519104203", "devExtended");
-    expect(result.devExtendedHash).to.equal(
+    assert.strictEqual(result.current, "1.2.3-pre.19", "current");
+    assert.strictEqual(result.dev, "1.2.3-dev.20250519104203", "dev");
+    assert.strictEqual(result.devExtended, "1.2.3-pre.19-dev.20250519104203", "devExtended");
+    assert.strictEqual(
+      result.devExtendedHash,
       "1.2.3-pre.19-dev.20250519104203+unknown",
       "devExtendedHash",
     );
-    expect(result.devHash).to.equal("1.2.3-dev.20250519104203+unknown", "devHash");
-    expect(result.extension).to.equal("-pre.19", "extension");
-    expect(result.major).to.equal("2.0.0", "major");
-    expect(result.majorDev).to.equal("2.0.0-dev.20250519104203", "majorDev");
-    expect(result.majorDevHash).to.equal("2.0.0-dev.20250519104203+unknown", "majorDevHash");
-    expect(result.majorExtendedDev).to.equal("2.0.0-pre.19-dev.20250519104203", "majorExtendedDev");
-    expect(result.majorExtendedDevHash).to.equal(
+    assert.strictEqual(result.devHash, "1.2.3-dev.20250519104203+unknown", "devHash");
+    assert.strictEqual(result.extension, "-pre.19", "extension");
+    assert.strictEqual(result.major, "2.0.0", "major");
+    assert.strictEqual(result.majorDev, "2.0.0-dev.20250519104203", "majorDev");
+    assert.strictEqual(result.majorDevHash, "2.0.0-dev.20250519104203+unknown", "majorDevHash");
+    assert.strictEqual(
+      result.majorExtendedDev,
+      "2.0.0-pre.19-dev.20250519104203",
+      "majorExtendedDev",
+    );
+    assert.strictEqual(
+      result.majorExtendedDevHash,
       "2.0.0-pre.19-dev.20250519104203+unknown",
       "majorExtendedDevHash",
     );
-    expect(result.majorExtendedNightly).to.equal(
+    assert.strictEqual(
+      result.majorExtendedNightly,
       "2.0.0-pre.19-nightly.20250519",
       "majorExtendedNightly",
     );
-    expect(result.majorExtendedNightlyHash).to.equal(
+    assert.strictEqual(
+      result.majorExtendedNightlyHash,
       "2.0.0-pre.19-nightly.20250519+unknown",
       "majorExtendedNightlyHash",
     );
-    expect(result.majorNightly).to.equal("2.0.0-nightly.20250519", "majorNightly");
-    expect(result.majorNightlyHash).to.equal("2.0.0-nightly.20250519+unknown", "majorNightlyHash");
-    expect(result.minor).to.equal("1.3.0", "minor");
-    expect(result.minorDev).to.equal("1.3.0-dev.20250519104203", "minorDev");
-    expect(result.minorDevHash).to.equal("1.3.0-dev.20250519104203+unknown", "minorDevHash");
-    expect(result.minorExtendedDev).to.equal("1.3.0-pre.19-dev.20250519104203", "minorExtendedDev");
-    expect(result.minorExtendedDevHash).to.equal(
+    assert.strictEqual(result.majorNightly, "2.0.0-nightly.20250519", "majorNightly");
+    assert.strictEqual(
+      result.majorNightlyHash,
+      "2.0.0-nightly.20250519+unknown",
+      "majorNightlyHash",
+    );
+    assert.strictEqual(result.minor, "1.3.0", "minor");
+    assert.strictEqual(result.minorDev, "1.3.0-dev.20250519104203", "minorDev");
+    assert.strictEqual(result.minorDevHash, "1.3.0-dev.20250519104203+unknown", "minorDevHash");
+    assert.strictEqual(
+      result.minorExtendedDev,
+      "1.3.0-pre.19-dev.20250519104203",
+      "minorExtendedDev",
+    );
+    assert.strictEqual(
+      result.minorExtendedDevHash,
       "1.3.0-pre.19-dev.20250519104203+unknown",
       "minorExtendedDevHash",
     );
-    expect(result.minorExtendedNightly).to.equal(
+    assert.strictEqual(
+      result.minorExtendedNightly,
       "1.3.0-pre.19-nightly.20250519",
       "minorExtendedNightly",
     );
-    expect(result.minorExtendedNightlyHash).to.equal(
+    assert.strictEqual(
+      result.minorExtendedNightlyHash,
       "1.3.0-pre.19-nightly.20250519+unknown",
       "minorExtendedNightlyHash",
     );
-    expect(result.minorNightly).to.equal("1.3.0-nightly.20250519", "minorNightly");
-    expect(result.minorNightlyHash).to.equal("1.3.0-nightly.20250519+unknown", "minorNightlyHash");
-    expect(result.nightly).to.equal("1.2.3-nightly.20250519", "nightly");
-    expect(result.nightlyExtended).to.equal("1.2.3-pre.19-nightly.20250519", "nightlyExtended");
-    expect(result.nightlyExtendedHash).to.equal(
+    assert.strictEqual(result.minorNightly, "1.3.0-nightly.20250519", "minorNightly");
+    assert.strictEqual(
+      result.minorNightlyHash,
+      "1.3.0-nightly.20250519+unknown",
+      "minorNightlyHash",
+    );
+    assert.strictEqual(result.nightly, "1.2.3-nightly.20250519", "nightly");
+    assert.strictEqual(result.nightlyExtended, "1.2.3-pre.19-nightly.20250519", "nightlyExtended");
+    assert.strictEqual(
+      result.nightlyExtendedHash,
       "1.2.3-pre.19-nightly.20250519+unknown",
       "nightlyExtendedHash",
     );
-    expect(result.nightlyHash).to.equal("1.2.3-nightly.20250519+unknown", "nightlyHash");
-    expect(result.patch).to.equal("1.2.4", "patch");
-    expect(result.patchDev).to.equal("1.2.4-dev.20250519104203", "patchDev");
-    expect(result.patchDevHash).to.equal("1.2.4-dev.20250519104203+unknown", "patchDevHash");
-    expect(result.patchExtendedDev).to.equal("1.2.4-pre.19-dev.20250519104203", "patchExtendedDev");
-    expect(result.patchExtendedDevHash).to.equal(
+    assert.strictEqual(result.nightlyHash, "1.2.3-nightly.20250519+unknown", "nightlyHash");
+    assert.strictEqual(result.patch, "1.2.4", "patch");
+    assert.strictEqual(result.patchDev, "1.2.4-dev.20250519104203", "patchDev");
+    assert.strictEqual(result.patchDevHash, "1.2.4-dev.20250519104203+unknown", "patchDevHash");
+    assert.strictEqual(
+      result.patchExtendedDev,
+      "1.2.4-pre.19-dev.20250519104203",
+      "patchExtendedDev",
+    );
+    assert.strictEqual(
+      result.patchExtendedDevHash,
       "1.2.4-pre.19-dev.20250519104203+unknown",
       "patchExtendedDevHash",
     );
-    expect(result.patchExtendedNightly).to.equal(
+    assert.strictEqual(
+      result.patchExtendedNightly,
       "1.2.4-pre.19-nightly.20250519",
       "patchExtendedNightly",
     );
-    expect(result.patchExtendedNightlyHash).to.equal(
+    assert.strictEqual(
+      result.patchExtendedNightlyHash,
       "1.2.4-pre.19-nightly.20250519+unknown",
       "patchExtendedNightlyHash",
     );
-    expect(result.patchNightly).to.equal("1.2.4-nightly.20250519", "patchNightly");
-    expect(result.patchNightlyHash).to.equal("1.2.4-nightly.20250519+unknown", "patchNightlyHash");
+    assert.strictEqual(result.patchNightly, "1.2.4-nightly.20250519", "patchNightly");
+    assert.strictEqual(
+      result.patchNightlyHash,
+      "1.2.4-nightly.20250519+unknown",
+      "patchNightlyHash",
+    );
 
-    expect(result.root).to.equal("1.2.3", "root");
+    assert.strictEqual(result.root, "1.2.3", "root");
   });
 });
