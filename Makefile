@@ -26,7 +26,7 @@ lint: node_modules/.package-lock.json
 
 test: node_modules/.package-lock.json
 	npm exec -- tsc
-	TZ=UTC node --enable-source-maps --test output/*.test.js
+	GITHUB_SHA= TZ=UTC node --enable-source-maps --test output/*.test.js
 
 run: lib/main.js
 	node ./lib/main.js
