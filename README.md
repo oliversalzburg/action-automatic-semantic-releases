@@ -181,7 +181,7 @@ jobs:
 
 <!-- AUTO-DOC-INPUT:START - Do not remove or modify this section -->
 ```yaml
-- uses: oliversalzburg/action-automatic-semantic-releases@v1
+- uses: oliversalzburg/action-automatic-semantic-releases@v2
   id: action-automatic-semantic-releases
   with:
     # git tag (for automatic releases).
