@@ -152,5 +152,5 @@ outputs:
   version-root:
     description: Current version stripped of extensions.
 runs:
-  using: node20
+  using: node24
   main: lib/main.js
