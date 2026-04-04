@@ -37,10 +37,10 @@ refresh: default
 	git add .
 	git commit -s -m 'chore: Rebuild entrypoint'
 
-node_modules/.package-lock.json: package-lock.json
-	npm ci
 package-lock.json: package.json
 	npm install
+node_modules/.package-lock.json: package-lock.json
+	npm ci
 
 lib/main.js: node_modules/.package-lock.json
 	node build.js

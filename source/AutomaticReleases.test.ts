@@ -1,7 +1,6 @@
 import { afterEach, beforeEach, describe, it } from "node:test";
 import * as core from "@actions/core";
-import { getOctokit } from "@actions/github";
-import { Context } from "@actions/github/lib/context.js";
+import { context, getOctokit } from "@actions/github";
 import { Moctokit } from "@kie/mock-github";
 import { AutomaticReleases } from "./AutomaticReleases.js";
 import { getAndValidateArgs } from "./utils.js";
@@ -52,13 +51,26 @@ describe("Big Picture", () => {
     moctokit.rest.git
       .createRef({
         owner: "kitten-science",
-        ref: "refs/tags/next",
+        ref: encodeURIComponent("tags/next"),
         repo: "test",
         sha: "c0c8526b12c825637a12e9a700868b9568e5a0b2",
       })
       .reply({
         data: {},
         status: 201,
+      });
+
+    moctokit.rest.git
+      .updateRef({
+        force: true,
+        owner: "kitten-science",
+        ref: encodeURIComponent("tags/next"),
+        repo: "test",
+        sha: "",
+      })
+      .reply({
+        data: {},
+        status: 200,
       });
 
     moctokit.rest.repos
@@ -71,7 +83,7 @@ describe("Big Picture", () => {
 
     const automaticReleases = new AutomaticReleases(
       {
-        context: new Context(),
+        context: context,
         core,
         octokit: getOctokit("invalid-token", { request: { fetch } }),
       },

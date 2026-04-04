@@ -1,4 +1,4 @@
-import { type GitHub } from "@actions/github/lib/utils.js";
+import { type GitHub } from "@actions/github/lib/utils";
 import { GetResponseDataTypeFromEndpointMethod } from "@octokit/types";
 import { mustExist } from "@oliversalzburg/js-utils/data/nil.js";
 import semverLt from "semver/functions/lt.js";
@@ -198,6 +198,7 @@ export const getCommitsSinceRelease = async (
         repo: tagInfo.repo,
       },
     )) {
+      // @ts-expect-error GitHub types are invalid here?
       commits.push(...response.data.commits);
     }
     core.info(

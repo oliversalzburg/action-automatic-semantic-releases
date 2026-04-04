@@ -2,12 +2,11 @@ import crypto from "node:crypto";
 import fs, { lstatSync, readFileSync } from "node:fs";
 import path from "node:path";
 import * as core from "@actions/core";
-import { Context } from "@actions/github/lib/context.js";
-import { type GitHub } from "@actions/github/lib/utils.js";
+import { type GitHub } from "@actions/github/lib/utils";
 import { RestEndpointMethodTypes } from "@octokit/rest";
 import { fdir } from "fdir";
 import picomatch from "picomatch";
-import { NewGitHubRelease } from "./types.js";
+import { type Context, NewGitHubRelease } from "./types.js";
 
 /**
  * The type of the API response for uploading a release asset.
