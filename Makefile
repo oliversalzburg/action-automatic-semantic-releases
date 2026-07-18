@@ -5,7 +5,7 @@ default: build
 build: lib/main.js
 
 clean:
-	rm --force --recursive node_modules output tsconfig.tsbuildinfo
+	rm --force --recursive lib node_modules output tsconfig.tsbuildinfo
 
 check-updates: node_modules/.package-lock.json
 	npx npm-check-updates
