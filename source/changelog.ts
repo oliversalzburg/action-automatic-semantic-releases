@@ -297,8 +297,12 @@ export const generateChangelogMetadataFromParsedCommits = (
 
   changelog.commits = [...parsedCommits];
 
-  const commitsWithoutDeps = parsedCommits.filter(commit => commit.scope !== "deps");
-  const commitsDeps = parsedCommits.filter(commit => commit.scope === "deps");
+  const commitsWithoutDeps = parsedCommits.filter(
+    commit => commit.scope !== "deps" && commit.scope !== "deps-dev",
+  );
+  const commitsDeps = parsedCommits.filter(
+    commit => commit.scope === "deps" || commit.scope === "deps-dev",
+  );
 
   // Breaking Changes
   changelog.breakingChanges = parsedCommits.filter(val => val.extra.breakingChange);
