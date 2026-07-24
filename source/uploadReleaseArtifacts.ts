@@ -58,7 +58,6 @@ export const uploadReleaseArtifacts = async (
       const uploadArgs: UploadReleaseAssetOptions = {
         data: readFileSync(filePath) as unknown as string,
         headers: {
-          "content-length": lstatSync(filePath).size,
           "content-type": "application/octet-stream",
         },
         name: nameWithExt,
