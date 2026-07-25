@@ -1,5 +1,7 @@
 .PHONY: default build check-updates clean docs git-hook pretty lint test run
 
+SOURCES := $(wildcard source/*.ts)
+
 default: build
 
 build: lib/main.js
@@ -24,7 +26,7 @@ lint: node_modules/.package-lock.json
 	npm exec -- biome check .
 	npm exec -- tsc --noEmit
 
-test: node_modules/.package-lock.json
+test: $(SOURCES) node_modules/.package-lock.json
 	npm exec -- tsc
 	GITHUB_SHA= TZ=UTC node --enable-source-maps --test output/*.test.js
 
@@ -32,8 +34,7 @@ run: lib/main.js
 	node ./lib/main.js
 
 
-.PHONY: refresh
-refresh: default
+refresh: lib/main.js
 	git add .
 	git commit -s -m 'chore: Rebuild entrypoint'
 
@@ -42,5 +43,5 @@ package-lock.json: package.json
 node_modules/.package-lock.json: package-lock.json
 	npm ci
 
-lib/main.js: node_modules/.package-lock.json
+lib/main.js: $(SOURCES) node_modules/.package-lock.json
 	node build.js
