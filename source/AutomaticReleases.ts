@@ -201,37 +201,46 @@ export class AutomaticReleases {
     }
 
     if (!isNil(changelog)) {
+      core.info(`Setting output 'commits-total' to ${changelog.commits.length}`);
       core.setOutput("commits-total", changelog.commits.length);
+
+      core.info(`Setting output 'unconventional-total' to ${changelog.unconventional.length}`);
       core.setOutput("unconventional-total", changelog.unconventional.length);
+
+      core.info(`Setting output 'major-total' to ${changelog.breakingChanges.length}`);
       core.setOutput("major-total", changelog.breakingChanges.length);
+
+      core.info(`Setting output 'minor-total' to ${changelog.feat.length}`);
       core.setOutput("minor-total", changelog.feat.length);
-      core.setOutput(
-        "patch-total",
+
+      const patchTotal =
         changelog.fix.length +
-          changelog.perf.length +
-          changelog.refactor.length +
-          changelog.revert.length +
-          changelog.style.length +
-          changelog.deps.feat.length,
-      );
-      core.setOutput(
-        "lifecycle-total",
+        changelog.perf.length +
+        changelog.refactor.length +
+        changelog.revert.length +
+        changelog.style.length +
+        changelog.deps.feat.length;
+      core.info(`Setting output 'patch-total' to ${patchTotal}`);
+      core.setOutput("patch-total", patchTotal);
+
+      const lifecycleTotal =
         changelog.build.length +
-          changelog.chore.length +
-          changelog.ci.length +
-          changelog.docs.length +
-          changelog.test.length +
-          changelog.deps.build.length +
-          changelog.deps.chore.length +
-          changelog.deps.ci.length +
-          changelog.deps.docs.length +
-          changelog.deps.fix.length +
-          changelog.deps.perf.length +
-          changelog.deps.refactor.length +
-          changelog.deps.revert.length +
-          changelog.deps.style.length +
-          changelog.deps.test.length,
-      );
+        changelog.chore.length +
+        changelog.ci.length +
+        changelog.docs.length +
+        changelog.test.length +
+        changelog.deps.build.length +
+        changelog.deps.chore.length +
+        changelog.deps.ci.length +
+        changelog.deps.docs.length +
+        changelog.deps.fix.length +
+        changelog.deps.perf.length +
+        changelog.deps.refactor.length +
+        changelog.deps.revert.length +
+        changelog.deps.style.length +
+        changelog.deps.test.length;
+      core.info(`Setting output 'lifecycle-total' to ${lifecycleTotal}`);
+      core.setOutput("lifecycle-total", lifecycleTotal);
     }
 
     core.debug(`Exporting environment variable AUTOMATIC_RELEASES_TAG with value ${tagName}`);
